@@ -12,6 +12,13 @@
     <meta name="keywords" content="HTML5 Template" />
     <meta name="description" content="Molla - Bootstrap eCommerce Template" />
     <meta name="author" content="p-themes" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/home.css" />
     <!-- Favicon -->
     <link
       rel="apple-touch-icon"
@@ -69,41 +76,27 @@
   <body>
     <div class="page-wrapper">
       <!--Header start-->
-      <header class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-          <!-- <a class="navbar-brand" href="#">Navbar</a> -->
-          <img
-            src="assets/images/logo/cornerstone_furniture-logo-03562533B9-seeklogo.com (1).png"
-            alt=""
-          />
 
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-              </li>
-              <li class="nav-item dropdown"></li>
-              <li class="nav-item">
-                <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-              </li>
-            </ul>
+      <div class="container-fluid p-5">
+        <div class="row">
+          <div class="col-sm-2">
+            <img
+              src="https://imgs.search.brave.com/IS3ECAw-N7V5vfLuJOPJQwYn0zPRLDKKDI5LT2JFpxU/rs:fit:860:0:0/g:ce/aHR0cHM6Ly93d3cu/Y3NvZGJyYW5kLmNv/bS93cC1jb250ZW50/L3VwbG9hZHMvMjAy/MS8xMC9Db3JuZXJz/dG9uZS1Mb2dvLUhv/cml6b250YWwucG5n"
+              alt=""
+            />
+          </div>
+          <div class="col-sm-6"></div>
+          <div class="upper col-4">
+            <a class="me-4 text-dark" href="#">Home</a>
+            <a class="me-4 text-dark" href="#">Shop</a>
+            <a class="me-4 text-dark" href="#">About Us</a>
+            <a class="me-4 text-dark" href="#">Blog</a>
+            <a class="me-4 text-dark" href="#">Contact Us </a>
+            <a href="#"><i class="ms-5 fa-regular fa-heart"></i></a>
+            <a href="#"><i class="ms-5 fa-regular fa-user"></i></a>
           </div>
         </div>
-      </header>
+      </div>
       <!-- End .header -->
 
       <main class="main">
@@ -3143,71 +3136,6 @@
     </div>
     <!-- End .modal -->
 
-    <div
-      class="container newsletter-popup-container mfp-hide"
-      id="newsletter-popup-form"
-    >
-      <div class="row justify-content-center">
-        <div class="col-10">
-          <div class="row no-gutters bg-white newsletter-popup-content">
-            <div class="col-xl-3-5col col-lg-7 banner-content-wrap">
-              <div class="banner-content text-center">
-                <img
-                  src="assets/images/popup/newsletter/logo.png"
-                  class="logo"
-                  alt="logo"
-                  width="60"
-                  height="15"
-                />
-                <h2 class="banner-title">
-                  get <span>25<light>%</light></span> off
-                </h2>
-                <p>
-                  Subscribe to the Molla eCommerce newsletter to receive timely
-                  updates from your favorite products.
-                </p>
-                <form action="#">
-                  <div class="input-group input-group-round">
-                    <input
-                      type="email"
-                      class="form-control form-control-white"
-                      placeholder="Your Email Address"
-                      aria-label="Email Adress"
-                      required
-                    />
-                    <div class="input-group-append">
-                      <button class="btn" type="submit"><span>go</span></button>
-                    </div>
-                    <!-- .End .input-group-append -->
-                  </div>
-                  <!-- .End .input-group -->
-                </form>
-                <div class="custom-control custom-checkbox">
-                  <input
-                    type="checkbox"
-                    class="custom-control-input"
-                    id="register-policy-2"
-                    required
-                  />
-                  <label class="custom-control-label" for="register-policy-2"
-                    >Do not show this popup again</label
-                  >
-                </div>
-                <!-- End .custom-checkbox -->
-              </div>
-            </div>
-            <div class="col-xl-2-5col col-lg-5">
-              <img
-                src="assets/images/popup/newsletter/img-1.jpg"
-                class="newsletter-img"
-                alt="newsletter"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- Plugins JS File -->
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/js/bootstrap.bundle.min.js"></script>
@@ -3218,6 +3146,15 @@
     <script src="assets/js/jquery.plugin.min.js"></script>
     <script src="assets/js/jquery.magnific-popup.min.js"></script>
     <script src="assets/js/jquery.countdown.min.js"></script>
+    <script
+      src="https://kit.fontawesome.com/c0b612fc07.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
     <!-- Main JS File -->
     <script src="assets/js/main.js"></script>
     <script src="assets/js/demos/demo-2.js"></script>
