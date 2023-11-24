@@ -10,10 +10,14 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   mobileNumber: {
-    type: Number,
+    type: String,
     required: true,
   },
   password: {
+    type: String,
+    required: true,
+  },
+  confirmPassword: {
     type: String,
     required: true,
   },
