@@ -10,5 +10,6 @@ userRouter.use(express.static(path.join(__dirname, '..', 'public')));
 userRouter.use(express.static(path.join(__dirname, '..', 'public', 'styles')));
 
 userRouter.get('/', userController.loadHome);
+userRouter.get('/login', userController.loadLogin);
 
 module.exports = userRouter;
