@@ -16,7 +16,8 @@ userRouter.get('/', userController.loadHome);
 userRouter.get('/userRegister', userController.loadRegister);
 userRouter.post('/userRegister', userController.postRegister);
 userRouter.get('/userSignIn', userController.loadLogin);
-userRouter.get('/authentication', userController.loadOtp);
-userRouter.post('/authentication',userController.verifyOtp)
+userRouter.get('/authenticationPage', userController.loadOtpPage);
+userRouter.post('/authentication',userController.postAuthentication)
+
 
 module.exports = userRouter;
