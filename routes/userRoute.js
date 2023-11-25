@@ -3,9 +3,18 @@ const userRouter = express();
 const path = require('path');
 const userController = require('../controllers/userController');
 const bodyParser = require('body-parser');
+const session= require('express-session')
+
+
+userRouter.use(session({
+  secret: 'your-secret-keyamjadali', 
+  resave: false,
+  saveUninitialized: true,
+}));
 
 userRouter.use(bodyParser.json());
-userRouter.use(bodyParser.urlencoded({ extended: true }));
+userRouter.use(bodyParser.urlencoded({ extended: true}));
+
 userRouter.set('view engine', 'ejs');
 userRouter.set('views', path.join(__dirname, '..', 'views', 'users'));
 

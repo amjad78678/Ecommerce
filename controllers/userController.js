@@ -87,9 +87,10 @@ let transporter = nodemailer.createTransport({
       expiryDate: Date.now() + 3600000,
     });
     //----save otp record
-    let verified = await newOtpVerification.save();
+    
+    await newOtpVerification.save();
     await transporter.sendMail(mailOptions);
-    res.redirect('/authentication')
+    res.redirect(`/authentication?id=${_id}`)
 
     
 
@@ -107,28 +108,55 @@ const loadLogin = async (req, res) => {
 };
 const loadOtp = async (req, res) => {
   try {
+    req.session.userId=req.query.id
+    console.log(req.session.userId);
     res.render('userOtpRegister');
+
   } catch (error) {
     console.log(error.message);
   }
 };
 const verifyOtp=async(req,res)=>{
   try {
-      let {userId,otp}= req.body
-      if(!userId || !otp){
-        res.render('userOtpRegister',{message:'Empty otp details are not allowed'})
-      }else{
-        const userOtpVerificationRecords= await userOtpVerification.find({userId})
-        if (userOtpVerificationRecords.length<=0){
-        //no-record found
-       res.render('userOtpRegister',{message:'account record doesnt exist'})
-        }else{
-        console.log(userOtpVerificationRecords);  //------------------------------------------------------------
-          //user otp record exists
-
-        
-        }
+    const {Otp}= req.body
+    const userId=req.session.userId
+      console.log(Otp);
+      console.log(userId);
+     
+      if(!userId || !Otp){
+       return res.render('userOtpRegister',{message:'Empty otp details are not allowed'})
       }
+        const userOtpVerificationRecords= await userOtpVerification.find({userId})
+        console.log(userOtpVerificationRecords);
+        if(!userOtpVerificationRecords){
+       return res.render('userOtpRegister',{message:'account record doesnt exist'})
+        }
+      
+          //user otp record exists
+         const {expiryDate,otp:hashedOtp}=userOtpVerificationRecords[0];
+         console.log(hashedOtp);
+         console.log(expiryDate);
+         if (expiryDate<Date.now()){
+          //otp expired so
+          res.render('userOtpRegister',{message:'OTP has expired, please request a new one'})
+         }
+           const enteredOtp=Otp
+          //compare the entered otp
+           const validOtp=await bcrypt.compare(enteredOtp,hashedOtp)
+           if(!validOtp){
+            //case otp invalid
+           return res.render('userOtpRegister',{message:'Invalid Otp Please try again'})
+           }
+         
+         //update user to mask is verified true
+          await User.updateOne({_id:userId},{$set:{is_Verified:true }})
+          //delete the used otp of otp database 
+          await userOtpVerification.deleteOne({userId})
+          return res.redirect('/userSignIn')
+        
+      
+ 
+
   } catch (error) {
     console.log(error.message);
   }
