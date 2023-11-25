@@ -69,7 +69,7 @@ let transporter = nodemailer.createTransport({
   },
 });
     //mail---options-
-    console.log(email);//----------------------------------------------------------------------------
+    console.log(email);
     const mailOptions = {
       from: process.env.AUTH_EMAIL,
       to: email,
@@ -105,70 +105,30 @@ const loadLogin = async (req, res) => {
     console.log(error.message);
   }
 };
-const loadOtpPage = async (req, res) => {
+const loadOtp = async (req, res) => {
   try {
     res.render('userOtpRegister');
   } catch (error) {
     console.log(error.message);
   }
 };
-const postAuthentication=async(req,res)=>{
+const verifyOtp=async(req,res)=>{
   try {
-       let {otp,userId}=req.body
-       console.log('otp'+otp+'userId'+userId);
-     
-        const userOtpVerificationRecords= await userOtpVerification.find({_id:userId})
-        if(!userId || !otp){
-          await User.deleteMany({_id:userOtpVerificationRecords[0].userId})
-          await userOtpVerification.deleteMany({_id:userId});
-          res.redirect('/authenticationPage')
-        }else{
-
-        }if (userOtpVerificationRecords.length<=0){
+      let {userId,otp}= req.body
+      if(!userId || !otp){
+        res.render('userOtpRegister',{message:'Empty otp details are not allowed'})
+      }else{
+        const userOtpVerificationRecords= await userOtpVerification.find({userId})
+        if (userOtpVerificationRecords.length<=0){
         //no-record found
-       res.redirect('/authenticationPage')
-        
+       res.render('userOtpRegister',{message:'account record doesnt exist'})
         }else{
-        console.log('2'+userOtpVerificationRecords);  //------------------------------------------------------------
-       const { expiresAt } = userOtpVerificationRecords[0];
-        const hashedOTP = userOtpVerificationRecords[0].otp;
-          if (expiresAt < Date.now()) {
-          await userModel.deleteMany({
-            _id: UserOTPVerificationRecords[0].userId,
-          });
-          await userOtpVerification.deleteMany({ _id: userId });
+        console.log(userOtpVerificationRecords);  //------------------------------------------------------------
+          //user otp record exists
 
-          req.session.message = 'Invalid OTP,Please register again';
-          res.redirect('/register');
-        } else {
-          const validOTP = await bcrypt.compare(otp, hashedOTP);
-
-          if (!validOTP) {
-            req.session.otpVerification = userVerificationId;
-            req.session.message = 'Invalid OTP,Please try again';
-
-            res.redirect('/emailVerificationpage');
-          } else {
-            // const user = await userModel.findOne({ _id: session })
-
-            req.session.userId =
-              UserOTPVerificationRecords[0].userId.toString();
-            await userModel.updateOne(
-              { _id: UserOTPVerificationRecords[0].userId },
-              { $set: { is_verified: true } },
-            );
-            const userDetails = await userModel.findOne({
-              _id: UserOTPVerificationRecords[0].userId.toString(),
-            });
-            req.session.user_id = userDetails;
-
-            await userOtpVerification.deleteMany({ _id: userId });
-
-            res.redirect('/login');
-          }
+        
         }
       }
-      
   } catch (error) {
     console.log(error.message);
   }
@@ -178,6 +138,6 @@ module.exports = {
   loadRegister,
   postRegister,
   loadLogin,
-  loadOtpPage,
-  postAuthentication
+  loadOtp,
+  verifyOtp
 };
