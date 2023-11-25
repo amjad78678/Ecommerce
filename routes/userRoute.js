@@ -13,7 +13,9 @@ userRouter.use(express.static(path.join(__dirname, '..', 'public')));
 userRouter.use(express.static(path.join(__dirname, '..', 'public', 'styles')));
 
 userRouter.get('/', userController.loadHome);
-userRouter.get('/login', userController.loadRegister);
+userRouter.get('/userRegister', userController.loadRegister);
 userRouter.post('/userRegister', userController.insertUser);
+userRouter.get('/userSignIn', userController.loadLogin);
+userRouter.get('/authentication', userController.loadOtp);
 
 module.exports = userRouter;

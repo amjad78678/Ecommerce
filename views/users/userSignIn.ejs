@@ -145,7 +145,7 @@
                   role="tab"
                   aria-controls="register-2"
                   aria-selected="true"
-                  >Register</a
+                  >Sign in</a
                 >
               </li>
             </ul>
@@ -165,18 +165,7 @@
                 role="tabpanel"
                 aria-labelledby="register-tab-2"
               >
-                <form action="/userRegister" method="post">
-                  <div class="form-group">
-                    <label for="Username">Username *</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="userName"
-                      name="userName"
-                      required
-                    />
-                  </div>
-
+                <form action="/userSignIn" method="post">
                   <div class="form-group">
                     <label for="register-email-2">Your email address *</label>
                     <input
@@ -187,16 +176,7 @@
                       required
                     />
                   </div>
-                  <div class="form-group">
-                    <label for="mobileNumber">Your Mobile Number*</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="mobileNumber"
-                      name="mobileNumber"
-                      required
-                    />
-                  </div>
+
                   <!-- End .form-group -->
 
                   <div class="form-group">
@@ -209,24 +189,15 @@
                       required
                     />
                   </div>
-                  <div class="form-group">
-                    <label for="register-password-2">Confirm Password *</label>
-                    <input
-                      type="password"
-                      class="form-control"
-                      id="confirmPassword"
-                      name="confirmPassword"
-                      required
-                    />
-                  </div>
+
                   <!-- End .form-group -->
 
                   <div class="form-footer">
                     <button type="submit" class="btn btn-outline-primary-2">
-                      <span>SIGN UP</span>
+                      <span>LOG IN</span>
                       <i class="icon-long-arrow-right"></i>
                     </button>
-
+                    <a href="#" class="forgot-link">Forgot Your Password?</a>
                     <!-- End .custom-checkbox -->
                   </div>
                   <!-- End .form-footer -->
