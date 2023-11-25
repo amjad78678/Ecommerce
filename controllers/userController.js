@@ -161,11 +161,36 @@ const verifyOtp=async(req,res)=>{
     console.log(error.message);
   }
 }
+
+const verifyLogin=async(req,res)=>{
+     try {
+    
+      const password= req.body.password
+      const email=req.body.email
+     let userData=await User.findOne({email:email})
+     if (userData){
+      const passwordMatch= await bcrypt.compare(password,userData.password)
+      if (passwordMatch){
+        req.session.userId=userData._id
+        res.redirect('/')
+      }else{
+        res.render('userSignIn',{message:'Email and password is incorrect'})
+      }
+     }else{
+       res.render('userSignIn',{message:'Email and password is incorrect'})
+     }
+    
+
+     } catch (error) {
+      console.log(error.message);
+     }
+    }
 module.exports = {
   loadHome,
   loadRegister,
   postRegister,
   loadLogin,
   loadOtp,
-  verifyOtp
+  verifyOtp,
+  verifyLogin
 };
