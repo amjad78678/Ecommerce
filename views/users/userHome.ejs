@@ -107,11 +107,39 @@
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              <i class="fa-regular fa-user"></i>
+              <i class="fa-regular fa-user" style="margin-right: 5px;">
+                <% if (locals.user){%>
+               <%= user.userName%>
+                 <%} %></i>
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-              <li><a class="dropdown-item" href="/userSignIn">Login</a></li>
-              <li><a class="dropdown-item" href="/userRegister">Sign Up</a></li>
+              <li><a class="dropdown-item" <% if(locals.user) { %> 
+                    href="/userProfile">
+                <% }else{ %>
+                 href="/userSignIn">
+                  <% } %>
+               
+                <% if(locals.user){ %>
+                   My profile
+
+               <%  }else{%>
+                  Login
+
+              <%   }%>
+              </a></li>
+              <li><a class="dropdown-item" <% if(locals.user) {%> 
+                   href="/userLogout">
+                <% }else{ %>
+                    href="/userRegister">
+                  <% } %>
+                <% if(locals.user){ %>
+                   Logout
+
+               <%  }else{%> 
+                  Sign Up
+
+              <%   }%>
+              </a></li>
             </ul>
           </div>
         </div>

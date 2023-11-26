@@ -15,7 +15,15 @@ const securePassword = async (password) => {
 };
 const loadHome = async (req, res) => {
   try {
+    
+    if (req.session.userId){
+      const userData=await User.findById({_id:req.session.userId})
+        console.log(req.session.userId);
+      res.render('userHome',{user:userData});
+    
+    }
     res.render('userHome');
+    
   } catch (error) {
     console.log(error.message);
   }
@@ -23,6 +31,7 @@ const loadHome = async (req, res) => {
 
 const loadRegister = async (req, res) => {
   try {
+
     res.render('userRegister');
   } catch (error) {
     console.log(error.message);
@@ -30,6 +39,11 @@ const loadRegister = async (req, res) => {
 };
 const postRegister = async (req, res) => {
   try {
+    const existingUser = await User.findOne({email:req.body.email})
+    if (existingUser){
+      res.render('userRegister',{message:'User already exists enter new details'})
+      
+    }else{
     sPassword = await securePassword(req.body.password);
     sConfirmPassword = await securePassword(req.body.confirmPassword);
     const user = User({
@@ -46,12 +60,15 @@ const postRegister = async (req, res) => {
     });
 
     if (userData) {
-    let otpVerification = await sentOtpVerificationMail(userData.email, userData._id)
+      await sentOtpVerificationMail(userData.email, userData._id)
     }
-  } catch (error) {
+  } 
+}
+  catch (error) {
     console.log(error.message);
   }
 };
+
 
 const sentOtpVerificationMail = async ({ _id, email }, res) => {
   console.log(_id +'email'+email)    //-----------------------------------------------------------------------
