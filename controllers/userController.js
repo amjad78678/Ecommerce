@@ -55,6 +55,9 @@ const postRegister = async (req, res) => {
       is_Admin: 0,
       is_Verified: false,
     });
+    if (req.body.password!==req.body.confirmPassword){
+     res.render('userRegister',{message:'Password doesnt match enter again'})
+    }else{
     const userData = await user.save().then((result) => {
       sentOtpVerificationMail(result, res);
     });
@@ -63,6 +66,7 @@ const postRegister = async (req, res) => {
       await sentOtpVerificationMail(userData.email, userData._id)
     }
   } 
+}
 }
   catch (error) {
     console.log(error.message);

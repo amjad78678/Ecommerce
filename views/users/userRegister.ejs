@@ -132,7 +132,6 @@
       class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17"
       style="background-image: url('assets/images/backgrounds/loginsignup.jpg')"
     >
-      form
       <div class="container">
         <div class="form-box">
           <div class="form-tab">
@@ -166,7 +165,7 @@
                 role="tabpanel"
                 aria-labelledby="register-tab-2"
               >
-                <form action="" method="post">
+                <form action="" method="post" onsubmit="return validateForm()">
                   <div class="form-group">
                     <label for="Username">Username *</label>
                     <input
@@ -176,6 +175,7 @@
                       name="userName"
                       required
                     />
+                    <span id="userNameError" class="error"></span>
                   </div>
 
                   <div class="form-group">
@@ -187,6 +187,7 @@
                       name="email"
                       required
                     />
+                     <span id="emailError" class="error"></span>
                   </div>
                   <div class="form-group">
                     <label for="mobileNumber">Your Mobile Number*</label>
@@ -197,6 +198,7 @@
                       name="mobileNumber"
                       required
                     />
+                     <span id="mobileNumberError" class="error"></span>
                   </div>
                   <!-- End .form-group -->
 
@@ -209,6 +211,7 @@
                       name="password"
                       required
                     />
+                     <span id="passwordError" class="error"></span>
                   </div>
                   <div class="form-group">
                     <label for="register-password-2">Confirm Password *</label>
@@ -219,6 +222,7 @@
                       name="confirmPassword"
                       required
                     />
+                     <span id="confirmPasswordError" class="error"></span>
                   </div>
                   <!-- End .form-group -->
 
@@ -591,6 +595,9 @@
   integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
   crossorigin="anonymous"
 ></script>
+<script>
+
+</script>
 <!-- Main JS File -->
 <script src="assets/js/main.js"></script>
 <script src="assets/js/demos/demo-2.js"></script>
