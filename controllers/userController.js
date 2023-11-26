@@ -41,7 +41,7 @@ const postRegister = async (req, res) => {
   try {
     const existingUser = await User.findOne({email:req.body.email})
     if (existingUser){
-      res.render('userRegister',{message:'User already exists enter new details'})
+      res.render('userRegister',{message:'User already exists enter new details or  <a href="/userSignIn?id=existingUser._id">Login Now</a> '})//-------------------------------------------------------
       
     }else{
     sPassword = await securePassword(req.body.password);
@@ -74,52 +74,54 @@ const postRegister = async (req, res) => {
 };
 
 
-const sentOtpVerificationMail = async ({ _id, email }, res) => {
-  console.log(_id +'email'+email)    //-----------------------------------------------------------------------
-  try {
-    const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
-    //---------------NODEMAILER TRANSPORT
-let transporter = nodemailer.createTransport({
-  service:'gmail',
-  host: 'smtp.gmail.com',
-  port:587,
-  secure:true,
-  auth: {
-    user: process.env.AUTH_EMAIL,
-    pass: 'gasd cdmy jhlt gnhf'
-  },
-});
-    //mail---options-
-    console.log(email);
-    const mailOptions = {
-      from: process.env.AUTH_EMAIL,
-      to: email,
-      subject: 'Verify your email for Cornerstone',
-      html: `<p>Enter <b>${otp} </b>in the app to verify your email address and complete your registration </p><p>This code <b>expires in 1 hour</b></p>`,
-    };
+  const sentOtpVerificationMail = async ({ _id, email }, res) => {
 
-    //----hash-the-otp
-    const saltRounds = 10;
-    let hashedOtp = await bcrypt.hash(otp, saltRounds);
-    const newOtpVerification = new userOtpVerification({
-      userId: _id,
-      otp: hashedOtp,
-      createdDate: Date.now(),
-      expiryDate: Date.now() + 3600000,
-    });
-    //----save otp record
-    
-    await newOtpVerification.save();
-    await transporter.sendMail(mailOptions);
-    res.redirect(`/authentication?id=${_id}`)
 
-    
+    console.log(_id +'email'+email)    //-----------------------------------------------------------------------
+    try {
+      const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
+      //---------------NODEMAILER TRANSPORT
+  let transporter = nodemailer.createTransport({
+    service:'gmail',
+    host: 'smtp.gmail.com',
+    port:587,
+    secure:true,
+    auth: {
+      user: process.env.AUTH_EMAIL,
+      pass: 'gasd cdmy jhlt gnhf'
+    },
+  });
+      //mail---options-
+      console.log(email);
+      const mailOptions = {
+        from: process.env.AUTH_EMAIL,
+        to: email,
+        subject: 'Verify your email for Cornerstone',
+        html: `<p>Enter <b>${otp} </b>in the app to verify your email address and complete your registration </p><p>This code <b>expires in 1 hour</b></p>`,
+      };
 
-  }catch (error) {
-    
-    console.log(error.message);
-  }
-};
+      //----hash-the-otp
+      const saltRounds = 10;
+      let hashedOtp = await bcrypt.hash(otp, saltRounds);
+      const newOtpVerification = new userOtpVerification({
+        userId: _id,
+        otp: hashedOtp,
+        createdDate: Date.now(),
+        expiryDate: Date.now() + 300000,
+      });
+      //----save otp record
+      
+      await newOtpVerification.save();
+      await transporter.sendMail(mailOptions);
+      res.redirect(`/authentication?id=${_id}`)
+
+      
+
+    }catch (error) {
+      
+      console.log(error.message);
+    }
+  };
 const loadLogin = async (req, res) => {
   try {
     res.render('userSignIn');
@@ -129,6 +131,7 @@ const loadLogin = async (req, res) => {
 };
 const loadOtp = async (req, res) => {
   try {
+    User.findOne({is_Verified:false})
     req.session.userId=req.query.id
     console.log(req.session.userId);
     res.render('userOtpRegister');
@@ -191,9 +194,22 @@ const verifyLogin=async(req,res)=>{
      let userData=await User.findOne({email:email})
      if (userData){
       const passwordMatch= await bcrypt.compare(password,userData.password)
+      //checking is verify or not ----------------------------------------
       if (passwordMatch){
+        if(userData.is_Verified===true){
         req.session.userId=userData._id
         res.redirect('/')
+
+
+        }else{
+          await User.deleteOne({_id:userData._id})
+          //---------------data query kittaaaaan-----------
+              //  await sentOtpVerificationMail(userData._id,userData.email,res)
+              //  await sentOtpVerificationMail(user.email, user._id)
+          res.render('userSignIn',{message:'Account not verified ,please register now <a href="/userRegister">Register Now</a>'})
+        }
+
+       
       }else{
         res.render('userSignIn',{message:'Email and password is incorrect'})
       }
@@ -214,6 +230,33 @@ const verifyLogin=async(req,res)=>{
         console.log(error.message);
       }
     }
+  //  const userResendOtp =async(req,res)=>{
+  //       try {
+  //         res.render('userOtpRegister')
+  //       } catch (error) {
+  //         console.log(error.message);
+  //       }
+  //  }
+  //   const postUserResendOtp=async(req,res)=>{
+  //     try {
+  //         let {userId,email}=req.body
+  //         console.log('this'+userId);
+  //         console.log(email);
+  //         if(!userId || !email){
+  //           res.render('userOtpRegister',{message:'Empty user details are not allowed'})
+  //         }else{
+  //           //delete existing records and resend
+
+  //            await userOtpVerification.deleteMany({userId})
+  //            sentOtpVerificationMail({_id:userId,email})
+  //         }
+  //     } catch (error) {
+  //       console.log(error.message);
+  //     }
+  //   }
+
+
+
 module.exports = {
   loadHome,
   loadRegister,
@@ -222,5 +265,5 @@ module.exports = {
   loadOtp,
   verifyOtp,
   verifyLogin,
-  userLogout
+  userLogout,
 };

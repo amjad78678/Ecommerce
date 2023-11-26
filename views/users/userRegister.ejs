@@ -176,6 +176,7 @@
                       required
                     />
                     <span id="userNameError" class="error"></span>
+                    <br>
                   </div>
 
                   <div class="form-group">
@@ -188,6 +189,7 @@
                       required
                     />
                      <span id="emailError" class="error"></span>
+                     <br>
                   </div>
                   <div class="form-group">
                     <label for="mobileNumber">Your Mobile Number*</label>
@@ -199,6 +201,7 @@
                       required
                     />
                      <span id="mobileNumberError" class="error"></span>
+                     <br>
                   </div>
                   <!-- End .form-group -->
 
@@ -212,6 +215,7 @@
                       required
                     />
                      <span id="passwordError" class="error"></span>
+                     <br>
                   </div>
                   <div class="form-group">
                     <label for="register-password-2">Confirm Password *</label>
@@ -223,6 +227,7 @@
                       required
                     />
                      <span id="confirmPasswordError" class="error"></span>
+                     <br>
                   </div>
                   <!-- End .form-group -->
 
@@ -238,7 +243,7 @@
                 </form>
 
                 <% if (typeof message!=='undefined'){ %>
-                <p class="text-center text-success"><%= message%></p>
+                <p class="text-center text-success"><%- message%></p>
                 <% } %>
 
                 <!-- End .form-choice -->
@@ -563,6 +568,7 @@
               <!-- .End .tab-pane -->
             </div>
             <!-- End .tab-content -->
+           
           </div>
           <!-- End .form-tab -->
         </div>
@@ -596,6 +602,58 @@
   crossorigin="anonymous"
 ></script>
 <script>
+  function validateForm(){
+   
+       let userName=document.getElementById('userName').value
+       let email=document.getElementById('email').value.toLowerCase()
+       let mobileNumber=document.getElementById('mobileNumber').value
+       let password=document.getElementById('password').value
+       let confirmPassword=document.getElementById('password').value
+
+
+
+
+         const nameRegex =/^[a-zA-Z][a-zA-Z0-9]*$/
+    if (!nameRegex.test(userName)) {
+       document.getElementById('userNameError').innerHTML='Name should start with an alphabet then numbers'
+       return false
+    }else{
+        document.getElementById('userNameError').innerHTML=''
+    }
+    const emailOne = /^[^\s@]+@/;
+    const emailTwo=/[a-zA-Z\d-]+\.(com|net|org)$/
+    const combinedRegex=new RegExp(emailOne.source+emailTwo.source)
+
+    if (!combinedRegex.test(email)){
+        document.getElementById('emailError').innerHTML='  Please enter a valid Gmail address'
+        return false
+    }else{
+        document.getElementById('emailError').innerHTML=''
+    }
+    const mobileRegex=/^\d+$/
+    if(!mobileRegex.test(mobileNumber)){
+        document.getElementById('mobileNumberError').innerHTML='Mobile number should contain only numbers'
+        return false
+    }else{
+        document.getElementById('mobileNumberError').innerHTML=''
+    }
+    if(password.includes(' ')){
+        document.getElementById('passwordError').innerHTML='Password should not contain spaces'
+        return false
+    }else{
+        document.getElementById('passwordError').innerHTML=''
+    }
+    if(confirmPassword.includes(' ')){
+        document.getElementById('confirmPasswordError').innerHTML='Password should not contain spaces'
+        return false
+    }else{
+        document.getElementById('confirmPasswordError').innerHTML=''
+    }
+
+
+
+     return true
+  }
 
 </script>
 <!-- Main JS File -->
