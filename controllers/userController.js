@@ -202,6 +202,14 @@ const verifyLogin=async(req,res)=>{
       console.log(error.message);
      }
     }
+    const userLogout=async(req,res)=>{
+      try {
+         req.session.userId=null
+         res.redirect('/userSignIn')
+      } catch (error) {
+        console.log(error.message);
+      }
+    }
 module.exports = {
   loadHome,
   loadRegister,
@@ -209,5 +217,6 @@ module.exports = {
   loadLogin,
   loadOtp,
   verifyOtp,
-  verifyLogin
+  verifyLogin,
+  userLogout
 };
