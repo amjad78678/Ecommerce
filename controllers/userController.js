@@ -129,9 +129,10 @@ const loadLogin = async (req, res) => {
 const loadOtp = async (req, res) => {
   try {
     User.findOne({is_Verified:false})
-    req.session.userId=req.query.id
-    console.log(`this is session${req.session.userId}`);
-    res.render('userOtpRegister');
+    const id = req.query.id
+    // req.session.userId=req.query.id
+    // console.log(`this is session${req.session.userId}`);
+    res.render('userOtpRegister',{id:id});
 
   } catch (error) {
     console.log(error.message);
@@ -140,7 +141,7 @@ const loadOtp = async (req, res) => {
 const verifyOtp=async(req,res)=>{
   try {
     const Otp= req.body.Otp
-    const userId=req.session.userId
+    const userId=req.body.id
      
      
         console.log(`this is session ${userId}`);
@@ -163,17 +164,20 @@ const verifyOtp=async(req,res)=>{
           console.log(enteredOtp);
           console.log(hashedOtp);
            const validOtp = await bcrypt.compare(enteredOtp, hashedOtp);
-
+          if (userId){
+            req.session.userId=userId
+          }
            if(!validOtp){
             //case otp invalid
            return res.render('userOtpRegister',{message:'Invalid Otp Please try again'})
            }
+
          
          //update user to mask is verified true
           await User.updateOne({_id:userId},{$set:{is_Verified:true }})
           //delete the used otp of otp database 
           await userOtpVerification.deleteOne({userId})
-          return res.redirect('/')
+          return res.redirect('/home')
         
       
  
@@ -269,6 +273,7 @@ const verifyLogin=async(req,res)=>{
 
     const loadEmailVerifyAfter=async(req,res)=>{
        try {
+        
         res.render('emailVerifyAfter')
        } catch (error) {
         console.log(error.message);
@@ -277,7 +282,7 @@ const verifyLogin=async(req,res)=>{
 
        const postEmailVerifyAfter=async(req,res)=>{
          try {
-
+               
       const userData = await User.findOne({email:req.body.email });
         if(userData){
            sentOtpVerificationMail(userData,res)

@@ -90,33 +90,10 @@
           ><i class="fa-solid fa-bars"></i
         ></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <div class="ms-auto">
-          <a class="me-5 text-dark" href="#">Home</a>
-          <a class="me-5 text-dark" href="#">Shop</a>
-          <a class="me-5 text-dark" href="#">About Us</a>
-          <a class="me-4 text-dark" href="#">Blog</a>
-          <a class="me-4 text-dark" href="#">Contact Us </a>
-          <a href="#"><i class="me-4 fa-regular fa-heart"></i></a>
+      <!-- login home details -->
 
-          <div class="dropdown d-inline">
-            <button
-              class="btn btn-secondary dropdown-toggle"
-              type="button"
-              id="dropdownMenuButton1"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              <i class="fa-regular fa-user"></i>
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-              <li><a class="dropdown-item" href="/userSignIn">Login</a></li>
-              <li><a class="dropdown-item" href="/userRegister">Sign Up</a></li>
-              <!-- <li><a class="dropdown-item" href="#">Something else here</a></li> -->
-            </ul>
-          </div>
-        </div>
-      </div>
+
+      
     </div>
   </header>
 
@@ -130,7 +107,7 @@
 
     <div
       class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17"
-      style="background-image: url('assets/images/backgrounds/loginsignup.jpg')"
+      style="background-image: url('assetsAdmin/imgs/adminLogin.jpg')"
     >
       <div class="container">
         <div class="form-box">
@@ -165,34 +142,44 @@
                 role="tabpanel"
                 aria-labelledby="register-tab-2"
               >
-                <form action="" method="post">
+                <form action="" method="post" onsubmit="return validateForm()">
                   <div class="form-group">
-                   
-                    <label for="Your email">Provide your email to receive an OTP in your inbox for verification*</label>
-                   <input type="hidden" name="id" value="<%= locals.id %>">
+                    <label for="register-email-2">Your email address *</label>
                     <input
-                      type="text"
+                      type="email"
                       class="form-control"
                       id="email"
                       name="email"
                       required
                     />
+                     <span id="userNameError" class="error"></span>
+                     <br>
                   </div>
 
                   <!-- End .form-group -->
 
-                  
+                  <div class="form-group">
+                    <label for="register-password-2">Password *</label>
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="password"
+                      name="password"
+                      required
+                    />
+                     <span id="emailError" class="error"></span>
+                     <br>
+                  </div>
 
                   <!-- End .form-group -->
-
+                 <a class="text-secondary" href="/loginWithOtp">Login With Otp!</a>
+                 <br>
                   <div class="form-footer">
                     <button type="submit" class="btn btn-outline-primary-2">
-                      <span>Submit</span>
+                      <span>LOG IN</span>
                       <i class="icon-long-arrow-right"></i>
                     </button>
-
-                    <!-- <a class="text-decoration-none" href="/userResendOtp">Resend Otp</a> -->
-                   
+                    <a href="#" class="forgot-link">Forgot Your Password?</a>
                     <!-- End .custom-checkbox -->
                   </div>
                   <!-- End .form-footer -->
@@ -554,6 +541,42 @@
   integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
   crossorigin="anonymous"
 ></script>
+<script>
+  function validateForm(){
+   
+   
+       let email=document.getElementById('email').value.toLowerCase()
+       let password=document.getElementById('password').value
+    
+
+
+
+
+    const emailOne = /^[^\s@]+@/;
+    const emailTwo=/[a-zA-Z\d-]+\.(com|net|org)$/
+    const combinedRegex=new RegExp(emailOne.source+emailTwo.source)
+
+    if (!combinedRegex.test(email)){
+        document.getElementById('emailError').innerHTML='  Please enter a valid Gmail address'
+        return false
+    }else{
+        document.getElementById('emailError').innerHTML=''
+    }
+  
+    if(password.includes(' ')){
+        document.getElementById('passwordError').innerHTML='Password should not contain spaces'
+        return false
+    }else{
+        document.getElementById('passwordError').innerHTML=''
+    }
+   
+
+
+
+     return true
+  }
+
+</script>
 <!-- Main JS File -->
 <script src="assets/js/main.js"></script>
 <script src="assets/js/demos/demo-2.js"></script>

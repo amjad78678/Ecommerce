@@ -167,6 +167,11 @@
               >
                 <form action="/authentication" method="post">
                   <div class="form-group">
+
+                    <!-- hidden aayi pass cheyyaaan -->
+                    <input type="hidden" name="id" value="<%= locals.id  %>">
+
+                    
                     <label for="Your otp">An OTP has been sent to your email. Please enter the OTP to proceed. *</label>
                     <input
                       type="text"
