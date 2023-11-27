@@ -16,15 +16,12 @@ const securePassword = async (password) => {
 const loadHome = async (req, res) => {
   try {
     
-    if (req.session.userId){
-      const userData=await User.findById({_id:req.session.userId})
-        console.log(req.session.userId);
+    
+      const userData=await User.findOne({_id:req.session.userId})
+      console.log(req.session.userId);
       res.render('userHome',{user:userData});
     
-    }
-    res.render('userHome');
-    
-  } catch (error) {
+    }  catch (error) {
     console.log(error.message);
   }
 };
@@ -133,7 +130,7 @@ const loadOtp = async (req, res) => {
   try {
     User.findOne({is_Verified:false})
     req.session.userId=req.query.id
-    console.log(req.session.userId);
+    console.log(`this is session${req.session.userId}`);
     res.render('userOtpRegister');
 
   } catch (error) {
@@ -146,7 +143,7 @@ const verifyOtp=async(req,res)=>{
     const userId=req.session.userId
      
      
-        console.log(userId);
+        console.log(`this is session ${userId}`);
         const userOtpVerificationRecords= await userOtpVerification.find({userId})
      
         if(!userOtpVerificationRecords.length){
@@ -155,7 +152,7 @@ const verifyOtp=async(req,res)=>{
       
           //user otp record exists
          const {otp:hashedOtp}=userOtpVerificationRecords[0];
-          // console.log(expiryDate);
+        // console.log(expiryDate);
         //  if (expiryDate < Date.now()) {
 
         //   //otp expired so
@@ -220,12 +217,12 @@ const verifyLogin=async(req,res)=>{
 
      } catch (error) {
       console.log(error.message);
-     }
+     }  
     }
     const userLogout=async(req,res)=>{
       try {
-         req.session.userId=null
-         res.redirect('/userSignIn')
+         req.session.destroy()
+         res.redirect('/')
       } catch (error) {
         console.log(error.message);
       }
@@ -259,7 +256,11 @@ const verifyLogin=async(req,res)=>{
 
     const loadProductList=async(req,res)=>{
       try {
-        res.render('productList')
+      
+        let userData=await User.findOne({_id:req.session.userId})   
+        res.render('productList',{user:userData})
+    
+    
       } catch (error) {
         console.log(error.message);
       }

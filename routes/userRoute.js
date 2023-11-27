@@ -3,6 +3,7 @@ const userRouter = express();
 const path = require('path');
 const userController = require('../controllers/userController');
 const bodyParser = require('body-parser');
+const auth=require('../middleware/auth')
 const session= require('express-session')
 
 
@@ -21,19 +22,19 @@ userRouter.set('views', path.join(__dirname, '..', 'views', 'users'));
 userRouter.use(express.static(path.join(__dirname, '..', 'public')));
 userRouter.use(express.static(path.join(__dirname, '..', 'public', 'styles')));
 
-userRouter.get('/', userController.loadHome);
-
-
-userRouter.get('/userRegister', userController.loadRegister);
+userRouter.get('/',auth.isLogout, userController.loadHome);
+userRouter.get('/home',auth.isLogin, userController.loadHome);
+userRouter.get('/userRegister',auth.isLogout, userController.loadRegister);
 userRouter.post('/userRegister', userController.postRegister);
-userRouter.get('/userSignIn', userController.loadLogin);
+userRouter.get('/userSignIn',auth.isLogout, userController.loadLogin);
 userRouter.post('/userSignIn',userController.verifyLogin)
-userRouter.get('/authentication', userController.loadOtp);
+userRouter.get('/authentication', auth.isLogout,userController.loadOtp);
 userRouter.post('/authentication',userController.verifyOtp);
-userRouter.get('/userLogout',userController.userLogout);
-userRouter.get('/loginWithOtp',userController.loginWithOtp)
+userRouter.get('/userLogout',auth.isLogin,userController.userLogout);
+userRouter.get('/loginWithOtp',auth.isLogout,userController.loginWithOtp)
 userRouter.post('/loginWithOtp',userController.verifyLoginWithOtp)
-userRouter.get('/productList',userController.loadProductList)
+userRouter.get('/productList',auth.isLogin,userController.loadProductList)
+userRouter.get('/productListN',auth.isLogout,userController.loadProductList)
 userRouter.get('/emailVerifyAfter',userController.loadEmailVerifyAfter)
 userRouter.post('/emailVerifyAfter',userController.postEmailVerifyAfter)
 

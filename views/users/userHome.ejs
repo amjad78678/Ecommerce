@@ -93,7 +93,12 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <div class="ms-auto">
           <a class="me-5 text-dark" href="#">Home</a>
-          <a class="me-5 text-dark" href="/productList">Shop</a>
+          <a class="me-5 text-dark" <% if(locals.user){ %>
+                href="/productList">
+            <% }else{ %>
+              href="/productListN">
+              
+              <% } %>Shop</a>
           <a class="me-5 text-dark" href="#">About Us</a>
           <a class="me-4 text-dark" href="#">Blog</a>
           <a class="me-4 text-dark" href="#">Contact Us </a>
