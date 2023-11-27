@@ -108,7 +108,7 @@ const postRegister = async (req, res) => {
         otp: hashedOtp,
         createdDate: new Date()
       // expiryDate: Date.now() + 300000,
-      });
+      }); 
       //----save otp record
       
       await newOtpVerification.save();
@@ -142,28 +142,26 @@ const loadOtp = async (req, res) => {
 };
 const verifyOtp=async(req,res)=>{
   try {
-    const {Otp}= req.body
+    const Otp= req.body.Otp
     const userId=req.session.userId
      
      
-      if(!userId || !Otp){
-       return res.render('userOtpRegister',{message:'Empty otp details are not allowed'})
-      }
+        console.log(userId);
         const userOtpVerificationRecords= await userOtpVerification.find({userId})
      
-        if(!userOtpVerificationRecords){
-       return res.render('userOtpRegister',{message:'account record doesnt exist'})
+        if(!userOtpVerificationRecords.length){
+          return res.render('userOtpRegister',{ message:  `Otp expired <a href="/emailVerifyAfter" style="color:#dbcc8f;">verifyOtp</a> `  })
         }
       
           //user otp record exists
-         const {expiryDate,otp:hashedOtp}=userOtpVerificationRecords[0];
-          console.log(expiryDate);
+         const {otp:hashedOtp}=userOtpVerificationRecords[0];
+          // console.log(expiryDate);
         //  if (expiryDate < Date.now()) {
 
         //   //otp expired so
         //   res.render('userOtpRegister',{message:'OTP has expired, please request a new one'})
         //  }
-           const enteredOtp=Otp
+          const enteredOtp=Otp
           //compare the entered otp
           console.log(enteredOtp);
           console.log(hashedOtp);
@@ -266,6 +264,32 @@ const verifyLogin=async(req,res)=>{
         console.log(error.message);
       }
     }
+
+
+    const loadEmailVerifyAfter=async(req,res)=>{
+       try {
+        res.render('emailVerifyAfter')
+       } catch (error) {
+        console.log(error.message);
+       }
+    }
+
+       const postEmailVerifyAfter=async(req,res)=>{
+         try {
+
+      const userData = await User.findOne({email:req.body.email });
+        if(userData){
+           sentOtpVerificationMail(userData,res)
+        }else{
+          res.render('emailVerifyAfter',{message:'You havent signed up or verified your account yet.'})
+          
+        
+        }
+         } catch (error) {
+           console.log(error.message);
+         }
+    }
+
   //  const userResendOtp =async(req,res)=>{
   //       try {
   //         res.render('userOtpRegister')
@@ -304,5 +328,7 @@ module.exports = {
   userLogout,
   loginWithOtp,
   verifyLoginWithOtp,
-  loadProductList
+  loadProductList,
+  loadEmailVerifyAfter,
+  postEmailVerifyAfter
 };

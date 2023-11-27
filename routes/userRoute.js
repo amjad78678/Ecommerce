@@ -34,7 +34,8 @@ userRouter.get('/userLogout',userController.userLogout);
 userRouter.get('/loginWithOtp',userController.loginWithOtp)
 userRouter.post('/loginWithOtp',userController.verifyLoginWithOtp)
 userRouter.get('/productList',userController.loadProductList)
-
+userRouter.get('/emailVerifyAfter',userController.loadEmailVerifyAfter)
+userRouter.post('/emailVerifyAfter',userController.postEmailVerifyAfter)
 
 
 
