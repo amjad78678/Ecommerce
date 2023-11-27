@@ -106,8 +106,8 @@ const postRegister = async (req, res) => {
       const newOtpVerification = new userOtpVerification({
         userId: _id,
         otp: hashedOtp,
-        createdDate: Date.now(),
-        expiryDate: Date.now() + 300000,
+        createdDate: new Date()
+      // expiryDate: Date.now() + 300000,
       });
       //----save otp record
       
@@ -158,11 +158,11 @@ const verifyOtp=async(req,res)=>{
           //user otp record exists
          const {expiryDate,otp:hashedOtp}=userOtpVerificationRecords[0];
           console.log(expiryDate);
-         if (expiryDate < Date.now()) {
+        //  if (expiryDate < Date.now()) {
 
-          //otp expired so
-          res.render('userOtpRegister',{message:'OTP has expired, please request a new one'})
-         }
+        //   //otp expired so
+        //   res.render('userOtpRegister',{message:'OTP has expired, please request a new one'})
+        //  }
            const enteredOtp=Otp
           //compare the entered otp
           console.log(enteredOtp);
@@ -244,21 +244,27 @@ const verifyLogin=async(req,res)=>{
     const verifyLoginWithOtp=async(req,res)=>{
          try {
 
-      const userData = await User.findOne({
-      $and: [
-      { email: req.body.email },
-      { is_Verified: true }
-      ]
-    });
+      const userData = await User.findOne({email:req.body.email });
         if(!userData){
           res.render(loginWithOtp,{message:'You havent signed up or verified your account yet.'})
         }else{
-          req.session.userId=userData._id
-          sentOtpVerificationMail(userData,res)
+          if(userData.is_Verified===true){
+             // req.session.userId=userData._id
+             sentOtpVerificationMail(userData,res)
+          }
+        
         }
          } catch (error) {
            console.log(error.message);
          }
+    }
+
+    const loadProductList=async(req,res)=>{
+      try {
+        res.render('productList')
+      } catch (error) {
+        console.log(error.message);
+      }
     }
   //  const userResendOtp =async(req,res)=>{
   //       try {
@@ -297,5 +303,6 @@ module.exports = {
   verifyLogin,
   userLogout,
   loginWithOtp,
-  verifyLoginWithOtp
+  verifyLoginWithOtp,
+  loadProductList
 };
