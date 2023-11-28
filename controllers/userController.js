@@ -50,6 +50,7 @@ const postRegister = async (req, res) => {
       password: sPassword,
       confirmPassword: sConfirmPassword,
       is_Admin: 0,
+      is_Blocked:false,
       is_Verified: false,
     });
     if (req.body.password!==req.body.confirmPassword){

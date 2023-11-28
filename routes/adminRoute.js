@@ -33,6 +33,12 @@ adminRoute.use(session({
 adminRoute.get('/',adminController.loadAdminLogin)
 adminRoute.post('/',userController.verifyLogin)
 adminRoute.get('/adminHome',adminController.loadAdminHome)
+adminRoute.get('/products',adminController.loadProducts)
+adminRoute.get('/users',adminController.loadUsers)
+adminRoute.post('/users/block/:id',adminController.blockingUser)
+adminRoute.post('/users/unblock/:id',adminController.unBlockingUser)
+adminRoute.get('/category',adminController.loadCategory)
+
 
 
 

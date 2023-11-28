@@ -28,6 +28,9 @@ const userSchema = new mongoose.Schema({
   is_Verified: {
     type: Boolean,
   },
+  is_Blocked:{
+    type:Boolean,
+  }
 });
 
 module.exports = mongoose.model('User', userSchema);

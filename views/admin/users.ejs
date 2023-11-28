@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Cornerstone</title>
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+        <meta name="description" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta property="og:title" content="" />
+        <meta property="og:type" content="" />
+        <meta property="og:url" content="" />
+        <meta property="og:image" content="" />
+        <!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="assetsAdmin/imgs/theme/favicon.svg" />
+        <!-- Template CSS -->
+        <link href="assetsAdmin/css/main.css?v=1.1" rel="stylesheet" type="text/css" />
+    </head>
+
+    <body>
+        <div class="screen-overlay"></div>
+        <aside class="navbar-aside" id="offcanvas_aside">
+            <div class="aside-top">
+                <a href="index.html" class="brand-wrap">
+                    <img src="https://imgs.search.brave.com/IS3ECAw-N7V5vfLuJOPJQwYn0zPRLDKKDI5LT2JFpxU/rs:fit:860:0:0/g:ce/aHR0cHM6Ly93d3cu/Y3NvZGJyYW5kLmNv/bS93cC1jb250ZW50/L3VwbG9hZHMvMjAy/MS8xMC9Db3JuZXJz/dG9uZS1Mb2dvLUhv/cml6b250YWwucG5n" class="logo" alt="Nest Dashboard" />
+                </a>
+                <div>
+                    <button class="btn btn-icon btn-aside-minimize"><i class="text-muted material-icons md-menu_open"></i></button>
+                </div>
+            </div>  
+            <nav>
+                <ul class="menu-aside">
+                    <li class="menu-item active">
+                        <a class="menu-link" href="index.html">
+                            <i class="icon material-icons md-home"></i>
+                            <span class="text">Dashboard</span>
+                        </a>
+                    </li>
+                      <li class="menu-item">
+                        <a class="menu-link" href="/admin/users">  
+                            <i class="icon material-icons md-person"></i>
+                            <span class="text">Users</span>
+                        </a>
+                    </li>
+                    <li class="menu-item ">
+                        <a class="menu-link" href="/admin/products">
+                            <i class="icon material-icons md-shopping_bag"></i>
+                            <span class="text">Products</span>
+                        </a>
+                        
+                    </li>
+                    <li class="menu-item has-submenu">
+                        <a class="menu-link" href="page-orders-1.html">
+                            <i class="icon material-icons md-shopping_cart"></i>
+                            <span class="text">Orders</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="page-orders-1.html">Order list 1</a>
+                            <a href="page-orders-2.html">Order list 2</a>
+                            <a href="page-orders-detail.html">Order detail</a>
+                        </div>
+                    </li>
+                  
+                    <li class="menu-item has-submenu">
+                        <a class="menu-link" href="page-form-product-1.html">
+                            <i class="icon material-icons md-add_box"></i>
+                            <span class="text">Add product</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="page-form-product-1.html">Add product 1</a>
+                            <a href="page-form-product-2.html">Add product 2</a>
+                            <a href="page-form-product-3.html">Add product 3</a>
+                            <a href="page-form-product-4.html">Add product 4</a>
+                        </div>
+                    </li>
+                    <li class="menu-item has-submenu">
+                        <a class="menu-link" href="page-transactions-1.html">
+                            <i class="icon material-icons md-monetization_on"></i>
+                            <span class="text">Transactions</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="page-transactions-1.html">Transaction 1</a>
+                            <a href="page-transactions-2.html">Transaction 2</a>
+                        </div>
+                    </li>
+                    <li class="menu-item has-submenu">
+                        <a class="menu-link" href="#">
+                            <i class="icon material-icons md-person"></i>
+                            <span class="text">Account</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="page-account-login.html">User login</a>
+                            <a href="page-account-register.html">User registration</a>
+                            <a href="page-error-404.html">Error 404</a>
+                        </div>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link" href="page-reviews.html">
+                            <i class="icon material-icons md-comment"></i>
+                            <span class="text">Reviews</span>
+                        </a>
+                    </li>
+                    
+                   
+                </ul>
+                <hr />
+                <ul class="menu-aside">
+                    <li class="menu-item has-submenu">
+                        <a class="menu-link" href="#">
+                            <i class="icon material-icons md-settings"></i>
+                            <span class="text">Settings</span>
+                        </a>
+                        <div class="submenu">
+                            <a href="page-settings-1.html">Setting sample 1</a>
+                            <a href="page-settings-2.html">Setting sample 2</a>
+                        </div>
+                    </li>
+                    
+                </ul>
+                <br />
+                <br />
+            </nav>
+        </aside>
+        <main class="main-wrap">
+            <header class="main-header navbar">
+                <div class="col-search">
+                    <form class="searchform">
+                        <div class="input-group">
+                            <input list="search_terms" type="text" class="form-control" placeholder="Search term" />
+                            <button class="btn btn-light bg" type="button"><i class="material-icons md-search"></i></button>
+                        </div>
+                        <datalist id="search_terms">
+                            <option value="Products"></option>
+                            <option value="New orders"></option>
+                            <option value="Apple iphone"></option>
+                            <option value="Ahmed Hassan"></option>
+                        </datalist>
+                    </form>
+                </div>
+                <div class="col-nav">
+                    <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"><i class="material-icons md-apps"></i></button>
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a class="nav-link btn-icon" href="#">
+                                <i class="material-icons md-notifications animation-shake"></i>
+                                <span class="badge rounded-pill">3</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i> </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
+                        </li>
+                        <li class="dropdown nav-item">
+                            <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage" aria-expanded="false"><i class="material-icons md-public"></i></a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
+                                <a class="dropdown-item text-brand" href="#"><img src="assetsAdmin/imgs/theme/flag-us.png" alt="English" />English</a>
+                                <a class="dropdown-item" href="#"><img src="assetsAdmin/imgs/theme/flag-fr.png" alt="Français" />Français</a>
+                                <a class="dropdown-item" href="#"><img src="assetsAdmin/imgs/theme/flag-jp.png" alt="Français" />日本語</a>
+                                <a class="dropdown-item" href="#"><img src="assetsAdmin/imgs/theme/flag-cn.png" alt="Français" />中国人</a>
+                            </div>
+                        </li>
+                        <li class="dropdown nav-item">
+                            <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="assetsAdmin/imgs/people/avatar-2.png" alt="User" /></a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                                <a class="dropdown-item" href="#"><i class="material-icons md-perm_identity"></i>Edit Profile</a>
+                                <a class="dropdown-item" href="#"><i class="material-icons md-settings"></i>Account Settings</a>
+                                <a class="dropdown-item" href="#"><i class="material-icons md-account_balance_wallet"></i>Wallet</a>
+                                <a class="dropdown-item" href="#"><i class="material-icons md-receipt"></i>Billing</a>
+                                <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help center</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-danger" href="#"><i class="material-icons md-exit_to_app"></i>Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </header>
+            <section class="content-main">
+                <div class="content-header">
+                    <div>
+                        <h2 class="content-title card-title">Users</h2>
+                        <p>Cornerstone Furniture: Where Comfort Meets Craftsmanship.</p>
+                    </div>
+                    <div>
+                        <input type="text" placeholder="Search order ID" class="form-control bg-white" />
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <header class="card-header">
+                        <div class="row gx-3">
+                            <div class="col-lg-4 col-md-6 me-auto">
+                                <form action="">
+                                <input type="text" placeholder="Search..." name="Search" class="form-control" />
+                                <br>
+                                <input class="d-inline buttonSearch" type="submit" value="search">
+                                </form>
+                            </div>
+                            <div class="col-lg-2 col-6 col-md-3">
+                                <select class="form-select">
+                                    <option>Status</option>
+                                    <option>Active</option>
+                                    <option>Disabled</option>
+                                    <option>Show all</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-2 col-6 col-md-3">
+                                <select class="form-select">
+                                    <option>Show 20</option>
+                                    <option>Show 30</option>
+                                    <option>Show 40</option>
+                                </select>
+                            </div>
+                        </div>
+                    </header>
+                    <!-- card-header end// -->
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                       
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Number</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Verified</th>
+                                        <th scope="col" class="text-end">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <% if(users.length>0) { %>
+                                      <% for(i=0;i<users.length;i++) { %>
+                                    
+                                    <tr>
+                                        <td><b><%= users[i].userName %></b></td>
+                                        <td><%= users[i].email %></td>
+                                        <td><%= users[i].mobileNumber %></td>
+                                       <td class="text">
+                                            <span id="status_<%= users[i]._id %>">
+                                              <% if (users[i].is_Blocked) { %>
+                                                <span class="badge rounded-pill alert-warning">Blocked</span>
+                                              <% } else { %>
+                                                <span class="badge rounded-pill alert-success">Active</span>
+                                              <% } %>
+                                       
+                                        <td><% if(users[i].is_Verified==true){ %>
+                                            
+                                                Verified
+                                            <% }else{ %>
+                                               Not Verified
+                                                <% } %></td>
+                                        <td class="text-end">
+                                            <button class="btn btn-md rounded font-sm block-user" data-user-id="<%= users[i]._id %>" style="background-color: rgb(159, 0, 0);" >Block</button>
+                                            <button class="btn btn-md rounded font-sm unblock-user" data-user-id="<%= users[i]._id %>">Unblock</button>
+                                            
+                                            <!-- dropdown //end -->
+                                        </td>
+                                      
+                                    </tr>
+                                      <% } %>
+                                        
+                                    <% } %>
+                                    
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- table-responsive //end -->
+                    </div>
+                    <!-- card-body end// -->
+                </div>
+                <!-- card end// -->
+                <div class="pagination-area mt-15 mb-50">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-start">
+                            <% for (let j = 1; j <= totalPages; j++) { %>
+                                <% if (j === currentPage) { %>
+                                    <li class="page-item active"><span class="page-link"><%= j %></span></li>
+                                <% } else { %>
+                                    <li class="page-item"><a class="page-link" href="?userPage=<%= j %>"><%= j %></a></li>
+                                <% } %>
+                            <% } %>
+                        </ul>
+                    </nav>
+                </div>
+            </section>
+            <!-- content-main end// -->
+            <footer class="main-footer font-xs">
+                <div class="row pb-30 pt-15">
+                    <div class="col-sm-6">
+                        <script>
+                            document.write(new Date().getFullYear());
+                        </script>
+                        &copy; Nest - HTML Ecommerce Template .
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="text-sm-end">All rights reserved</div>
+                    </div>
+                </div>
+            </footer>
+        </main>
+        <script src="assetsAdmin/js/vendors/jquery-3.6.0.min.js"></script>   
+        <script src="assetsAdmin/js/vendors/bootstrap.bundle.min.js"></script>
+        <script src="assetsAdmin/js/vendors/select2.min.js"></script>
+        <script src="assetsAdmin/js/vendors/perfect-scrollbar.js"></script>
+        <script src="assetsAdmin/js/vendors/jquery.fullscreen.min.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+              document.querySelectorAll('.block-user').forEach(function (button) {
+                button.addEventListener('click', function () {
+                  const id = this.getAttribute('data-user-id');
+                  updateUserStatus(id, 'block');
+                });
+              });
+          
+              document.querySelectorAll('.unblock-user').forEach(function (button) {
+                button.addEventListener('click', function () {
+                  const id = this.getAttribute('data-user-id');
+                  updateUserStatus(id, 'unblock');
+                });
+              });
+          
+ function updateUserStatus(id, action) {
+  console.log(`Updating user status for ${id} with action ${action}`);
+  fetch(`/admin/users/${action}/${id}`, {
+    method: 'post',
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('Response data:', data);
+
+      // Update the UI
+      const statusElement = document.getElementById(`status_${id}`);
+      if (data.is_Blocked) {
+        // Update text content and apply a class
+        statusElement.textContent = 'Blocked';
+        statusElement.classList.add('alert-warning');
+        statusElement.classList.remove('alert-success');
+      } else {
+        // Update text content and apply a class
+        statusElement.textContent = 'Active';
+        statusElement.classList.add('alert-success');
+        statusElement.classList.remove('alert-warning');
+      }
+
+      // Optionally, you can show an alert or a popup here
+      // Example: alert('User status updated successfully');
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      // Handle errors if needed
+    });
+}
+
+}
+  );
+          </script>
+        <!-- Main Script -->
+        <script src="assetsAdmin/js/main.js?v=1.1" type="text/javascript"></script>
+    </body>
+</html>

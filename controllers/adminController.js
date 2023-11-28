@@ -39,7 +39,11 @@ const verifyLogin = async (req, res) => {
 
 const loadAdminHome=async(req,res)=>{
     try {
-        res.render('adminHome')
+    const userData =await User.findOne({_id:req.session.user_id})
+    
+      res.render('adminHome',{admin:userData})
+    
+       
     } catch (error) {
         console.log(error.message);
     }
@@ -54,9 +58,104 @@ const logout = async (req, res) => {
 };
 
 
+const loadProducts=async(req,res)=>{
+     try {
+        res.render('products')
+     } catch (error) {
+        console.log(error.message);
+     }
+}
+
+
+loadUsers=async(req,res)=>{
+    try {
+    var search = '';
+
+    if (req.query.Search) {
+      search = req.query.Search;
+    }
+    const page=parseInt(req.query.userPage)||1;
+    const pageSize=10
+    const regex=new RegExp(search,'i')
+   
+
+    const count = await User.find({
+      is_Admin: 0,
+      $or: [
+        { userName: { $regex: regex } },
+        { email: { $regex: regex } },
+        { mobileNumber: { $regex: regex } },
+      ],
+    }).countDocuments()
+
+    
+    const totalPages = Math.ceil(count / pageSize);
+    const skip = (page - 1) * pageSize;
+   
+
+
+    const usersData = await User.find({
+      is_Admin: 0,
+      $or: [
+        { userName: { $regex: regex } },
+        { email: { $regex: regex } },
+        { mobileNumber: { $regex: regex } },
+      ],
+    }).skip(skip).limit(pageSize)
+     
+    
+    res.render('users', { users : usersData,totalPages,currentPage:page });
+        
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+
+const blockingUser = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const updateUser = await User.findByIdAndUpdate(id, { is_Blocked: true }, { new: true });
+    if (!updateUser) {
+      return res.status(404).send('User not found');
+    }
+    res.status(200).json(updateUser);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+const unBlockingUser = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const updateUser = await User.findByIdAndUpdate(id, { is_Blocked: false }, { new: true });
+    if (!updateUser) {
+      return res.status(404).send('User not found');
+    }
+    res.status(200).json(updateUser);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Internal Server Error');
+  }
+};  
+const loadCategory=async(req,res)=>{
+      try {
+           res.render('category')
+      } catch (error) {
+          console.log(error.message);
+      }
+}
+
 module.exports={
        loadAdminHome,
        loadAdminLogin,
        verifyLogin, 
-       logout
+       logout,
+       loadProducts,
+       loadUsers,
+       blockingUser,
+       unBlockingUser,
+       loadCategory
     }
