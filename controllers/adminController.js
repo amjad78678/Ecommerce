@@ -71,44 +71,46 @@ const loadProducts=async(req,res)=>{
 
 loadUsers=async(req,res)=>{
     try {
-    var search = '';
+    // var search = '';
 
-    if (req.query.Search) {
-      search = req.query.Search;
-    }
+    // if (req.query.Search) {
+    //   search = req.query.Search;
+    // }
 
-    const page=parseInt(req.query.userPage)||1;
-    const pageSize=10
+    // const page=parseInt(req.query.userPage)||1;
+    // const pageSize=10
 
-    const regex=new RegExp(search,'i')
+    // const regex=new RegExp(search,'i')
    
 
-    const count = await User.find({
-      is_Admin: 0,
-      $or: [
-        { userName: { $regex: regex } },
-        { email: { $regex: regex } },
-        { mobileNumber: { $regex: regex } },
-      ],
-    }).countDocuments()
+    // const count = await User.find({
+    //   is_Admin: 0,
+    //   $or: [
+    //     { userName: { $regex: regex } },
+    //     { email: { $regex: regex } },
+    //     { mobileNumber: { $regex: regex } },
+    //   ],
+    // }).countDocuments()
 
     
-    const totalPages = Math.ceil(count / pageSize);
-    const skip = (page - 1) * pageSize;
+    // const totalPages = Math.ceil(count / pageSize);
+    // const skip = (page - 1) * pageSize;
    
 
 
     const usersData = await User.find({
       is_Admin: 0,
-      $or: [
-        { userName: { $regex: regex } },
-        { email: { $regex: regex } },
-        { mobileNumber: { $regex: regex } },
-      ],
-    }).skip(skip).limit(pageSize)
+      // $or: [
+      //   { userName: { $regex: regex } },
+      //   { email: { $regex: regex } },
+      //   { mobileNumber: { $regex: regex } },
+      // ],
+    })
+    // .skip(skip).limit(pageSize)
      
     
-    res.render('users', { users : usersData,totalPages,currentPage:page });
+    res.render('users', { users : usersData});
+    // ,totalPages,currentPage:page 
         
     } catch (error) {
         console.log(error.message);
@@ -262,6 +264,21 @@ const unlistingCategory = async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 };  
+
+const deleteCategory = async (req, res) => {
+  try {
+    const categoryId = req.params.id;
+    await Category.deleteOne({_id:categoryId})
+
+    
+  } catch (error) {
+    console.error('Error deleting category:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
+
 module.exports={
        loadAdminHome,
        loadAdminLogin,
@@ -277,5 +294,6 @@ module.exports={
        loadEditCategory,
        postEditCategory,
        listingCategory,
-       unlistingCategory
+       unlistingCategory,
+       deleteCategory
     }

@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>Cornerstone</title>
+        <title>Nest Dashboard</title>
         <meta http-equiv="x-ua-compatible" content="ie=edge" />
         <meta name="description" content="" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -18,7 +18,7 @@
 
     <body>
         <div class="screen-overlay"></div>
-       <aside class="navbar-aside" id="offcanvas_aside">
+         <aside class="navbar-aside" id="offcanvas_aside">
             <div class="aside-top">
                 <a href="index.html" class="brand-wrap">
                     <img src="https://imgs.search.brave.com/IS3ECAw-N7V5vfLuJOPJQwYn0zPRLDKKDI5LT2JFpxU/rs:fit:860:0:0/g:ce/aHR0cHM6Ly93d3cu/Y3NvZGJyYW5kLmNv/bS93cC1jb250ZW50/L3VwbG9hZHMvMjAy/MS8xMC9Db3JuZXJz/dG9uZS1Mb2dvLUhv/cml6b250YWwucG5n" class="logo" alt="Nest Dashboard" />
@@ -176,8 +176,8 @@
             <section class="content-main">
                 <div class="content-header">
                     <div>
-                        <h2 class="content-title card-title">Products</h2>
-                        <p>Cornerstone Furniture: Where Comfort Meets Craftsmanship.</p>
+                        <h2 class="content-title card-title">Products List</h2>
+                        <p>Lorem ipsum dolor sit amet.</p>
                     </div>
                     <div>
                         <a href="#" class="btn btn-light rounded font-md">Export</a>
@@ -187,172 +187,65 @@
                 </div>
                 <div class="card mb-4">
                     <header class="card-header">
-                        <div class="row gx-3">
-                            <div class="col-lg-4 col-md-6 me-auto">
-                                <input type="text" placeholder="Search..." class="form-control" />
+                        <div class="row align-items-center">
+                            <div class="col col-check flex-grow-0">
+                                
                             </div>
-                            <div class="col-lg-2 col-6 col-md-3">
+                            <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
                                 <select class="form-select">
-                                    <option>All category</option>
+                                    <option selected>All category</option>
                                     <option>Electronics</option>
-                                    <option>Clothings</option>
-                                    <option>Something else</option>
+                                    <option>Clothes</option>
+                                    <option>Automobile</option>
                                 </select>
                             </div>
-                            <div class="col-lg-2 col-6 col-md-3">
+                            <div class="col-md-2 col-6">
+                                <input type="date" value="02.05.2021" class="form-control" />
+                            </div>
+                            <div class="col-md-2 col-6">
                                 <select class="form-select">
-                                    <option>Latest added</option>
-                                    <option>Cheap first</option>
-                                    <option>Most viewed</option>
+                                    <option selected>Status</option>
+                                    <option>Active</option>
+                                    <option>Disabled</option>
+                                    <option>Show all</option>
                                 </select>
                             </div>
                         </div>
                     </header>
                     <!-- card-header end// -->
                     <div class="card-body">
-                        <div class="row gx-3 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-5">
-                            <div class="col">
-                                <div class="card card-product-grid">
-                                    <a href="#" class="img-wrap"> <img src="assetsAdmin/imgs/items/1.jpg" alt="Product" /> </a>
-                                    <div class="info-wrap">
-                                        <a href="#" class="title text-truncate">Haagen-Dazs Caramel Cone Ice</a>
-                                        <div class="price mb-2">$179.00</div>
-                                        <!-- price.// -->
-                                        <a href="#" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i> Edit </a>
-                                        <a href="#" class="btn btn-sm font-sm btn-light rounded"> <i class="material-icons md-delete_forever"></i> Delete </a>
-                                    </div>
+                        <article class="itemlist">
+                            <div class="row align-items-center">
+                                <div class="col col-check flex-grow-0">
+                                
                                 </div>
-                                <!-- card-product  end// -->
-                            </div>
-                            <!-- col.// -->
-                            <div class="col">
-                                <div class="card card-product-grid">
-                                    <a href="#" class="img-wrap"> <img src="assetsAdmin/imgs/items/2.jpg" alt="Product" /> </a>
-                                    <div class="info-wrap">
-                                        <a href="#" class="title text-truncate">Seeds of Change Organic Quinoa</a>
-                                        <div class="price mb-2">$179.00</div>
-                                        <!-- price.// -->
-                                        <a href="#" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i> Edit </a>
-                                        <a href="#" class="btn btn-sm font-sm btn-light rounded"> <i class="material-icons md-delete_forever"></i> Delete </a>
-                                    </div>
+                                <div class="col-lg-4 col-sm-4 col-8 flex-grow-1 col-name">
+                                    <a class="itemside" href="#">
+                                        <div class="left">
+                                            <img src="assetsAdmin/imgs/items/1.jpg" class="img-sm img-thumbnail" alt="Item" />
+                                        </div>
+                                        <div class="info">
+                                            <h6 class="mb-0">Seeds of Change Organic Quinoa</h6>
+                                        </div>
+                                    </a>
                                 </div>
-                                <!-- card-product  end// -->
-                            </div>
-                            <!-- col.// -->
-                            <div class="col">
-                                <div class="card card-product-grid">
-                                    <a href="#" class="img-wrap"> <img src="assetsAdmin/imgs/items/3.jpg" alt="Product" /> </a>
-                                    <div class="info-wrap">
-                                        <a href="#" class="title text-truncate">All Natural Italian-Style</a>
-                                        <div class="price mb-2">$179.00</div>
-                                        <!-- price.// -->
-                                        <a href="#" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i> Edit </a>
-                                        <a href="#" class="btn btn-sm font-sm btn-light rounded"> <i class="material-icons md-delete_forever"></i> Delete </a>
-                                    </div>
+                                <div class="col-lg-2 col-sm-2 col-4 col-price"><span>$34.50</span></div>
+                                <div class="col-lg-2 col-sm-2 col-4 col-status">
+                                    <span class="badge rounded-pill alert-success">Active</span>
                                 </div>
-                                <!-- card-product  end// -->
-                            </div>
-                            <!-- col.// -->
-                            <div class="col">
-                                <div class="card card-product-grid">
-                                    <a href="#" class="img-wrap"> <img src="assetsAdmin/imgs/items/4.jpg" alt="Product" /> </a>
-                                    <div class="info-wrap">
-                                        <a href="#" class="title text-truncate">Boomchick apop Sweet & Salty</a>
-                                        <div class="price mb-2">$179.00</div>
-                                        <!-- price.// -->
-                                        <a href="#" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i> Edit </a>
-                                        <a href="#" class="btn btn-sm font-sm btn-light rounded"> <i class="material-icons md-delete_forever"></i> Delete </a>
-                                    </div>
+                                <div class="col-lg-1 col-sm-2 col-4 col-date">
+                                    <span>02.11.2021</span>
                                 </div>
-                                <!-- card-product  end// -->
-                            </div>
-                            <!-- col.// -->
-                            <div class="col">
-                                <div class="card card-product-grid">
-                                    <a href="#" class="img-wrap"> <img src="assetsAdmin/imgs/items/5.jpg" alt="Product" /> </a>
-                                    <div class="info-wrap">
-                                        <a href="#" class="title text-truncate">Haagen-Dazs Caramel Cone Ice</a>
-                                        <div class="price mb-2">$179.00</div>
-                                        <!-- price.// -->
-                                        <a href="#" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i> Edit </a>
-                                        <a href="#" class="btn btn-sm font-sm btn-light rounded"> <i class="material-icons md-delete_forever"></i> Delete </a>
-                                    </div>
+                                <div class="col-lg-2 col-sm-2 col-4 col-action text-end">
+                                    <a href="#" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i> Edit </a>
+                                    <a href="#" class="btn btn-sm font-sm btn-light rounded"> <i class="material-icons md-delete_forever"></i> Delete </a>
                                 </div>
-                                <!-- card-product  end// -->
                             </div>
-                            <!-- col.// -->
-                            <div class="col">
-                                <div class="card card-product-grid">
-                                    <a href="#" class="img-wrap"> <img src="assetsAdmin/imgs/items/6.jpg" alt="Product" /> </a>
-                                    <div class="info-wrap">
-                                        <a href="#" class="title text-truncate">Haagen-Dazs Caramel Cone Ice</a>
-                                        <div class="price mb-2">$179.00</div>
-                                        <!-- price.// -->
-                                        <a href="#" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i> Edit </a>
-                                        <a href="#" class="btn btn-sm font-sm btn-light rounded"> <i class="material-icons md-delete_forever"></i> Delete </a>
-                                    </div>
-                                </div>
-                                <!-- card-product  end// -->
-                            </div>
-                            <!-- col.// -->
-                            <div class="col">
-                                <div class="card card-product-grid">
-                                    <a href="#" class="img-wrap"> <img src="assetsAdmin/imgs/items/7.jpg" alt="Product" /> </a>
-                                    <div class="info-wrap">
-                                        <a href="#" class="title text-truncate">Haagen-Dazs Caramel Cone Ice</a>
-                                        <div class="price mb-2">$179.00</div>
-                                        <!-- price.// -->
-                                        <a href="#" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i> Edit </a>
-                                        <a href="#" class="btn btn-sm font-sm btn-light rounded"> <i class="material-icons md-delete_forever"></i> Delete </a>
-                                    </div>
-                                </div>
-                                <!-- card-product  end// -->
-                            </div>
-                            <!-- col.// -->
-                            <div class="col">
-                                <div class="card card-product-grid">
-                                    <a href="#" class="img-wrap"> <img src="assetsAdmin/imgs/items/8.jpg" alt="Product" /> </a>
-                                    <div class="info-wrap">
-                                        <a href="#" class="title text-truncate">Apple Airpods CB-133</a>
-                                        <div class="price mb-2">$179.00</div>
-                                        <!-- price.// -->
-                                        <a href="#" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i> Edit </a>
-                                        <a href="#" class="btn btn-sm font-sm btn-light rounded"> <i class="material-icons md-delete_forever"></i> Delete </a>
-                                    </div>
-                                </div>
-                                <!-- card-product  end// -->
-                            </div>
-                            <!-- col.// -->
-                            <div class="col">
-                                <div class="card card-product-grid">
-                                    <a href="#" class="img-wrap"> <img src="assetsAdmin/imgs/items/9.jpg" alt="Product" /> </a>
-                                    <div class="info-wrap">
-                                        <a href="#" class="title text-truncate">Apple Airpods CB-133</a>
-                                        <div class="price mb-2">$179.00</div>
-                                        <!-- price.// -->
-                                        <a href="#" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i> Edit </a>
-                                        <a href="#" class="btn btn-sm font-sm btn-light rounded"> <i class="material-icons md-delete_forever"></i> Delete </a>
-                                    </div>
-                                </div>
-                                <!-- card-product  end// -->
-                            </div>
-                            <!-- col.// -->
-                            <div class="col">
-                                <div class="card card-product-grid">
-                                    <a href="#" class="img-wrap"> <img src="assetsAdmin/imgs/items/10.jpg" alt="Product" /> </a>
-                                    <div class="info-wrap">
-                                        <a href="#" class="title text-truncate">Apple Airpods CB-133</a>
-                                        <div class="price mb-2">$179.00</div>
-                                        <!-- price.// -->
-                                        <a href="#" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i> Edit </a>
-                                        <a href="#" class="btn btn-sm font-sm btn-light rounded"> <i class="material-icons md-delete_forever"></i> Delete </a>
-                                    </div>
-                                </div>
-                                <!-- card-product  end// -->
-                            </div>
-                            <!-- col.// -->
-                        </div>
-                        <!-- row.// -->
+                            <!-- row .// -->
+                        </article>
+                   
+                        
+                        <!-- itemlist  .// -->
                     </div>
                     <!-- card-body end// -->
                 </div>
@@ -393,6 +286,6 @@
         <script src="assetsAdmin/js/vendors/perfect-scrollbar.js"></script>
         <script src="assetsAdmin/js/vendors/jquery.fullscreen.min.js"></script>
         <!-- Main Script -->
-        <script src="assetsAdmin/js/main.js?v=1.1" type="text/javascript"></script>
+        <script src="assetsAdmin/js/main.js" type="text/javascript"></script>
     </body>
 </html>

@@ -43,7 +43,9 @@ adminRoute.post('/addCategory',adminController.postAddCategory)
 adminRoute.get('/editCategory',adminController.loadEditCategory)
 adminRoute.post('/editCategory',adminController.postEditCategory)
 adminRoute.post('/category/list/:id',adminController.listingCategory)
-adminRoute.post('/category/unlist/:id',adminController.unlistingCategory)
+adminRoute.post('/category/unlist/:id',adminController.unlistingCategory),
+adminRoute.post('/category/deleteCategory/:id',adminController.deleteCategory)
+
 
 
 
