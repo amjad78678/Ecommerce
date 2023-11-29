@@ -181,16 +181,29 @@
                         <p>Add, edit or delete a category</p>
                     </div>
                     <div><span><a class="btn btn-success" href="/admin/addCategory">Add Category</a></span></div>
-                    <div>
-                        <input type="text" placeholder="Search Categories" class="form-control bg-white" />
-                    </div>
+                    
                 </div>
                 <div class="card">
-                    <div class="card-body">
+                <div class="card-body">
+        <form action="">
+        <div class="row">
+         <div class="col-8">
+        <input type="text" placeholder="Search Categories" name="Search" class="form-control bg-white"  />
+        </div>
+         <div class="col-4">
+        <input class="d-inline buttonSearch" type="submit" value="Search">
+        </div>
+        </div>
+        <br>
+        </form>
+    
                         <div class="row">
                            
-                            <div class="col-md-9">
+                            <div class="col-md-12">
                                 <div class="table-responsive">
+         
+                           </div>
+
                                     <table class="table table-hover">
                                         <thead>
                                             <tr>
@@ -232,6 +245,7 @@
 
 
                                                 <td><a href="/admin/editCategory?id=<%= categ[i]._id %>" class="btn btn-light rounded-pill  ps-4  pe-4">Edit</a></td>
+                                                
                                                 <td></td>
                                                 <td> <button class="btn btn-md rounded font-sm list-category" data-user-id="<%= categ[i]._id %>"  style="background-color: rgb(30, 139, 10);" >List</button>
                                                      <button class="btn btn-md rounded font-sm  unlist-category" data-user-id="<%= categ[i]._id  %>" style="background-color: rgb(159, 0, 0);" >Unlist</button>

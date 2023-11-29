@@ -76,8 +76,10 @@ loadUsers=async(req,res)=>{
     if (req.query.Search) {
       search = req.query.Search;
     }
+
     const page=parseInt(req.query.userPage)||1;
     const pageSize=10
+
     const regex=new RegExp(search,'i')
    
 
@@ -144,11 +146,27 @@ const unBlockingUser = async (req, res) => {
 };  
 const loadCategory=async(req,res)=>{
       try {
-      const cateData =await Category.find({})
-           res.render('category',{categ:cateData})
-      } catch (error) {
+        var search=''
+        if(req.query.Search){
+          search=req.query.Search
+        }
+
+    const regex=new RegExp(search,'i')
+
+         const cateData= await Category.find({
+      $or: [
+        { name: { $regex: regex } },
+        { description: { $regex: regex } },
+      ],
+    });
+
+  
+     res.render('category',{categ:cateData})
+
+    
+ } catch (error) {
           console.log(error.message);
-      }
+ }
 }
 
 
