@@ -18,7 +18,7 @@
 
     <body>
         <div class="screen-overlay"></div>
-        <aside class="navbar-aside" id="offcanvas_aside">
+       <aside class="navbar-aside" id="offcanvas_aside">
             <div class="aside-top">
                 <a href="index.html" class="brand-wrap">
                     <img src="https://imgs.search.brave.com/IS3ECAw-N7V5vfLuJOPJQwYn0zPRLDKKDI5LT2JFpxU/rs:fit:860:0:0/g:ce/aHR0cHM6Ly93d3cu/Y3NvZGJyYW5kLmNv/bS93cC1jb250ZW50/L3VwbG9hZHMvMjAy/MS8xMC9Db3JuZXJz/dG9uZS1Mb2dvLUhv/cml6b250YWwucG5n" class="logo" alt="Nest Dashboard" />
@@ -30,7 +30,7 @@
             <nav>
                 <ul class="menu-aside">
                     <li class="menu-item active">
-                        <a class="menu-link" href="index.html">
+                        <a class="menu-link" href="/admin/adminHome">
                             <i class="icon material-icons md-home"></i>
                             <span class="text">Dashboard</span>
                         </a>
@@ -41,14 +41,24 @@
                             <span class="text">Users</span>
                         </a>
                     </li>
-                    <li class="menu-item ">
+                 
+                  <li class="menu-item ">
+                        <a class="menu-link" href="/admin/category">
+                            <i class="icon material-icons md-add_box"></i>
+                            <span class="text">Categories</span>
+                        </a>
+                        
+                    </li>
+                  
+                       <li class="menu-item ">
                         <a class="menu-link" href="/admin/products">
                             <i class="icon material-icons md-shopping_bag"></i>
                             <span class="text">Products</span>
                         </a>
                         
                     </li>
-                    <li class="menu-item has-submenu">
+
+                      <li class="menu-item has-submenu">
                         <a class="menu-link" href="page-orders-1.html">
                             <i class="icon material-icons md-shopping_cart"></i>
                             <span class="text">Orders</span>
@@ -59,19 +69,7 @@
                             <a href="page-orders-detail.html">Order detail</a>
                         </div>
                     </li>
-                  
-                    <li class="menu-item has-submenu">
-                        <a class="menu-link" href="page-form-product-1.html">
-                            <i class="icon material-icons md-add_box"></i>
-                            <span class="text">Add product</span>
-                        </a>
-                        <div class="submenu">
-                            <a href="page-form-product-1.html">Add product 1</a>
-                            <a href="page-form-product-2.html">Add product 2</a>
-                            <a href="page-form-product-3.html">Add product 3</a>
-                            <a href="page-form-product-4.html">Add product 4</a>
-                        </div>
-                    </li>
+                   
                     <li class="menu-item has-submenu">
                         <a class="menu-link" href="page-transactions-1.html">
                             <i class="icon material-icons md-monetization_on"></i>
@@ -237,11 +235,12 @@
                                         <td><%= users[i].mobileNumber %></td>
                                        <td class="text">
                                             <span id="status_<%= users[i]._id %>">
-                                              <% if (users[i].is_Blocked) { %>
+                                              <% if (users[i].is_Blocked==true) { %>
                                                 <span class="badge rounded-pill alert-warning">Blocked</span>
                                               <% } else { %>
                                                 <span class="badge rounded-pill alert-success">Active</span>
                                               <% } %>
+                                              </td>
                                        
                                         <td><% if(users[i].is_Verified==true){ %>
                                             

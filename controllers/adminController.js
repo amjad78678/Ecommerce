@@ -1,4 +1,6 @@
 const User=require('../models/userModel')
+const Category= require('../models/categoryModel')
+
 const bcrypt=require('bcrypt')
 
 const loadAdminLogin=async(req,res)=>{
@@ -142,12 +144,106 @@ const unBlockingUser = async (req, res) => {
 };  
 const loadCategory=async(req,res)=>{
       try {
-           res.render('category')
+      const cateData =await Category.find({})
+           res.render('category',{categ:cateData})
       } catch (error) {
           console.log(error.message);
       }
 }
 
+
+
+const loadAddCategory =async(req,res)=>{
+    try {
+      res.render('addCategory')
+    } catch (error) {
+      console.log(error.message);
+    }
+}
+const postAddCategory=async(req,res)=>{
+   try {
+ const name=  req.body.name
+ const description=req.body.description
+
+        if (!name || !description) {
+            return res.render('addCategory', { message: 'Invalid data provided' });
+        }
+         const cateData=await Category.find({name:name})
+         if(cateData.length>0){
+           res.render('addCategory',{message:'The category already exists'})
+         }else{
+          const cate=new Category({
+          name:name,
+          description:description,
+          is_Listed:true
+
+        }) 
+
+         let cateData= await cate.save()
+         if(cateData){
+
+        res.redirect('/admin/category')
+      }
+  
+  }
+
+
+       } catch (error) {
+        console.log(error.message);
+       }
+}
+const loadEditCategory=async(req,res)=>{
+     try {
+     const id= req.query.id
+     const cateData =await Category.findOne({_id:id})
+     console.log(cateData);
+     
+        if (!cateData){
+          res.render('editCategory',{message:'Data Not Found'})
+        }else{
+          res.render('editCategory',{categ:cateData})
+        }
+     } catch (error) {
+      console.log(error.message);
+     }
+}
+
+const postEditCategory=async(req,res)=>{
+        try {
+      await Category.findByIdAndUpdate({_id:req.body.id},{name:req.body.name,description:req.body.description})
+          res.redirect('/admin/category')
+
+        } catch (error) {
+          console.log(error.message);
+        }
+}
+const listingCategory = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const updateUser = await Category.findByIdAndUpdate(id, { is_Listed: true }, { new: true });
+    if (!updateUser) {
+      return res.status(404).send('Category not found');
+    }
+    res.status(200).json(updateUser);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Internal Server Error');
+  }
+};  
+  
+const unlistingCategory = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const updateUser = await Category.findByIdAndUpdate(id, { is_Listed: false }, { new: true });
+    if (!updateUser) {
+      return res.status(404).send('Category not found');
+    }
+    res.status(200).json(updateUser);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Internal Server Error');
+  }
+};  
 module.exports={
        loadAdminHome,
        loadAdminLogin,
@@ -157,5 +253,11 @@ module.exports={
        loadUsers,
        blockingUser,
        unBlockingUser,
-       loadCategory
+       loadCategory,
+       loadAddCategory,
+       postAddCategory,
+       loadEditCategory,
+       postEditCategory,
+       listingCategory,
+       unlistingCategory
     }

@@ -43,7 +43,7 @@ const postRegister = async (req, res) => {
     }else{
     sPassword = await securePassword(req.body.password);
     sConfirmPassword = await securePassword(req.body.confirmPassword);
-    const user = User({
+    const user =new User({
       userName: req.body.userName,
       email: req.body.email,
       mobileNumber: req.body.mobileNumber,

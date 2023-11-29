@@ -38,6 +38,12 @@ adminRoute.get('/users',adminController.loadUsers)
 adminRoute.post('/users/block/:id',adminController.blockingUser)
 adminRoute.post('/users/unblock/:id',adminController.unBlockingUser)
 adminRoute.get('/category',adminController.loadCategory)
+adminRoute.get('/addCategory',adminController.loadAddCategory)
+adminRoute.post('/addCategory',adminController.postAddCategory)
+adminRoute.get('/editCategory',adminController.loadEditCategory)
+adminRoute.post('/editCategory',adminController.postEditCategory)
+adminRoute.post('/category/list/:id',adminController.listingCategory)
+adminRoute.post('/category/unlist/:id',adminController.unlistingCategory)
 
 
 

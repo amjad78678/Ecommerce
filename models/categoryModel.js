@@ -8,7 +8,10 @@ const categorySchema = new mongoose.Schema({
   description: {
     type: String,
   },
-  // You can add more fields as needed
+  is_Listed:{
+    type:Boolean,
+    required:true
+  }
 });
 
 

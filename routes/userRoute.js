@@ -42,4 +42,5 @@ userRouter.post('/emailVerifyAfter',userController.postEmailVerifyAfter)
 
 
 
+
 module.exports = userRouter;
