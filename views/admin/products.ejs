@@ -264,8 +264,8 @@
                                             <div class="dropdown">
                                                 <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
                                                 <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="">Edit</a>
-                                                    <a class="dropdown-item text-danger" href="#">Delete</a>
+                                                    <a class="dropdown-item" href="/admin/editProduct?id=<%=product[i]._id%>">Edit</a>
+                                                    <a class="dropdown-item text-danger delete-product" href="#"  data-toggle="modal" data-target="#deleteProductModal" data-product-id="<%= product[i]._id %>">Delete</a>
                                                 </div>
                                             </div>
                                             <!-- dropdown //end -->
@@ -300,6 +300,34 @@
                 </div>
             </footer>
         </main>
+
+
+
+ <!-- Delete Category Modal -->
+<div class="modal fade" id="deleteProductModal" tabindex="-1" aria-labelledby="deleteProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteProductModalLabel">Confirm Deletion</h5>
+                <button type="button" class="btn-close goBackBtn" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this category?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal">Cancel</button>
+               <a href="/admin/products"><button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button></a> 
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
         <script src="assetsAdmin/js/vendors/jquery-3.6.0.min.js"></script>
         <script src="assetsAdmin/js/vendors/bootstrap.bundle.min.js"></script>
         <script src="assetsAdmin/js/vendors/select2.min.js"></script>
@@ -320,21 +348,37 @@
   <script>
         // JavaScript for the increment and decrement functionality
         document.addEventListener('DOMContentLoaded', function () {
-            const quantityInput = document.getElementById('quantity');
-            const incrementButton = document.getElementById('increment');
-            const decrementButton = document.getElementById('decrement');
+    const quantityInput = document.getElementById('quantity');
+    const incrementButton = document.getElementById('increment');
+    const decrementButton = document.getElementById('decrement');
 
-            incrementButton.addEventListener('click', function () {
-                quantityInput.value = parseInt(quantityInput.value) + 1;
-            });
+    incrementButton.addEventListener('click', function () {
+        updateQuantity(1); // Increase quantity by 1
+    });
 
-            decrementButton.addEventListener('click', function () {
-                const currentValue = parseInt(quantityInput.value);
-                if (currentValue > 0) {
-                    quantityInput.value = currentValue - 1;
-                }
-            });
+    decrementButton.addEventListener('click', function () {
+        updateQuantity(-1); // Decrease quantity by 1
+    });
+
+    async function updateQuantity(change) {
+        const currentQuantity = parseInt(quantityInput.value, 10);
+        const newQuantity = Math.max(0, currentQuantity + change); // Ensure quantity is non-negative
+
+        // Update the input field with the new quantity
+        quantityInput.value = newQuantity;
+
+        // Make an asynchronous request to update the quantity on the server
+        const productId = 'your_product_id'; // Replace with the actual product ID
+        await fetch(`/update-quantity/${productId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ quantity: newQuantity }),
         });
+    }
+});
+
     </script>
 
     <script>
@@ -387,7 +431,54 @@
 
 }
   );
-          </script>
+ </script>
+
+
+<!-- for deleteling category script -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Handle Delete button click
+        $('.delete-product').on('click', function () {
+            const productId = $(this).data('product-id');
+
+            // Set the categoryId in the modal for reference
+            $('#deleteProductModal').data('product-id', productId);
+
+            // Show the modal
+            $('#deleteProductModal').modal('show');
+        });
+
+    
+
+        // Handle Confirm Delete button click
+        $('#confirmDeleteBtn').on('click', function () {
+            // Retrieve the categoryId from the modal
+            const productId = $('#deleteProductModal').data('product-id');
+
+            // Make a POST request to delete the category
+            fetch(`/admin/products/deleteProducts/${productId}`, {
+                method: 'POST',
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Perform actions after successful deletion
+                        console.log('Category deleted successfully');
+
+                        // Redirect to the categories page
+                        window.location.href = '/admin/products';
+                    } else {
+                        // Handle deletion failure
+                        console.error('Deletion failed');
+                    }
+                })
+                .catch(error => {
+                    // Handle fetch error
+                    console.error('Fetch error:', error);
+                });
+        });
+    });
+</script>
 
 
         <!-- Main Script -->

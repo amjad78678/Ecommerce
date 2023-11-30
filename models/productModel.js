@@ -26,7 +26,7 @@ name: {
     default: 0,
   },
    date:{   
-    type:Date,
+    type:String,
     required:true
    },
    is_Listed:{

@@ -66,6 +66,8 @@ adminRoute.post('/addProduct',upload.single('image'),adminController.postAddProd
 adminRoute.post('/products/list/:id',adminController.listingProduct)
 adminRoute.post('/products/unlist/:id',adminController.unlistingProduct)
 adminRoute.get('/editProduct',adminController.loadEditProduct)
+adminRoute.post('/editProduct',upload.single('image'),adminController.postEditProduct)
+adminRoute.post('/products/deleteProducts/:id',adminController.deleteProducts)
 
 
 

@@ -2,6 +2,8 @@ const User=require('../models/userModel')
 const Category= require('../models/categoryModel')
 const Product=require('../models/productModel')
 const bcrypt=require('bcrypt')
+const mongoose = require('mongoose');
+
 
 const loadAdminLogin=async(req,res)=>{
     try {
@@ -226,7 +228,7 @@ const loadEditCategory=async(req,res)=>{
 
 const postEditCategory=async(req,res)=>{
         try {
-      await Category.findByIdAndUpdate({_id:req.body.id},{name:req.body.name,description:req.body.description})
+         await Category.findByIdAndUpdate({_id:req.body.id},{name:req.body.name,description:req.body.description})
           res.redirect('/admin/category')
 
         } catch (error) {
@@ -285,7 +287,9 @@ const loadProducts=async(req,res)=>{
 
 const loadAddProduct=async(req,res)=>{
        try {
-           res.render('addProduct')
+
+   const category=await Category.find({})
+           res.render('addProduct',{category:category})
        } catch (error) {
         console.log(error.message);
        }
@@ -306,10 +310,28 @@ const postAddProduct=async(req,res)=>{
              imageUrl:image,
              price:price,
              category:category,
-             date:Date.now(),
+             date:formatDate(Date.now()), // Format the date
              is_Listed:true
 
         })
+
+
+   //format our date
+   function formatDate(timestamp) {
+    const date = new Date(timestamp);
+
+    // Extracting date, month, and year
+    const day = date.getDate();
+    const month = date.getMonth() + 1; // Months are zero-based
+    const year = date.getFullYear();
+
+    // Formatting as "dd/mm/yyyy" (you can adjust the format as needed)
+    const formattedDate = `${day}/${month}/${year}`;
+
+    return formattedDate;
+}
+
+
 
 let productData =await product.save()
 if (!productData){
@@ -355,15 +377,39 @@ const unlistingProduct=async(req,res)=>{
 
 const loadEditProduct=async(req,res)=>{
     try {
-      res.render('editProduct')
+      const id=req.query.id
+      const productData=await Product.findOne({_id:id})
+           const category =await  Category.find({})
+      res.render('editProduct',{product:productData,categ:category})
     } catch (error) {
       
     }
 }
 
 
+const postEditProduct=async(req,res)=>{
+       try {
+     console.log(req.body);
+     console.log(req.query.id);
+    await Product.findByIdAndUpdate({_id:req.body.id},{name:req.body.name,description:req.body.description,price:req.body.price,category:req.body.category,imageUrl:req.file?.filename})
+    res.redirect('/admin/products')
 
+           
+       } catch (error) {
+        console.log(error.message);
+       }
+}
 
+const deleteProducts=async(req,res)=>{
+     try {
+      console.log(req.params);
+      const productId=req.params.id
+      await Product.deleteOne({_id:productId})  
+
+     } catch (error) {
+       console.log(error.message);
+     }
+}
 
 module.exports={
        loadAdminHome,
@@ -386,5 +432,7 @@ module.exports={
        postAddProduct,
        listingProduct,
        unlistingProduct,
-       loadEditProduct
+       loadEditProduct,
+       postEditProduct,
+       deleteProducts
     }
