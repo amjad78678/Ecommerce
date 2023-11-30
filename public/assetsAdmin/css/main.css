@@ -4321,6 +4321,24 @@ body.dark .dropdown-menu .dropdown-item.text-danger {
   box-shadow: rgba(255, 255, 255, .2) 0 3px 15px inset, rgba(0, 0, 0, .1) 0 3px 5px, rgba(0, 0, 0, .1) 0 10px 13px;
   transform: scale(1.05);
 }
+ /* Style for the form and input */
+        form {
+            display: flex;
+            flex-direction: column;
+            max-width: 200px;
+        }
+
+        input {
+            margin-bottom: 10px;
+            padding: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
 
 @media (min-width: 768px) {
   .button-71 {
@@ -4348,4 +4366,6 @@ body.dark .dropdown-menu .dropdown-item.text-danger {
     display: none;
   }
 }
+
+
 /*# sourceMappingURL=main.css.map */

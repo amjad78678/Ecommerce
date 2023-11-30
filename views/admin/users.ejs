@@ -14,6 +14,9 @@
         <link rel="shortcut icon" type="image/x-icon" href="assetsAdmin/imgs/theme/favicon.svg" />
         <!-- Template CSS -->
         <link href="assetsAdmin/css/main.css?v=1.1" rel="stylesheet" type="text/css" />
+
+           <!-- DataTables JS jquery pagination search -->
+      <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
     </head>
 
     <body>
@@ -182,29 +185,11 @@
                    
                 </div>
                 <div class="card mb-4">
-                    <header class="card-header">
-                        <div class="row gx-3">
-                            <div class="col-lg-4 col-md-6 me-auto">
-                                <form action="">
-                                    <div class="row">
-                                <div class="col-8">
-                                    
-                                <input type="text" placeholder="Search..." name="Search" class="form-control" />
-                                </div>
-                                <br>
-                                <div class="col-4">
-                                <input class="d-inline buttonSearch" type="submit" value="search">
-                                </div>
-                                </div>
-                                </form>
-                            </div>
-                           
-                        </div>
-                    </header>
+                 
                     <!-- card-header end// -->
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-hover">
+                            <table class="table table-hover" id="example">
                                 <thead>
                                     <tr>
                                        
@@ -231,8 +216,9 @@
                                               <% } else { %>
                                                 <span class="badge rounded-pill alert-success">Active</span>
                                               <% } %>
+                                               </span>
                                               </td>
-                                       
+                                            
                                         <td><% if(users[i].is_Verified==true){ %>
                                             
                                                 Verified
@@ -260,19 +246,8 @@
                     <!-- card-body end// -->
                 </div>
                 <!-- card end// -->
-                <div class="pagination-area mt-15 mb-50">
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination justify-content-start">
-                            <% for (let j = 1; j <= totalPages; j++) { %>
-                                <% if (j === currentPage) { %>
-                                    <li class="page-item active"><span class="page-link"><%= j %></span></li>
-                                <% } else { %>
-                                    <li class="page-item"><a class="page-link" href="?userPage=<%= j %>"><%= j %></a></li>
-                                <% } %>
-                            <% } %>
-                        </ul>
-                    </nav>
-                </div>
+                
+
             </section>
             <!-- content-main end// -->
             <footer class="main-footer font-xs">
@@ -294,6 +269,12 @@
         <script src="assetsAdmin/js/vendors/select2.min.js"></script>
         <script src="assetsAdmin/js/vendors/perfect-scrollbar.js"></script>
         <script src="assetsAdmin/js/vendors/jquery.fullscreen.min.js"></script>
+       
+
+      <!-- DataTables JS jquery pagination search -->
+      <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
+
         <script>
             document.addEventListener('DOMContentLoaded', function () {
               document.querySelectorAll('.block-user').forEach(function (button) {
@@ -321,7 +302,7 @@
 
       // Update the UI
       const statusElement = document.getElementById(`status_${id}`);
-      if (data.is_Blocked) {
+      if (data.is_Blocked==true) {
         // Update text content and apply a class
         statusElement.textContent = 'Blocked';
         statusElement.classList.add('alert-warning');
@@ -345,6 +326,14 @@
 }
   );
           </script>
+
+     <!-- jquery library search -->
+          <script>
+              $(document).ready(function() {
+                 $('#example').DataTable();
+                });
+          </script>
+        
         <!-- Main Script -->
         <script src="assetsAdmin/js/main.js?v=1.1" type="text/javascript"></script>
     </body>

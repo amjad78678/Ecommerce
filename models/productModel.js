@@ -21,10 +21,18 @@ name: {
     type: String,
     required: true,
   },
-  quantity: {
+  stockQuantity: {
     type: Number,
     default: 0,
   },
+   date:{   
+    type:Date,
+    required:true
+   },
+   is_Listed:{
+    type:Boolean,
+    required:true,
+   }
 });
 
 

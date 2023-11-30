@@ -1,6 +1,6 @@
 const User=require('../models/userModel')
 const Category= require('../models/categoryModel')
-
+const Product=require('../models/productModel')
 const bcrypt=require('bcrypt')
 
 const loadAdminLogin=async(req,res)=>{
@@ -60,14 +60,6 @@ const logout = async (req, res) => {
 };
 
 
-const loadProducts=async(req,res)=>{
-     try {
-        res.render('products')
-     } catch (error) {
-        console.log(error.message);
-     }
-}
-
 
 loadUsers=async(req,res)=>{
     try {
@@ -98,19 +90,23 @@ loadUsers=async(req,res)=>{
    
 
 
-    const usersData = await User.find({
-      is_Admin: 0,
-      // $or: [
-      //   { userName: { $regex: regex } },
-      //   { email: { $regex: regex } },
-      //   { mobileNumber: { $regex: regex } },
-      // ],
-    })
-    // .skip(skip).limit(pageSize)
+    // const usersData = await User.find({
+    //   is_Admin: 0,
+    //   $or: [
+    //     { userName: { $regex: regex } },
+    //     { email: { $regex: regex } },
+    //     { mobileNumber: { $regex: regex } },
+    //   ],
+    // }).skip(skip).limit(pageSize)
      
     
-    res.render('users', { users : usersData});
-    // ,totalPages,currentPage:page 
+    // res.render('users', { users : usersData,totalPages,currentPage:page });
+
+    const usersData = await User.find({ is_Admin: 0})
+    if (usersData){
+         res.render('users', { users : usersData});
+    }
+
         
     } catch (error) {
         console.log(error.message);
@@ -278,6 +274,96 @@ const deleteCategory = async (req, res) => {
 };
 
 
+const loadProducts=async(req,res)=>{
+     try {
+     const product=await Product.find({})
+        res.render('products',{product:product})
+     } catch (error) {
+        console.log(error.message);
+     }
+}
+
+const loadAddProduct=async(req,res)=>{
+       try {
+           res.render('addProduct')
+       } catch (error) {
+        console.log(error.message);
+       }
+}
+
+
+const postAddProduct=async(req,res)=>{
+     try {
+        const name= req.body.name
+        const description=req.body.description
+        const image=req.file.filename
+        const price=req.body.price
+        const category=req.body.category
+
+      const product=new Product({
+             name:name,
+             description:description,
+             imageUrl:image,
+             price:price,
+             category:category,
+             date:Date.now(),
+             is_Listed:true
+
+        })
+
+let productData =await product.save()
+if (!productData){
+  res.render('addProduct',{message:'Invalid input'})
+}else{
+  res.redirect('/admin/products')
+}
+
+ } catch (error) {
+      console.log(error.message);
+ }
+}
+
+
+const listingProduct=async(req,res)=>{
+   try {
+    const id = req.params.id;
+    const updateProduct = await Product.findByIdAndUpdate(id, { is_Listed: true }, { new: true });
+    if (!updateProduct) {
+      return res.status(404).send('Category not found');
+    }
+    res.status(200).json(updateProduct);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Internal Server Error');
+  }
+}
+
+
+const unlistingProduct=async(req,res)=>{
+      try {
+    const id = req.params.id;
+    const updateProduct = await Product.findByIdAndUpdate(id, { is_Listed: false }, { new: true });
+    if (!updateProduct) {
+      return res.status(404).send('Category not found');
+    }
+    res.status(200).json(updateProduct);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Internal Server Error');
+  }
+}
+
+const loadEditProduct=async(req,res)=>{
+    try {
+      res.render('editProduct')
+    } catch (error) {
+      
+    }
+}
+
+
+
+
 
 module.exports={
        loadAdminHome,
@@ -295,5 +381,10 @@ module.exports={
        postEditCategory,
        listingCategory,
        unlistingCategory,
-       deleteCategory
+       deleteCategory,
+       loadAddProduct,
+       postAddProduct,
+       listingProduct,
+       unlistingProduct,
+       loadEditProduct
     }
