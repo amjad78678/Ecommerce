@@ -63,35 +63,6 @@
 <link rel="stylesheet" href="assets/css/demos/demo-2.css" />
 <link rel="stylesheet" href="/userHome.css" />
 
-<style>
-    .filter-price {
-        display: flex;
-        align-items: center;
-    }
-
-    .filter-price-text {
-        margin-right: 10px;
-        font-weight: bold;
-    }
-
-    input {
-        padding: 5px 8px; /* Adjusted padding for a shorter length */
-        margin-right: 5px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
-
-    button {
-        padding: 8px 15px;
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-</style>
-
-
 <% include('../layouts/center.ejs') %>
 <div class="page-wrapper">
   <!--Header start-->
@@ -121,8 +92,13 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <div class="ms-auto">
-          <a class="me-5 text-dark" href="/">Home</a>
-          <a class="me-5 text-dark" href="/productList">Shop</a>
+          <a class="me-5 text-dark" href="#">Home</a>
+          <a class="me-5 text-dark" <% if(locals.user){ %>
+                href="/productList">
+            <% }else{ %>
+              href="/productListN">
+              
+              <% } %>Shop</a>
           <a class="me-5 text-dark" href="#">About Us</a>
           <a class="me-4 text-dark" href="#">Blog</a>
           <a class="me-4 text-dark" href="#">Contact Us </a>
@@ -174,244 +150,342 @@
         </div>
       </div>
     </div>
-  </header><!-- End .header -->
+  </header>
 
         <main class="main">
-        	<div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
-        		<div class="container">
-        			<h1 class="page-title">Furnitures<span>Shop</span></h1>
-        		</div><!-- End .container -->
-        	</div><!-- End .page-header -->
-            <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
-                <div class="container">
+            <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+                <div class="container d-flex align-items-center">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#">Shop</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Grid 3 Columns</li>
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Products</a></li>
+                       
                     </ol>
+
+                    <nav class="product-pager ml-auto" aria-label="Product">
+                        <a class="product-pager-link product-pager-prev" href="#" aria-label="Previous" tabindex="-1">
+                            <i class="icon-angle-left"></i>
+                            <span>Prev</span>
+                        </a>
+
+                        <a class="product-pager-link product-pager-next" href="#" aria-label="Next" tabindex="-1">
+                            <span>Next</span>
+                            <i class="icon-angle-right"></i>
+                        </a>
+                    </nav><!-- End .pager-nav -->
                 </div><!-- End .container -->
             </nav><!-- End .breadcrumb-nav -->
+            <br>
 
             <div class="page-content">
                 <div class="container">
-                	<div class="row">
-                		<div class="col-lg-9">
-                			<div class="toolbox">
-                				<div class="toolbox-left">
-                					<div class="toolbox-info">
-                						Showing <span>9 of 56</span> Products
-                					</div><!-- End .toolbox-info -->
-                				</div><!-- End .toolbox-left -->
-
-                				<div class="toolbox-right">
-                					<div class="toolbox-sort">
-                						<label for="sortby">Sort by:</label>
-                						<div class="select-custom">
-											<select name="sortby" id="sortby" class="form-control">
-												<option value="popularity" selected="selected">Most Popular</option>
-												<option value="rating">Most Rated</option>
-												<option value="date">Date</option>
-											</select>
-										</div>
-                					</div><!-- End .toolbox-sort -->
-                					<div class="toolbox-layout">
-                						<a href="category-list.html" class="btn-layout">
-                							<svg width="16" height="10">
-                								<rect x="0" y="0" width="4" height="4" />
-                								<rect x="6" y="0" width="10" height="4" />
-                								<rect x="0" y="6" width="4" height="4" />
-                								<rect x="6" y="6" width="10" height="4" />
-                							</svg>
-                						</a>
-
-                						<a href="category-2cols.html" class="btn-layout">
-                							<svg width="10" height="10">
-                								<rect x="0" y="0" width="4" height="4" />
-                								<rect x="6" y="0" width="4" height="4" />
-                								<rect x="0" y="6" width="4" height="4" />
-                								<rect x="6" y="6" width="4" height="4" />
-                							</svg>
-                						</a>
-
-                						<a href="category.html" class="btn-layout active">
-                							<svg width="16" height="10">
-                								<rect x="0" y="0" width="4" height="4" />
-                								<rect x="6" y="0" width="4" height="4" />
-                								<rect x="12" y="0" width="4" height="4" />
-                								<rect x="0" y="6" width="4" height="4" />
-                								<rect x="6" y="6" width="4" height="4" />
-                								<rect x="12" y="6" width="4" height="4" />
-                							</svg>
-                						</a>
-
-                						<a href="category-4cols.html" class="btn-layout">
-                							<svg width="22" height="10">
-                								<rect x="0" y="0" width="4" height="4" />
-                								<rect x="6" y="0" width="4" height="4" />
-                								<rect x="12" y="0" width="4" height="4" />
-                								<rect x="18" y="0" width="4" height="4" />
-                								<rect x="0" y="6" width="4" height="4" />
-                								<rect x="6" y="6" width="4" height="4" />
-                								<rect x="12" y="6" width="4" height="4" />
-                								<rect x="18" y="6" width="4" height="4" />
-                							</svg>
-                						</a>
-                					</div><!-- End .toolbox-layout -->
-                				</div><!-- End .toolbox-right -->
-                			</div><!-- End .toolbox -->
-
-                            <div class="products mb-3">
-                                <div class="row justify-content-center">
+                    <div class="product-details-top mb-2">
+                        <div class="row">
+                            <div class="col-md-6">
 
 
-                      <% if(product.length>0 ) {%>
-                        <% for(i=0;i<product.length;i++) {%>
-                            <% if(product[i].is_Listed==true) {%>
-                          
-                                    <div class="col-6 col-md-4 col-lg-4">
-                                        <div class="product product-7 text-center">
-                                            <figure class="product-media">
-                                                <span class="product-label label-new">New</span>
-                                                <a href="/productDetail?id=<%= product[i]._id  %>">
-                                                    <img src="<%= product[i].imageUrl  %>" alt="<%= product[i].imageUrl  %>" class="product-image">
-                                                </a>
+                      
+                                <div class="product-gallery product-gallery-vertical">
+                                    <div class="row">
+                                        <figure class="product-main-image">
+                                            <img id="product-zoom" src="<%= product.imageUrl %>" data-zoom-image="assets/images/products/single/centered/1-big.jpg" alt="product image">
 
-                                                <div class="product-action-vertical">
-                                                    <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
-                                                    <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a>
-                                                    <a href="#" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a>
-                                                </div><!-- End .product-action-vertical -->
+                                            <a href="#" id="btn-product-gallery" class="btn-product-gallery">
+                                                <i class="icon-arrows"></i>
+                                            </a>
+                                        </figure><!-- End .product-main-image -->
 
-                                                <div class="product-action">
-                                                    <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
-                                                </div><!-- End .product-action -->
-                                            </figure><!-- End .product-media -->
+                                        <div id="product-zoom-gallery" class="product-image-gallery">
+                                            <a class="product-gallery-item active" href="#" data-image="assets/images/products/single/centered/1.jpg" data-zoom-image="assets/images/products/single/centered/1-big.jpg">
+                                                <img src="assets/images/products/single/centered/1-small.jpg" alt="product side">
+                                            </a>
 
-                                            <div class="product-body">
-                                                <div class="product-cat">
-                                                    <a href="#"><%= product[i].category %></a>
-                                                </div><!-- End .product-cat -->
-                                                <h3 class="product-title"><a href="/productDetail"><%= product[i].name  %></a></h3><!-- End .product-title -->
-                                                <div class="product-price">
-                                                    <%= product[i].price  %>
-                                                </div><!-- End .product-price -->
+                                            <a class="product-gallery-item" href="#" data-image="assets/images/products/single/centered/2.jpg" data-zoom-image="assets/images/products/single/centered/2-big.jpg">
+                                                <img src="assets/images/products/single/centered/2-small.jpg" alt="product cross">
+                                            </a>
+
+                                            <a class="product-gallery-item" href="#" data-image="assets/images/products/single/centered/3.jpg" data-zoom-image="assets/images/products/single/centered/3-big.jpg">
+                                                <img src="assets/images/products/single/centered/3-small.jpg" alt="product with model">
+                                            </a>
+
+                                            <a class="product-gallery-item" href="#" data-image="assets/images/products/single/centered/4.jpg" data-zoom-image="assets/images/products/single/centered/4-big.jpg">
+                                                <img src="assets/images/products/single/centered/4-small.jpg" alt="product back">
+                                            </a>
+                                        </div><!-- End .product-image-gallery -->
+                                    </div><!-- End .row -->
+                                </div><!-- End .product-gallery -->
+                            </div><!-- End .col-md-6 -->
+
+
+
+
+
+                           
+                            <div class="col-md-6">
+                                <div class="product-details product-details-centered">
+                                    <h1 class="product-title"><%= product.name  %></h1><!-- End .product-title -->
+                                    <div class="product-single__text mb-3" style="color:black ; font-size: 13px"><p>Pan India - Free Shipping</p></div>
+                                    
+
+                                    <div class="ratings-container">
+                                        <div class="ratings">
+                                            <div class="ratings-val" style="width: 80%;"></div><!-- End .ratings-val -->
+                                        </div><!-- End .ratings -->
+                                      
+                                        <a class="ratings-text" href="#product-review-link" id="review-link">( 2 Reviews )</a>
+                                    </div><!-- End .rating-container -->
+                                        <br>
+
+                                        <label class="variants__label">Wood: <span class="js-swatch-display--2 text"><b><%=product.wood %></b></span></label>
+                                     
+                                    <div class="product-price">
+                                          <br>
+                                      <%= product.price  %>
+                                    </div><!-- End .product-price -->
+
+                                    <div class="product-content">
+                                        <p> Good Quality</p>
+                                    </div><!-- End .product-content -->
+
+                                   <br>
+
+                                  
+
+                                    <div class="product-details-action">
+                                        <div class="details-action-col">
+                                            <div class="product-details-quantity">
+                                                <input type="number" id="qty" class="form-control" value="1" min="1" max="10" step="1" data-decimals="0" required>
+                                            </div><!-- End .product-details-quantity -->
+
+                                            <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+                                        </div><!-- End .details-action-col -->
+                                         <br>
+                                        <div class="details-action-wrapper">
+                                            <a href="#" class="btn-product btn-wishlist" title="Wishlist"><span>Add to Wishlist</span></a>
+                                           
+                                        </div><!-- End .details-action-wrapper -->
+                                    
+                                    </div><!-- End .product-details-action -->
+                                        <br>
+
+                                    <div class="product-details-footer">
+                                        <div class="product-cat">
+                                            <span>Category:</span>
+                                            <a href="#"><%= product.category  %></a>
+                                            
+                                        </div><!-- End .product-cat -->
+
+                                        <div class="social-icons social-icons-sm">
+                                            <span class="social-label">Share:</span>
+                                            <a href="#" class="social-icon" title="Facebook" target="_blank"><i class="icon-facebook-f"></i></a>
+                                            <a href="#" class="social-icon" title="Twitter" target="_blank"><i class="icon-twitter"></i></a>
+                                            <a href="#" class="social-icon" title="Instagram" target="_blank"><i class="icon-instagram"></i></a>
+                                            <a href="#" class="social-icon" title="Pinterest" target="_blank"><i class="icon-pinterest"></i></a>
+                                        </div>
+                                    </div><!-- End .product-details-footer -->
+                                </div><!-- End .product-details -->
+                            </div><!-- End .col-md-6 -->
+
+
+
+                        </div><!-- End .row -->
+                    </div><!-- End .product-details-top -->
+
+             
+
+                    <div class="product-details-tab">
+                        <ul class="nav nav-pills justify-content-center" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="product-desc-link" data-toggle="tab" href="#product-desc-tab" role="tab" aria-controls="product-desc-tab" aria-selected="true">Description</a>
+                            </li>
+                           
+                            <li class="nav-item">
+                                <a class="nav-link" id="product-shipping-link" data-toggle="tab" href="#product-shipping-tab" role="tab" aria-controls="product-shipping-tab" aria-selected="false">Shipping & Returns</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="product-review-link" data-toggle="tab" href="#product-review-tab" role="tab" aria-controls="product-review-tab" aria-selected="false">Reviews (2)</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="product-desc-tab" role="tabpanel" aria-labelledby="product-desc-link">
+                                <div class="product-desc-content">
+                                    <h3>Product Information</h3>
+                                    <p><%= product.description  %>. </p>
+                                   
+
+                                    
+                                </div><!-- End .product-desc-content -->
+                            </div><!-- .End .tab-pane -->
+                            <div class="tab-pane fade" id="product-info-tab" role="tabpanel" aria-labelledby="product-info-link">
+                                <div class="product-desc-content">
+                                    <h3>Information</h3>
+                                    <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna viverra non, semper suscipit, posuere a, pede. Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. </p>
+
+                                    <h3>Fabric & care</h3>
+                                    <ul>
+                                        <li>Faux suede fabric</li>
+                                        <li>Gold tone metal hoop handles.</li>
+                                        <li>RI branding</li>
+                                        <li>Snake print trim interior </li>
+                                        <li>Adjustable cross body strap</li>
+                                        <li> Height: 31cm; Width: 32cm; Depth: 12cm; Handle Drop: 61cm</li>
+                                    </ul>
+
+                                    <h3>Size</h3>
+                                    <p>one size</p>
+                                </div><!-- End .product-desc-content -->
+                            </div><!-- .End .tab-pane -->
+                            <div class="tab-pane fade" id="product-shipping-tab" role="tabpanel" aria-labelledby="product-shipping-link">
+                                <div class="product-desc-content">
+                                    <h3>Delivery & returns</h3>
+                                    <p>We deliver to over 100 countries around the world. For full details of the delivery options we offer, please view our <a href="#">Delivery information</a><br>
+                                    We hope you’ll love every purchase, but if you ever need to return an item you can do so within a month of receipt. For full details of how to make a return, please view our <a href="#">Returns information</a></p>
+                                </div><!-- End .product-desc-content -->
+                            </div><!-- .End .tab-pane -->
+                            <div class="tab-pane fade" id="product-review-tab" role="tabpanel" aria-labelledby="product-review-link">
+                                <div class="reviews">
+                                    <h3>Reviews (2)</h3>
+                                    <div class="review">
+                                        <div class="row no-gutters">
+                                            <div class="col-auto">
+                                                <h4><a href="#">Samanta J.</a></h4>
                                                 <div class="ratings-container">
                                                     <div class="ratings">
-                                                        <div class="ratings-val" style="width: 20%;"></div><!-- End .ratings-val -->
+                                                        <div class="ratings-val" style="width: 80%;"></div><!-- End .ratings-val -->
                                                     </div><!-- End .ratings -->
-                                                    <span class="ratings-text">( 2 Reviews )</span>
                                                 </div><!-- End .rating-container -->
+                                                <span class="review-date">6 days ago</span>
+                                            </div><!-- End .col -->
+                                            <div class="col">
+                                                <h4>Good, perfect size</h4>
 
-                                                <!-- End .product-nav -->
-                                            </div><!-- End .product-body -->
-                                        </div><!-- End .product -->
-                                    </div><!-- End .col-sm-6 col-lg-4 -->
-                               <% } %>
-                               <% } %>
-                               <% } %>
+                                                <div class="review-content">
+                                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus cum dolores assumenda asperiores facilis porro reprehenderit animi culpa atque blanditiis commodi perspiciatis doloremque, possimus, explicabo, autem fugit beatae quae voluptas!</p>
+                                                </div><!-- End .review-content -->
+
+                                                <div class="review-action">
+                                                    <a href="#"><i class="icon-thumbs-up"></i>Helpful (2)</a>
+                                                    <a href="#"><i class="icon-thumbs-down"></i>Unhelpful (0)</a>
+                                                </div><!-- End .review-action -->
+                                            </div><!-- End .col-auto -->
+                                        </div><!-- End .row -->
+                                    </div><!-- End .review -->
+
+                                    <div class="review">
+                                        <div class="row no-gutters">
+                                            <div class="col-auto">
+                                                <h4><a href="#">John Doe</a></h4>
+                                                <div class="ratings-container">
+                                                    <div class="ratings">
+                                                        <div class="ratings-val" style="width: 100%;"></div><!-- End .ratings-val -->
+                                                    </div><!-- End .ratings -->
+                                                </div><!-- End .rating-container -->
+                                                <span class="review-date">5 days ago</span>
+                                            </div><!-- End .col -->
+                                            <div class="col">
+                                                <h4>Very good</h4>
+
+                                                <div class="review-content">
+                                                    <p>Sed, molestias, tempore? Ex dolor esse iure hic veniam laborum blanditiis laudantium iste amet. Cum non voluptate eos enim, ab cumque nam, modi, quas iure illum repellendus, blanditiis perspiciatis beatae!</p>
+                                                </div><!-- End .review-content -->
+
+                                                <div class="review-action">
+                                                    <a href="#"><i class="icon-thumbs-up"></i>Helpful (0)</a>
+                                                    <a href="#"><i class="icon-thumbs-down"></i>Unhelpful (0)</a>
+                                                </div><!-- End .review-action -->
+                                            </div><!-- End .col-auto -->
+                                        </div><!-- End .row -->
+                                    </div><!-- End .review -->
+                                </div><!-- End .reviews -->
+                            </div><!-- .End .tab-pane -->
+                        </div><!-- End .tab-content -->
+                    </div><!-- End .product-details-tab -->
+
+                    <h2 class="title text-center mb-4">You May Also Like</h2><!-- End .title text-center -->
+                    <div class="owl-carousel owl-simple carousel-equal-height carousel-with-shadow" data-toggle="owl" 
+                        data-owl-options='{
+                            "nav": false, 
+                            "dots": true,
+                            "margin": 20,
+                            "loop": false,
+                            "responsive": {
+                                "0": {
+                                    "items":1
+                                },
+                                "480": {
+                                    "items":2
+                                },
+                                "768": {
+                                    "items":3
+                                },
+                                "992": {
+                                    "items":4
+                                },
+                                "1200": {
+                                    "items":4,
+                                    "nav": true,
+                                    "dots": false
+                                }
+                            }
+                        }'>
+
+
+
+
+                        <% if(productAll.length>0) { %>
+                          <% for(i=0;i<productAll.length;i++){ %>
+                            <% if(productAll[i].category==product.category){ %>
+                              <% if(productAll[i]._id.toString()!==product._id.toString()){ %>
+                        <div class="product product-7 text-center">
+                            <figure class="product-media">
+                                <span class="product-label label-new">New</span>
+                                <a href="/productDetail?id=<%= productAll[i]._id  %>">
+                                    <img src="<%= productAll[i].imageUrl %>" alt="Product image" class="product-image">
+                                </a>
+
+                                <div class="product-action-vertical">
+                                    <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
+                                    <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a>
+                                    <a href="#" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a>
+                                </div><!-- End .product-action-vertical -->
+
+                                <div class="product-action">
+                                    <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+                                </div><!-- End .product-action -->
+                            </figure><!-- End .product-media -->
+
+                            <div class="product-body">
+                                <div class="product-cat">
+                                    <a href="#"><%= productAll[i].category %></a>
+                                </div><!-- End .product-cat -->
+                                <h3 class="product-title"><a href="/productDetail?id=<%= productAll[i]._id  %>"><%= productAll[i].name  %></a></h3><!-- End .product-title -->
+                                <div class="product-price">
+                                    <%= productAll[i].price %>
+                                </div><!-- End .product-price -->
+                                <div class="ratings-container">
+                                    <div class="ratings">
+                                        <div class="ratings-val" style="width: 20%;"></div><!-- End .ratings-val -->
+                                    </div><!-- End .ratings -->
+                                    <span class="ratings-text">( 2 Reviews )</span>
+                                </div><!-- End .rating-container -->
 
                              
-                                 
-                                    
-                                    
-                                    
-                                    
-                                    <!-- End .col-sm-6 col-lg-4 -->
-                                </div><!-- End .row -->
-                            </div><!-- End .products -->
+                            </div><!-- End .product-body -->
+                        </div><!-- End .product -->
 
-                			<nav aria-label="Page navigation">
-							    <ul class="pagination justify-content-center">
-							        <li class="page-item disabled">
-							            <a class="page-link page-link-prev" href="#" aria-label="Previous" tabindex="-1" aria-disabled="true">
-							                <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Prev
-							            </a>
-							        </li>
-							        <li class="page-item active" aria-current="page"><a class="page-link" href="#">1</a></li>
-							        <li class="page-item"><a class="page-link" href="#">2</a></li>
-							        <li class="page-item"><a class="page-link" href="#">3</a></li>
-							        <li class="page-item-total">of 6</li>
-							        <li class="page-item">
-							            <a class="page-link page-link-next" href="#" aria-label="Next">
-							                Next <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
-							            </a>
-							        </li>
-							    </ul>
-							</nav>
-                		</div><!-- End .col-lg-9 -->
-                		<aside class="col-lg-3 order-lg-first">
-                			<div class="sidebar sidebar-shop">
-                				<div class="widget widget-clean">
-                					<label>Filters:</label>
-                					<a href="#" class="sidebar-filter-clear">Clean All</a>
-                				</div><!-- End .widget widget-clean -->
+                         <% } %>
+                        <% } %>
+                        <% } %>
+                        <% } %>
+                       
 
-                				<div class="widget widget-collapsible">
-    								<h3 class="widget-title">
-									    <a data-toggle="collapse" href="#widget-1" role="button" aria-expanded="true" aria-controls="widget-1">
-									        Category
-									    </a>
-									</h3><!-- End .widget-title -->
 
-									<div class="collapse show" id="widget-1">
-										<div class="widget-body">
-											<div class="filter-items filter-items-count">
-
-                <% if(category.length>0){ %>
-                  <% for(i=0;i<category.length;i++) { %>
-												<div class="filter-item">
-													<div class="custom-control custom-checkbox">
-														<input type="checkbox" class="custom-control-input category-checkbox" id="cat-<%= category[i]._id  %>" data-category-name="<%= category[i].name %>">
-														<label class="custom-control-label" for="cat-<%= category[i]._id  %>"><%= category[i].name %></label>
-													</div><!-- End .custom-checkbox -->
-													<span class="item-count">3</span>
-												</div><!-- End .filter-item -->
-                   <% } %>
-                   <% } %>
-
-											</div><!-- End .filter-items -->
-										</div><!-- End .widget-body -->
-									</div><!-- End .collapse -->
-        						</div><!-- End .widget -->
-
-        						
-
-        					
-
-        					
-
-        						<div class="widget widget-collapsible">
-    <h3 class="widget-title">
-        <a data-toggle="collapse" href="#widget-5" role="button" aria-expanded="true" aria-controls="widget-5">
-            Price
-        </a>
-    </h3>
-    <div class="collapse show" id="widget-5">
-        <div class="widget-body">
-            <div class="filter-price">
-                <div class="filter-price-text mb-5">
-                    Price Range:
-                </div>
-                <div>
-                    <input type="number" id="min-price" placeholder="Min Price"  style="width: 40%" />
-                    <span class="mx-2">to</span>
-                    <input type="number" id="max-price" placeholder="Max Price"  style="width: 40%"/>
-                    <br>
-                    <button class="mt-2" onclick="applyPriceFilter()">Apply</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- End .widget -->
-                			</div><!-- End .sidebar sidebar-shop -->
-                		</aside><!-- End .col-lg-3 -->
-                	</div><!-- End .row -->
+                    </div><!-- End .owl-carousel -->
                 </div><!-- End .container -->
             </div><!-- End .page-content -->
         </main><!-- End .main -->
 
-        <footer class="">
+       <!--Footer Start-->
+  <footer class="">
     <div class="container-fluid border-top border-bottom">
       <div class="row">
         <div class="col-xl-3 mb-3">
@@ -608,7 +682,7 @@
         <nav class="mobile-nav">
           <ul class="mobile-menu">
             <li class="active">
-              <a href="index.html">Home</a>
+              <a href="/">Home</a>
 
               <ul>
                 <li><a href="index-1.html">01 - furniture store</a></li>
@@ -693,9 +767,9 @@
               </ul>
             </li>
             <li>
-              <a href="/productDetail" class="sf-with-ul">Product</a>
+              <a href="product.html" class="sf-with-ul">Product</a>
               <ul>
-                <li><a href="/productDetail">Default</a></li>
+                <li><a href="product.html">Default</a></li>
                 <li><a href="product-centered.html">Centered</a></li>
                 <li>
                   <a href="product-extended.html"
@@ -1121,11 +1195,6 @@
   integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
   crossorigin="anonymous"
 ></script>
-
-
-
-
-
 <!-- Main JS File -->
 <script src="assets/js/main.js"></script>
 <script src="assets/js/demos/demo-2.js"></script>

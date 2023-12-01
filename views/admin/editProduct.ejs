@@ -237,6 +237,14 @@
                                     <label class="form-label">Price</label>
                                     <input type="text" placeholder="Type here" name="price" class="form-control" value="<%= product.price  %>" />
                                 </div>
+                                  <div class="mb-4">
+                                    <label class="form-label">Stock Qty</label>
+                                    <input type="text" placeholder="Type here" name="quantity" class="form-control" value="<%= product.stockQuantity  %>" />
+                                </div>
+                                  <div class="mb-4">
+                                    <label class="form-label">Wood</label>
+                                    <input type="text" placeholder="Type here" name="wood" class="form-control" value="<%= product.wood  %>" />
+                                </div>
                                 
                                
                               
@@ -247,7 +255,7 @@
                                         <select class="form-select" name="category">
                                             <% if(categ.length>0){ %>
                                                 <% for(i=0;i<categ.length;i++) { %>
-                                            <option><%= categ[i].name  %></option>
+                                                 <option <%= product.category==categ[i].name ?  'selected' : ''  %> ><%=  categ[i].name  %></option>
 
                                             <% } %>
                                             <% } %>

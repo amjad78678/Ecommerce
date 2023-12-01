@@ -302,6 +302,8 @@ const postAddProduct=async(req,res)=>{
         const description=req.body.description
         const image=req.file.filename
         const price=req.body.price
+        const wood = req.body.wood
+        const quantity=req.body.quantity
         const category=req.body.category
 
       const product=new Product({
@@ -309,6 +311,8 @@ const postAddProduct=async(req,res)=>{
              description:description,
              imageUrl:image,
              price:price,
+             wood:wood,
+             stockQuantity:quantity,
              category:category,
              date:formatDate(Date.now()), // Format the date
              is_Listed:true
@@ -391,7 +395,7 @@ const postEditProduct=async(req,res)=>{
        try {
      console.log(req.body);
      console.log(req.query.id);
-    await Product.findByIdAndUpdate({_id:req.body.id},{name:req.body.name,description:req.body.description,price:req.body.price,category:req.body.category,imageUrl:req.file?.filename})
+    await Product.findByIdAndUpdate({_id:req.body.id},{name:req.body.name,description:req.body.description,price:req.body.price,category:req.body.category,imageUrl:req.file?.filename,stockQuantity:req.body.quantity,wood:req.body.wood})
     res.redirect('/admin/products')
 
            

@@ -1,6 +1,8 @@
 const User = require('../models/userModel');
 const bcrypt = require('bcrypt');
 const userOtpVerification = require('../models/userOtpVarification');
+const Category= require('../models/categoryModel')
+const Product=require('../models/productModel')
 const nodemailer = require('nodemailer');
 const dotenv=require('dotenv')
 dotenv.config();
@@ -95,7 +97,7 @@ const postRegister = async (req, res) => {
         from: process.env.AUTH_EMAIL,
         to: email,
         subject: 'Verify your email for Cornerstone',
-        html: `<p>Enter <b>${otp} </b>in the app to verify your email address and complete your registration </p><p>This code <b>expires in 1 hour</b></p>`,
+        html: `<p>Enter <b>${otp} </b>in the app to verify your email address and complete your registration </p><p>This code <b>expires in 2 minutes</b></p>`,
       };
 
       //----hash-the-otp
@@ -261,9 +263,12 @@ const verifyLogin=async(req,res)=>{
 
     const loadProductList=async(req,res)=>{
       try {
-      
+           
+        const product=await Product.find({})
+        const  category= await Category.find({})
         let userData=await User.findOne({_id:req.session.userId})   
-        res.render('productList',{user:userData})
+        res.render('productList',{user:userData,category:category,product:product})
+
     
     
       } catch (error) {
@@ -295,6 +300,18 @@ const verifyLogin=async(req,res)=>{
          } catch (error) {
            console.log(error.message);
          }
+    }
+
+    const loadProductDetail=async(req,res)=>{
+      try {
+        const id=req.query.id
+        console.log('hellobruda'+id);
+        const productAll=await Product.find({})
+        const  productOne= await Product.findOne({_id:id})
+        res.render('productDetail',{product:productOne,productAll:productAll})
+      } catch (error) {
+        console.log(error.message);
+      }
     }
 
   //  const userResendOtp =async(req,res)=>{
@@ -337,5 +354,6 @@ module.exports = {
   verifyLoginWithOtp,
   loadProductList,
   loadEmailVerifyAfter,
-  postEmailVerifyAfter
+  postEmailVerifyAfter,
+  loadProductDetail
 };

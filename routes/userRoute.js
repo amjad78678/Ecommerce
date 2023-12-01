@@ -22,6 +22,10 @@ userRouter.set('views', path.join(__dirname, '..', 'views', 'users'));
 userRouter.use(express.static(path.join(__dirname, '..', 'public')));
 userRouter.use(express.static(path.join(__dirname, '..', 'public', 'styles')));
 
+userRouter.use(
+  express.static(path.join(__dirname, '..', 'public', 'assetsAdmin','imgs','products')),
+);
+
 userRouter.get('/',auth.isLogout, userController.loadHome);
 userRouter.get('/home',auth.isLogin, userController.loadHome);
 userRouter.get('/userRegister',auth.isLogout, userController.loadRegister);
@@ -37,6 +41,7 @@ userRouter.get('/productList',auth.isLogin,userController.loadProductList)
 userRouter.get('/productListN',auth.isLogout,userController.loadProductList)
 userRouter.get('/emailVerifyAfter',auth.isLogout,userController.loadEmailVerifyAfter)
 userRouter.post('/emailVerifyAfter',userController.postEmailVerifyAfter)
+userRouter.get('/productDetail',userController.loadProductDetail)
 
 
 

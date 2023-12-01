@@ -22,8 +22,8 @@ name: {
     required: true,
   },
   stockQuantity: {
-    type: Number,
-    default: 0,
+    type: String,
+    required:true
   },
    date:{   
     type:String,
@@ -32,6 +32,10 @@ name: {
    is_Listed:{
     type:Boolean,
     required:true,
+   },
+   wood:{
+    type:String,
+    required:true
    }
 });
 
