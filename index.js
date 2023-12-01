@@ -10,6 +10,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json())
 app.use(nocache())
 
+
+
 const userRouter = require('./routes/userRoute');
 app.use('/', userRouter);
 const adminRoute=require('./routes/adminRoute')

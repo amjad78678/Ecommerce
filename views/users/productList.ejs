@@ -357,14 +357,19 @@
 										<div class="widget-body">
 											<div class="filter-items filter-items-count">
 
-                <% if(category.length>0){ %>
+                <% if(category.length>0 ){ %>
                   <% for(i=0;i<category.length;i++) { %>
+                    
 												<div class="filter-item">
 													<div class="custom-control custom-checkbox">
 														<input type="checkbox" class="custom-control-input category-checkbox" id="cat-<%= category[i]._id  %>" data-category-name="<%= category[i].name %>">
 														<label class="custom-control-label" for="cat-<%= category[i]._id  %>"><%= category[i].name %></label>
 													</div><!-- End .custom-checkbox -->
-													<span class="item-count">3</span>
+
+
+													<!-- <span class="item-count"><%= category.length  %></span> -->
+
+
 												</div><!-- End .filter-item -->
                    <% } %>
                    <% } %>

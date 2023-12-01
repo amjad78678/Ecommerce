@@ -215,11 +215,11 @@ const loadEditCategory=async(req,res)=>{
      const id= req.query.id
      const cateData =await Category.findOne({_id:id})
      console.log(cateData);
-     
+      
         if (!cateData){
           res.render('editCategory',{message:'Data Not Found'})
         }else{
-          res.render('editCategory',{categ:cateData})
+          res.render('editCategory',{categ,cateData} )
         }
      } catch (error) {
       console.log(error.message);
@@ -228,8 +228,17 @@ const loadEditCategory=async(req,res)=>{
 
 const postEditCategory=async(req,res)=>{
         try {
-         await Category.findByIdAndUpdate({_id:req.body.id},{name:req.body.name,description:req.body.description})
+
+      let existData =await Category.findOne({name:req.body.name})
+       console.log(existData);
+      if (!existData){
+        await Category.findByIdAndUpdate({_id:req.body.id},{name:req.body.name,description:req.body.description})
           res.redirect('/admin/category')
+      }else{
+        res.render('editCategory',{categ:existData})
+      }
+
+         
 
         } catch (error) {
           console.log(error.message);
@@ -265,8 +274,13 @@ const unlistingCategory = async (req, res) => {
 
 const deleteCategory = async (req, res) => {
   try {
+        
+    const categ=await Category.findOne({_id:req.params.id})
+    console.log(categ);
     const categoryId = req.params.id;
+    console.log(categoryId);
     await Category.deleteOne({_id:categoryId})
+    await Product.deleteMany({category:categ.name})
 
     
   } catch (error) {
@@ -383,7 +397,7 @@ const loadEditProduct=async(req,res)=>{
     try {
       const id=req.query.id
       const productData=await Product.findOne({_id:id})
-           const category =await  Category.find({})
+      const category =await  Category.find({})
       res.render('editProduct',{product:productData,categ:category})
     } catch (error) {
       
@@ -395,8 +409,12 @@ const postEditProduct=async(req,res)=>{
        try {
      console.log(req.body);
      console.log(req.query.id);
-    await Product.findByIdAndUpdate({_id:req.body.id},{name:req.body.name,description:req.body.description,price:req.body.price,category:req.body.category, imageUrl : req.files.map(file => file.filename),stockQuantity:req.body.quantity,wood:req.body.wood})
-    res.redirect('/admin/products')
+    
+    
+      await Product.findByIdAndUpdate({_id:req.body.id},{name:req.body.name,description:req.body.description,price:req.body.price,category:req.body.category, imageUrl : req.files.map(file => file.filename),stockQuantity:req.body.quantity,wood:req.body.wood})
+      res.redirect('/admin/products')
+     
+   
 
            
        } catch (error) {

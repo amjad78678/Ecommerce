@@ -151,7 +151,7 @@ const verifyOtp=async(req,res)=>{
         const userOtpVerificationRecords= await userOtpVerification.find({userId})
      
         if(!userOtpVerificationRecords.length){
-          return res.render('userOtpRegister',{ message:  `Otp expired <a href="/emailVerifyAfter" style="color:#dbcc8f;">verifyOtp</a> `  })
+          return res.render('userOtpRegister',{ message:  `Otp expired <a href="/emailVerifyAfter" style="color:blue;">verifyOtp</a> `  })
         }
       
           //user otp record exists
