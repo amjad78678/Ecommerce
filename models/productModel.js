@@ -17,10 +17,12 @@ name: {
     type: String,
     required: true,
   },
-  imageUrl: {
+  imageUrl: [{
     type: String,
-    required: true,
-  },
+    required:true
+    
+
+  }],
   stockQuantity: {
     type: String,
     required:true

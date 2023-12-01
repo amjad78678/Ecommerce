@@ -187,7 +187,7 @@
                                 <div class="product-gallery product-gallery-vertical">
                                     <div class="row">
                                         <figure class="product-main-image">
-                                            <img id="product-zoom" src="<%= product.imageUrl %>" data-zoom-image="assets/images/products/single/centered/1-big.jpg" alt="product image">
+                                            <img id="product-zoom" src="<%= product.imageUrl[0] %>" data-zoom-image="assets/images/products/single/centered/1-big.jpg" alt="product image">
 
                                             <a href="#" id="btn-product-gallery" class="btn-product-gallery">
                                                 <i class="icon-arrows"></i>
@@ -195,20 +195,20 @@
                                         </figure><!-- End .product-main-image -->
 
                                         <div id="product-zoom-gallery" class="product-image-gallery">
-                                            <a class="product-gallery-item active" href="#" data-image="assets/images/products/single/centered/1.jpg" data-zoom-image="assets/images/products/single/centered/1-big.jpg">
-                                                <img src="assets/images/products/single/centered/1-small.jpg" alt="product side">
+                                            <a class="product-gallery-item active" href="#" data-image="<%= product.imageUrl[1]  %>" data-zoom-image="assets/images/products/single/centered/1-big.jpg">
+                                                <img src="<%= product.imageUrl[1]  %>" alt="product side">
                                             </a>
 
-                                            <a class="product-gallery-item" href="#" data-image="assets/images/products/single/centered/2.jpg" data-zoom-image="assets/images/products/single/centered/2-big.jpg">
-                                                <img src="assets/images/products/single/centered/2-small.jpg" alt="product cross">
+                                            <a class="product-gallery-item" href="#" data-image="<%= product.imageUrl[2]  %>" data-zoom-image="assets/images/products/single/centered/2-big.jpg">
+                                                <img src="<%= product.imageUrl[2]  %>" alt="product cross">
                                             </a>
 
-                                            <a class="product-gallery-item" href="#" data-image="assets/images/products/single/centered/3.jpg" data-zoom-image="assets/images/products/single/centered/3-big.jpg">
-                                                <img src="assets/images/products/single/centered/3-small.jpg" alt="product with model">
+                                            <a class="product-gallery-item" href="#" data-image="<%= product.imageUrl[3]  %>" data-zoom-image="assets/images/products/single/centered/3-big.jpg">
+                                                <img src="<%= product.imageUrl[3]  %>" alt="product with model">
                                             </a>
 
-                                            <a class="product-gallery-item" href="#" data-image="assets/images/products/single/centered/4.jpg" data-zoom-image="assets/images/products/single/centered/4-big.jpg">
-                                                <img src="assets/images/products/single/centered/4-small.jpg" alt="product back">
+                                            <a class="product-gallery-item" href="#" data-image="<%= product.imageUrl[4]  %>" data-zoom-image="assets/images/products/single/centered/4-big.jpg">
+                                                <img src="<%= product.imageUrl[4]  %>" alt="product back">
                                             </a>
                                         </div><!-- End .product-image-gallery -->
                                     </div><!-- End .row -->
@@ -439,7 +439,7 @@
                             <figure class="product-media">
                                 <span class="product-label label-new">New</span>
                                 <a href="/productDetail?id=<%= productAll[i]._id  %>">
-                                    <img src="<%= productAll[i].imageUrl %>" alt="Product image" class="product-image">
+                                    <img src="<%= productAll[i].imageUrl[0] %>" alt="Product image" class="product-image">
                                 </a>
 
                                 <div class="product-action-vertical">
@@ -1195,6 +1195,38 @@
   integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
   crossorigin="anonymous"
 ></script>
+
+
+<!-- for product gallery function -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Get references to elements
+        var galleryThumbnails = document.querySelectorAll('#product-zoom-gallery .product-gallery-item');
+        var mainImage = document.getElementById('product-zoom');
+
+        // Add click event listeners to each thumbnail
+        galleryThumbnails.forEach(function (thumbnail) {
+            thumbnail.addEventListener('click', function (event) {
+                event.preventDefault();
+
+                // Update the main image with the clicked thumbnail's data
+                mainImage.src = thumbnail.dataset.image;
+                mainImage.dataset.zoomImage = thumbnail.dataset.zoomImage;
+
+                // Remove 'active' class from all thumbnails
+                galleryThumbnails.forEach(function (thumb) {
+                    thumb.classList.remove('active');
+                });
+
+                // Add 'active' class to the clicked thumbnail
+                thumbnail.classList.add('active');
+            });
+        });
+    });
+</script>
+
+
+
 <!-- Main JS File -->
 <script src="assets/js/main.js"></script>
 <script src="assets/js/demos/demo-2.js"></script>

@@ -300,7 +300,7 @@ const postAddProduct=async(req,res)=>{
      try {
         const name= req.body.name
         const description=req.body.description
-        const image=req.file.filename
+        const image= req.files.map(file => file.filename);
         const price=req.body.price
         const wood = req.body.wood
         const quantity=req.body.quantity
@@ -395,7 +395,7 @@ const postEditProduct=async(req,res)=>{
        try {
      console.log(req.body);
      console.log(req.query.id);
-    await Product.findByIdAndUpdate({_id:req.body.id},{name:req.body.name,description:req.body.description,price:req.body.price,category:req.body.category,imageUrl:req.file?.filename,stockQuantity:req.body.quantity,wood:req.body.wood})
+    await Product.findByIdAndUpdate({_id:req.body.id},{name:req.body.name,description:req.body.description,price:req.body.price,category:req.body.category, imageUrl : req.files.map(file => file.filename),stockQuantity:req.body.quantity,wood:req.body.wood})
     res.redirect('/admin/products')
 
            
@@ -413,6 +413,15 @@ const deleteProducts=async(req,res)=>{
      } catch (error) {
        console.log(error.message);
      }
+}
+
+const loadLogout=async(req,res)=>{
+      try {
+          req.session.destroy()
+          res.redirect('/admin/')
+      } catch (error) {
+        console.log(error.message);
+      }
 }
 
 module.exports={
@@ -438,5 +447,6 @@ module.exports={
        unlistingProduct,
        loadEditProduct,
        postEditProduct,
-       deleteProducts
+       deleteProducts,
+       loadLogout
     }

@@ -216,11 +216,11 @@
                             <div class="card-body">
                                 
                                 <div class="input-upload">
-                                     <img class="imgProduct" src="<%= product.imageUrl %>" width="500px" height="250px" alt="<%= product.imageUrl %>">
-                                    <input class="form-control" type="file" name="image" />
+                                     <img class="imgProduct" src="<%= product.imageUrl[0] %>" width="500px" height="250px" alt="<%= product.imageUrl %>">
+                                    <input class="form-control" type="file" name="image" multiple />
                                 </div>
                             
-                            </div>
+                            </div>  
                         </div>
                         <!-- card end// -->
                     </div>
