@@ -219,7 +219,7 @@ const loadEditCategory=async(req,res)=>{
         if (!cateData){
           res.render('editCategory',{message:'Data Not Found'})
         }else{
-          res.render('editCategory',{categ,cateData} )
+          res.render('editCategory',{categ:cateData})
         }
      } catch (error) {
       console.log(error.message);
@@ -229,13 +229,15 @@ const loadEditCategory=async(req,res)=>{
 const postEditCategory=async(req,res)=>{
         try {
 
-      let existData =await Category.findOne({name:req.body.name})
+      let existData =await Category.findOne({name:req.body.name,_id:{$ne:req.body.id}})
        console.log(existData);
       if (!existData){
         await Category.findByIdAndUpdate({_id:req.body.id},{name:req.body.name,description:req.body.description})
-          res.redirect('/admin/category')
+        res.redirect('/admin/category')
       }else{
-        res.render('editCategory',{categ:existData})
+        const cateData=await Category.findOne({_id:req.body.id})
+        
+        res.render('editCategory',{message:'Already exists category',categ:cateData||null})
       }
 
          

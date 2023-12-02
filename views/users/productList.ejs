@@ -264,51 +264,70 @@
                                 <div class="row justify-content-center">
 
 
-                      <% if(product.length>0 ) {%>
-                        <% for(i=0;i<product.length;i++) {%>
-                            <% if(product[i].is_Listed==true) {%>
-                          
-                                    <div class="col-6 col-md-4 col-lg-4">
-                                        <div class="product product-7 text-center">
-                                            <figure class="product-media">
-                                                <span class="product-label label-new">New</span>
-                                                <a href="/productDetail?id=<%= product[i]._id  %>">
-                                                    <img src="<%= product[i].imageUrl[0]  %>" alt="<%= product[i].imageUrl  %>" class="product-image">
-                                                </a>
 
-                                                <div class="product-action-vertical">
-                                                    <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
-                                                    <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a>
-                                                    <a href="#" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a>
-                                                </div><!-- End .product-action-vertical -->
 
-                                                <div class="product-action">
-                                                    <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
-                                                </div><!-- End .product-action -->
-                                            </figure><!-- End .product-media -->
 
-                                            <div class="product-body">
-                                                <div class="product-cat">
-                                                    <a href="#"><%= product[i].category %></a>
-                                                </div><!-- End .product-cat -->
-                                                <h3 class="product-title"><a href="/productDetail"><%= product[i].name  %></a></h3><!-- End .product-title -->
-                                                <div class="product-price">
-                                                    <%= product[i].price  %>
-                                                </div><!-- End .product-price -->
-                                                <div class="ratings-container">
-                                                    <div class="ratings">
-                                                        <div class="ratings-val" style="width: 20%;"></div><!-- End .ratings-val -->
-                                                    </div><!-- End .ratings -->
-                                                    <span class="ratings-text">( 2 Reviews )</span>
-                                                </div><!-- End .rating-container -->
 
-                                                <!-- End .product-nav -->
-                                            </div><!-- End .product-body -->
-                                        </div><!-- End .product -->
-                                    </div><!-- End .col-sm-6 col-lg-4 -->
-                               <% } %>
-                               <% } %>
-                               <% } %>
+
+
+
+               <%
+               // Create a mapping of category IDs to is_Listed status
+               const categoryMap = {};
+               for (let j = 0; j < category.length; j++) {
+                 categoryMap[category[j].name] = category[j].is_Listed==true;
+                }
+               %>
+
+<% if(product.length > 0) { %>
+  <div class="row">
+    <% for(let i = 0; i < product.length; i++) { %>
+    
+      <% const categoryIsListed = categoryMap[product[i].category]; %>
+
+      <% if(product[i].is_Listed==true && categoryIsListed) { %>
+        <div class="col-6 col-md-4 col-lg-4">
+          <div class="product product-7 text-center">
+            <figure class="product-media">
+              <span class="product-label label-new">New</span>
+              <a href="/productDetail?id=<%= product[i]._id %>">
+                <img src="<%= product[i].imageUrl[0] %>" alt="<%= product[i].imageUrl %>" class="product-image">
+              </a>
+
+              <div class="product-action-vertical">
+                <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
+                <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a>
+                <a href="#" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a>
+              </div><!-- End .product-action-vertical -->
+
+              <div class="product-action">
+                <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+              </div><!-- End .product-action -->
+            </figure><!-- End .product-media -->
+
+            <div class="product-body">
+              <div class="product-cat">
+                <a href="#"><%= product[i].category %></a>
+              </div><!-- End .product-cat -->
+              <h3 class="product-title"><a href="/productDetail?id=<%= product[i]._id %>"><%= product[i].name %></a></h3><!-- End .product-title -->
+              <div class="product-price">
+                <%= product[i].price %>
+              </div><!-- End .product-price -->
+              <div class="ratings-container">
+                <div class="ratings">
+                  <div class="ratings-val" style="width: 20%;"></div><!-- End .ratings-val -->
+                </div><!-- End .ratings -->
+                <span class="ratings-text">( 2 Reviews )</span>
+              </div><!-- End .rating-container -->
+
+              <!-- End .product-nav -->
+            </div><!-- End .product-body -->
+          </div><!-- End .product -->
+        </div><!-- End .col-sm-6 col-lg-4 -->
+      <% } %>
+    <% } %>
+  </div><!-- End .row -->
+<% } %>
 
                              
                                  
@@ -359,7 +378,7 @@
 
                 <% if(category.length>0 ){ %>
                   <% for(i=0;i<category.length;i++) { %>
-                    
+                      <% if(category[i].is_Listed==true) { %>
 												<div class="filter-item">
 													<div class="custom-control custom-checkbox">
 														<input type="checkbox" class="custom-control-input category-checkbox" id="cat-<%= category[i]._id  %>" data-category-name="<%= category[i].name %>">
@@ -371,6 +390,7 @@
 
 
 												</div><!-- End .filter-item -->
+                   <% } %>
                    <% } %>
                    <% } %>
 
