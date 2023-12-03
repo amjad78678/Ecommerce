@@ -2,6 +2,7 @@ const express = require('express');
 const userRouter = express();
 const path = require('path');
 const userController = require('../controllers/userController');
+const cartController=require('../controllers/cartController');
 const bodyParser = require('body-parser');
 const auth=require('../middleware/auth')
 const session= require('express-session')
@@ -42,8 +43,12 @@ userRouter.get('/productListN',auth.isLogout,userController.loadProductList)
 userRouter.get('/emailVerifyAfter',auth.isLogout,userController.loadEmailVerifyAfter)
 userRouter.post('/emailVerifyAfter',userController.postEmailVerifyAfter)
 userRouter.get('/productDetail',userController.loadProductDetail)
-
-
+userRouter.get('/checkout',userController.loadCheckout)
+userRouter.get('/addNewAddress',userController.loadAddNewAddress)
+userRouter.post('/addToCart',cartController.postAddToCart)
+userRouter.get('/cart',cartController.loadCart)
+userRouter.post('/deleteItems',cartController.postDeleteItems)
+userRouter.post('/changeQuantity',cartController.postChangeQuantity)
 
 
 

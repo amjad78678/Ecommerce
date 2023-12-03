@@ -24,7 +24,7 @@ name: {
 
   }],
   stockQuantity: {
-    type: String,
+    type: Number,
     required:true
   },
    date:{   

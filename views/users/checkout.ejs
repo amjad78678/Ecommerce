@@ -1,0 +1,939 @@
+<% include('../layouts/header.ejs') %>
+<meta name="keywords" content="HTML5 Template" />
+<meta name="description" content="Molla - Bootstrap eCommerce Template" />
+<meta name="author" content="p-themes" />
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+  integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+  crossorigin="anonymous"
+/>
+
+<!-- Favicon -->
+<link
+  rel="apple-touch-icon"
+  sizes="180x180"
+  href="assets/images/icons/apple-touch-icon.png"
+/>
+<link
+  rel="icon"
+  type="image/png"
+  sizes="32x32"
+  href="assets/images/icons/favicon-32x32.png"
+/>
+<link
+  rel="icon"
+  type="image/png"
+  sizes="16x16"
+  href="assets/images/icons/favicon-16x16.png"
+/>
+<link rel="manifest" href="assets/images/icons/site.html" />
+<link
+  rel="mask-icon"
+  href="assets/images/icons/safari-pinned-tab.svg"
+  color="#666666"
+/>
+<link rel="shortcut icon" href="assets/images/icons/favicon.ico" />
+<meta name="apple-mobile-web-app-title" content="Molla" />
+<meta name="application-name" content="Molla" />
+<meta name="msapplication-TileColor" content="#cc9966" />
+<meta
+  name="msapplication-config"
+  content="assets/images/icons/browserconfig.xml"
+/>
+<meta name="theme-color" content="#ffffff" />
+<link
+  rel="stylesheet"
+  href="assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css"
+/>
+<!-- Plugins CSS File -->
+<link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+<link
+  rel="stylesheet"
+  href="assets/css/plugins/owl-carousel/owl.carousel.css"
+/>
+<link
+  rel="stylesheet"
+  href="assets/css/plugins/magnific-popup/magnific-popup.css"
+/>
+<link rel="stylesheet" href="assets/css/plugins/jquery.countdown.css" />
+<!-- Main CSS File -->
+<link rel="stylesheet" href="assets/css/style.css" />
+<link rel="stylesheet" href="assets/css/skins/skin-demo-2.css" />
+<link rel="stylesheet" href="assets/css/demos/demo-2.css" />
+<link rel="stylesheet" href="/userHome.css" />
+
+
+ <style>
+        /* Custom CSS to make the table full width */
+        section.bg-white {
+            padding: 40px 0; /* Adjust padding as needed */
+        }
+
+        .main-div {
+            max-width: 100%; /* Set the maximum width */
+            margin: 0 auto; /* Center the content */
+        }
+
+        .shopping__cart__table {
+            width: 100%;
+            overflow-x: auto; /* Enable horizontal scrolling if needed */
+        }
+
+        .shopping__cart__table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .shopping__cart__table table th,
+        .shopping__cart__table table td {
+            padding: 15px;
+            border: 1px solid #e6e6e6;
+            text-align: center;
+        }
+    </style> 
+<% include('../layouts/center.ejs') %>
+<div class="page-wrapper">
+  <!--Header start-->
+
+  <header class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid p-5">
+      <a class="navbar-brand" href="#">
+        <img
+          width="250rem"
+          height="250rem"
+          src="https://imgs.search.brave.com/IS3ECAw-N7V5vfLuJOPJQwYn0zPRLDKKDI5LT2JFpxU/rs:fit:860:0:0/g:ce/aHR0cHM6Ly93d3cu/Y3NvZGJyYW5kLmNv/bS93cC1jb250ZW50/L3VwbG9hZHMvMjAy/MS8xMC9Db3JuZXJz/dG9uZS1Mb2dvLUhv/cml6b250YWwucG5n"
+          alt=""
+        />
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon togg"
+          ><i class="fa-solid fa-bars"></i
+        ></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <div class="ms-auto">
+          <a class="me-5 text-dark" href="#">Home</a>
+          <a class="me-5 text-dark" <% if(locals.user){ %>
+                href="/productList">
+            <% }else{ %>
+              href="/productListN">
+              
+              <% } %>Shop</a>
+          <a class="me-5 text-dark" href="#">About Us</a>
+          <a class="me-4 text-dark" href="#">Blog</a>
+          <a class="me-4 text-dark" href="#">Contact Us </a>
+          <a href="#"><i class="me-4 fa-regular fa-heart"></i></a>
+
+          <div class="dropdown d-inline">
+            <button
+              class="btn btn-secondary dropdown-toggle"
+              type="button"
+              id="dropdownMenuButton1"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="fa-regular fa-user" style="margin-right: 5px;">
+                <% if (locals.user){%>
+               <%= user.userName%>
+                 <%} %></i>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <li><a class="dropdown-item" <% if(locals.user) { %> 
+                    href="/userProfile">
+                <% }else{ %>
+                 href="/userSignIn">
+                  <% } %>
+               
+                <% if(locals.user){ %>
+                   My profile
+
+               <%  }else{%>
+                  Login
+
+              <%   }%>
+              </a></li>
+              <li><a class="dropdown-item" <% if(locals.user) {%> 
+                   href="/userLogout">
+                <% }else{ %>
+                    href="/userRegister">
+                  <% } %>
+                <% if(locals.user){ %>
+                   Logout
+
+               <%  }else{%> 
+                  Sign Up
+
+              <%   }%>
+              </a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+       <main class="main">
+    <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+        <div class="container">
+            <h1 class="page-title">Checkout<span>Shop</span></h1>
+        </div><!-- End .container -->
+    </div><!-- End .page-header -->
+
+    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Shop</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+            </ol>
+        </div><!-- End .container -->
+    </nav><!-- End .breadcrumb-nav -->
+
+
+
+
+
+            <section class="bg-white">
+                <div class="container mt-5">
+                    <div class="row">
+                        <input type="text" value="mohammed" id="userName" hidden>
+                        <div class="col-lg-12 main-div">
+                        
+                                <div class="shopping__cart__table">
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>Quantity</th>
+                                                <th>Size</th>
+                                                <th>Color</th>
+                                                <th>Total</th>
+                                                
+                                            </tr>
+                                        </thead>
+                                        
+                                <tbody>
+                                    
+                                                <tr class="cart-item">
+                                                    <td class="product__cart__item">
+                                                        <div class="product__cart__item__pic">
+                                                            <img src="/images/" alt=""
+                                                                style="height: 100px; width: 100px;">
+                                                        </div>
+                                                        
+                                                        <div class="product__cart__item__text">
+                                                            <h6>
+                                                                amjad
+                                                            </h6>
+
+                                                        
+
+
+                                                            
+                                                                    <h6><del style="color: rgba(0, 0, 0, 0.372);">₹ 100</del></h6>
+
+                                                                    <h5>₹ 100000
+                                                                    </h5>
+
+
+                                                                
+                                                                        
+
+
+                                                        </div>
+                                                    </td>
+                                                    <td class="quantity">
+
+                                                        <input type="text" class="form-control-plain"
+                                                            value="10" readonly>
+
+                                                    </td>
+                                                    <td>
+                                                    
+                                                            <strong>18inch</strong>
+                                                            
+                                                    
+                                                    </td>
+                                                    
+                                                    <td>
+                                                    
+                                                            <strong>red</strong>
+                                                    
+                                                    
+                                                    </td>
+                                                    
+                                                    
+
+                                                
+
+                                                    
+
+                                                            <td class="cart__price">₹1000
+
+
+                                                                
+                                                                    
+                                                            
+
+
+                                                            </td>
+                                                </tr>
+                                                
+                                        </tbody>    
+                                    </table>
+                                </div>
+                        </div>
+
+
+
+
+
+
+
+
+
+
+    <div class="page-content">
+        <div class="container">
+            <br>
+            <div class="row">
+                <div class="col-xl-8 col-lg-8 mt-4">
+                    <div class="card shadow-0 border mb-4" id="addressDetails">
+                        <div class="card-body">
+                            <h5 class="card-title">Select Address</h5>
+                            <div class="d-flex justify-content-end">
+                                <a href="/addNewAddress"  class="btn btn-primary btn-sm">Add New Address</a>
+                            </div>
+                            <hr />
+
+                            <div class="border-top address-item" id="addrId1">
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-1">
+                                        <div class="form-check">
+                                            <input class="custom-radio-style" type="radio" name="selectedAddress" value="AMJAD, EDAVANNAPPAR, OMANOOR, 673645, 9946782379" id="address1" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <p class="text-muted mb-1">aMJAD</p>
+                                        <p class="text-muted mb-1">7387458473</p>
+                                        <p class="text-muted mb-1">thattanakanditil, oamr, 6437463</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr />
+                        </div>
+                    </div>
+                </div>
+
+                   <aside class="col-lg-3">
+		                			<div class="summary">
+		                				<h3 class="summary-title">Your Order</h3><!-- End .summary-title -->
+
+		                				<table class="table table-summary">
+		                				
+		                					<tbody>
+                                                
+		                						<tr class="summary-subtotal">
+		                							<td>Subtotal:</td>
+		                							<td>$160.00</td>
+		                						</tr><!-- End .summary-subtotal -->
+		                						<tr>
+		                							<td>Shipping:</td>
+		                							<td>Free shipping</td>
+		                						</tr>
+		                						<tr class="summary-total">
+		                							<td>Total:</td>
+		                							<td>$160.00</td>
+		                						</tr><!-- End .summary-total -->
+		                					</tbody>
+		                				</table><!-- End .table table-summary -->
+
+		                				<div class="accordion-summary" id="accordion-payment">
+										   
+
+										    <div class="card">
+										        <div class="card-header" id="heading-3">
+										            <h2 class="card-title">
+										                <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
+										                    Cash on delivery
+										                </a>
+										            </h2>
+										        </div><!-- End .card-header -->
+										        <div id="collapse-3" class="collapse" aria-labelledby="heading-3" data-parent="#accordion-payment">
+										            <div class="card-body">Quisque volutpat mattis eros. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. 
+										            </div><!-- End .card-body -->
+										        </div><!-- End .collapse -->
+										    </div><!-- End .card -->
+
+										    <div class="card">
+										        <div class="card-header" id="heading-4">
+										            <h2 class="card-title">
+										                <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
+										                    Razorpay <small class="float-right paypal-link">What is Razorpay?</small>
+										                </a>
+										            </h2>
+										        </div><!-- End .card-header -->
+										        <div id="collapse-4" class="collapse" aria-labelledby="heading-4" data-parent="#accordion-payment">
+										            <div class="card-body">
+										                Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede. Donec nec justo eget felis facilisis fermentum.
+										            </div><!-- End .card-body -->
+										        </div><!-- End .collapse -->
+										    </div><!-- End .card -->
+
+										</div><!-- End .accordion -->
+
+		                				<button type="submit" class="btn btn-outline-primary-2 btn-order btn-block">
+		                					<span class="btn-text">Place Order</span>
+		                					<span class="btn-hover-text">Proceed to Checkout</span>
+		                				</button>
+		                			</div><!-- End .summary -->
+		                		</aside>
+            </div><!-- End .row -->
+        </div><!-- End .container -->
+    </div><!-- End .page-content -->
+</main><!-- End .main -->
+
+
+
+
+
+
+
+      <footer class="">
+    <div class="container-fluid border-top border-bottom">
+      <div class="row">
+        <div class="col-xl-3 mb-3">
+          <img
+            class="p-4"
+            width="90rem"
+            height="90rem"
+            src="/assets/images/logo/logo-only.png"
+            alt=""
+          />
+          <p class="mb-4 mt-1">
+            Welcome to Cornerstore, where beauty meets function in every piece. Elevate your living spaces with our curated collection, a symphony of style and comfort. Transform your home into a haven of beauty and sophistication, exclusively at Cornerstore.
+          </p>
+          <span class="social-label mt-3 mb-3"
+            ><a
+              href="#"
+              class="social-icon social-facebook p-3"
+              title="Facebook"
+              target="_blank"
+              ><i class="icon-facebook-f"></i
+            ></a>
+            <a
+              href="#"
+              class="social-icon social-twitter p-3"
+              title="Twitter"
+              target="_blank"
+              ><i class="icon-twitter"></i
+            ></a>
+            <a
+              href="#"
+              class="social-icon social-instagram p-3"
+              title="Instagram"
+              target="_blank"
+              ><i class="icon-instagram"></i
+            ></a>
+            <a
+              href="#"
+              class="social-icon social-youtube p-3"
+              title="Youtube"
+              target="_blank"
+              ><i class="icon-youtube"></i></a
+          ></span>
+        </div>
+
+        <div class="col-xl-2"></div>
+        <div class="col-xl-7 mb-4">
+          <div class="container-fluid mt-5">
+            <div class="row links-wrap mt-5">
+              <div class="col-6 col-sm-6 col-md-3">
+                <ul class="list-unstyled">
+                  <li class="mb-2">
+                    <a class="text-dark" href="#">About us</a>
+                  </li>
+                  <li class="mb-2">
+                    <a class="text-dark" href="#">Services</a>
+                  </li>
+                  <li class="mb-2"><a class="text-dark" href="#">Blog</a></li>
+                  <li class="mb-2">
+                    <a class="text-dark" href="#">Contact us</a>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="col-6 col-sm-6 col-md-3">
+                <ul class="list-unstyled">
+                  <li class="mb-2">
+                    <a class="text-dark" href="#">Support</a>
+                  </li>
+                  <li class="mb-2">
+                    <a class="text-dark" href="#">Knowledge base</a>
+                  </li>
+                  <li class="mb-2">
+                    <a class="text-dark" href="#">Live chat</a>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="col-6 col-sm-6 col-md-3">
+                <ul class="list-unstyled">
+                  <li class="mb-2"><a class="text-dark" href="#">Jobs</a></li>
+                  <li class="mb-2">
+                    <a class="text-dark" href="#">Our team</a>
+                  </li>
+                  <li class="mb-2">
+                    <a class="text-dark" href="#">Leadership</a>
+                  </li>
+                  <li class="mb-2">
+                    <a class="text-dark" href="#">Privacy Policy</a>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="col-6 col-sm-6 col-md-3">
+                <ul class="list-unstyled">
+                  <li class="mb-2">
+                    <a class="text-dark" href="#">Nordic Chair</a>
+                  </li>
+                  <li class="mb-2">
+                    <a class="text-dark" href="#">Kruzo Aero</a>
+                  </li>
+                  <li class="mb-2">
+                    <a class="text-dark" href="#">Ergonomic Chair</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--payment images-->
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xl-3">
+          <img
+            class="mt-2"
+            src="assets/images/payments.png"
+            alt="Payment methods"
+            width="272"
+            height="20"
+          />
+        </div>
+        <div class="col-xl-6"></div>
+        <div class="col-xl-3 ms-auto mt-1">
+          Copyright © 2023 Cornerstone Store. All Rights Reserved.
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- End .footer -->
+</div>
+<!-- End .page-wrapper -->
+<button id="scroll-top" title="Back to Top">
+  <i class="icon-arrow-up"></i>
+</button>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu-overlay"></div>
+<!-- End .mobil-menu-overlay -->
+
+<div class="mobile-menu-container mobile-menu-light">g
+  <div class="mobile-menu-wrapper">
+    <span class="mobile-menu-close"><i class="icon-close"></i></span>
+
+    <form action="#" method="get" class="mobile-search">
+      <label for="mobile-search" class="sr-only">Search</label>
+      <input
+        type="search"
+        class="form-control"
+        name="mobile-search"
+        id="mobile-search"
+        placeholder="Search product ..."
+        required
+      />
+      <button class="btn btn-primary" type="submit">
+        <i class="icon-search"></i>
+      </button>
+    </form>
+
+    <ul class="nav nav-pills-mobile nav-border-anim" role="tablist">
+      <li class="nav-item">
+        <a
+          class="nav-link active"
+          id="mobile-menu-link"
+          data-toggle="tab"
+          href="#mobile-menu-tab"
+          role="tab"
+          aria-controls="mobile-menu-tab"
+          aria-selected="true"
+          >Menu</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          id="mobile-cats-link"
+          data-toggle="tab"
+          href="#mobile-cats-tab"
+          role="tab"
+          aria-controls="mobile-cats-tab"
+          aria-selected="false"
+          >Categories</a
+        >
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <div
+        class="tab-pane fade show active"
+        id="mobile-menu-tab"
+        role="tabpanel"
+        aria-labelledby="mobile-menu-link"
+      >
+        <nav class="mobile-nav">
+          <ul class="mobile-menu">
+            <li class="active">
+              <a href="index.html">Home</a>
+
+              <ul>
+                <li><a href="index-1.html">01 - furniture store</a></li>
+                <li><a href="index-2.html">02 - furniture store</a></li>
+                <li><a href="index-3.html">03 - electronic store</a></li>
+                <li><a href="index-4.html">04 - electronic store</a></li>
+                <li><a href="index-5.html">05 - fashion store</a></li>
+                <li><a href="index-6.html">06 - fashion store</a></li>
+                <li><a href="index-7.html">07 - fashion store</a></li>
+                <li><a href="index-8.html">08 - fashion store</a></li>
+                <li><a href="index-9.html">09 - fashion store</a></li>
+                <li><a href="index-10.html">10 - shoes store</a></li>
+                <li>
+                  <a href="index-11.html">11 - furniture simple store</a>
+                </li>
+                <li>
+                  <a href="index-12.html">12 - fashion simple store</a>
+                </li>
+                <li><a href="index-13.html">13 - market</a></li>
+                <li><a href="index-14.html">14 - market fullwidth</a></li>
+                <li><a href="index-15.html">15 - lookbook 1</a></li>
+                <li><a href="index-16.html">16 - lookbook 2</a></li>
+                <li><a href="index-17.html">17 - fashion store</a></li>
+                <li>
+                  <a href="index-18.html">18 - fashion store (with sidebar)</a>
+                </li>
+                <li><a href="index-19.html">19 - games store</a></li>
+                <li><a href="index-20.html">20 - book store</a></li>
+                <li><a href="index-21.html">21 - sport store</a></li>
+                <li><a href="index-22.html">22 - tools store</a></li>
+                <li>
+                  <a href="index-23.html">23 - fashion left navigation store</a>
+                </li>
+                <li>
+                  <a href="index-24.html">24 - extreme sport store</a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="category.html">Shop</a>
+              <ul>
+                <li><a href="category-list.html">Shop List</a></li>
+                <li>
+                  <a href="category-2cols.html">Shop Grid 2 Columns</a>
+                </li>
+                <li><a href="category.html">Shop Grid 3 Columns</a></li>
+                <li>
+                  <a href="category-4cols.html">Shop Grid 4 Columns</a>
+                </li>
+                <li>
+                  <a href="category-boxed.html"
+                    ><span
+                      >Shop Boxed No Sidebar<span class="tip tip-hot"
+                        >Hot</span
+                      ></span
+                    ></a
+                  >
+                </li>
+                <li>
+                  <a href="category-fullwidth.html"
+                    >Shop Fullwidth No Sidebar</a
+                  >
+                </li>
+                <li>
+                  <a href="product-category-boxed.html"
+                    >Product Category Boxed</a
+                  >
+                </li>
+                <li>
+                  <a href="product-category-fullwidth.html"
+                    ><span
+                      >Product Category Fullwidth<span class="tip tip-new"
+                        >New</span
+                      ></span
+                    ></a
+                  >
+                </li>
+                <li><a href="cart.html">Cart</a></li>
+                <li><a href="checkout.html">Checkout</a></li>
+                <li><a href="wishlist.html">Wishlist</a></li>
+                <li><a href="#">Lookbook</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="product.html" class="sf-with-ul">Product</a>
+              <ul>
+                <li><a href="product.html">Default</a></li>
+                <li><a href="product-centered.html">Centered</a></li>
+                <li>
+                  <a href="product-extended.html"
+                    ><span
+                      >Extended Info<span class="tip tip-new">New</span></span
+                    ></a
+                  >
+                </li>
+                <li><a href="product-gallery.html">Gallery</a></li>
+                <li><a href="product-sticky.html">Sticky Info</a></li>
+                <li>
+                  <a href="product-sidebar.html">Boxed With Sidebar</a>
+                </li>
+                <li><a href="product-fullwidth.html">Full Width</a></li>
+                <li>
+                  <a href="product-masonry.html">Masonry Sticky Info</a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="#">Pages</a>
+              <ul>
+                <li>
+                  <a href="about.html">About</a>
+
+                  <ul>
+                    <li><a href="about.html">About 01</a></li>
+                    <li><a href="about-2.html">About 02</a></li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="contact.html">Contact</a>
+
+                  <ul>
+                    <li><a href="contact.html">Contact 01</a></li>
+                    <li><a href="contact-2.html">Contact 02</a></li>
+                  </ul>
+                </li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="faq.html">FAQs</a></li>
+                <li><a href="404.html">Error 404</a></li>
+                <li><a href="coming-soon.html">Coming Soon</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="blog.html">Blog</a>
+
+              <ul>
+                <li><a href="blog.html">Classic</a></li>
+                <li><a href="blog-listing.html">Listing</a></li>
+                <li>
+                  <a href="#">Grid</a>
+                  <ul>
+                    <li>
+                      <a href="blog-grid-2cols.html">Grid 2 columns</a>
+                    </li>
+                    <li>
+                      <a href="blog-grid-3cols.html">Grid 3 columns</a>
+                    </li>
+                    <li>
+                      <a href="blog-grid-4cols.html">Grid 4 columns</a>
+                    </li>
+                    <li>
+                      <a href="blog-grid-sidebar.html">Grid sidebar</a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="#">Masonry</a>
+                  <ul>
+                    <li>
+                      <a href="blog-masonry-2cols.html">Masonry 2 columns</a>
+                    </li>
+                    <li>
+                      <a href="blog-masonry-3cols.html">Masonry 3 columns</a>
+                    </li>
+                    <li>
+                      <a href="blog-masonry-4cols.html">Masonry 4 columns</a>
+                    </li>
+                    <li>
+                      <a href="blog-masonry-sidebar.html">Masonry sidebar</a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="#">Mask</a>
+                  <ul>
+                    <li>
+                      <a href="blog-mask-grid.html">Blog mask grid</a>
+                    </li>
+                    <li>
+                      <a href="blog-mask-masonry.html">Blog mask masonry</a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="#">Single Post</a>
+                  <ul>
+                    <li><a href="single.html">Default with sidebar</a></li>
+                    <li>
+                      <a href="single-fullwidth.html">Fullwidth no sidebar</a>
+                    </li>
+                    <li>
+                      <a href="single-fullwidth-sidebar.html"
+                        >Fullwidth with sidebar</a
+                      >
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a href="elements-list.html">Elements</a>
+              <ul>
+                <li><a href="elements-products.html">Products</a></li>
+                <li><a href="elements-typography.html">Typography</a></li>
+                <li><a href="elements-titles.html">Titles</a></li>
+                <li><a href="elements-banners.html">Banners</a></li>
+                <li>
+                  <a href="elements-product-category.html">Product Category</a>
+                </li>
+                <li>
+                  <a href="elements-video-banners.html">Video Banners</a>
+                </li>
+                <li><a href="elements-buttons.html">Buttons</a></li>
+                <li><a href="elements-accordions.html">Accordions</a></li>
+                <li><a href="elements-tabs.html">Tabs</a></li>
+                <li>
+                  <a href="elements-testimonials.html">Testimonials</a>
+                </li>
+                <li><a href="elements-blog-posts.html">Blog Posts</a></li>
+                <li><a href="elements-portfolio.html">Portfolio</a></li>
+                <li><a href="elements-cta.html">Call to Action</a></li>
+                <li><a href="elements-icon-boxes.html">Icon Boxes</a></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+        <!-- End .mobile-nav -->
+      </div>
+      <!-- .End .tab-pane -->
+      <div
+        class="tab-pane fade"
+        id="mobile-cats-tab"
+        role="tabpanel"
+        aria-labelledby="mobile-cats-link"
+      >
+        <nav class="mobile-cats-nav">
+          <ul class="mobile-cats-menu">
+            <li><a class="mobile-cats-lead" href="#">Daily offers</a></li>
+            <li><a class="mobile-cats-lead" href="#">Gift Ideas</a></li>
+            <li><a href="#">Beds</a></li>
+            <li><a href="#">Lighting</a></li>
+            <li><a href="#">Sofas & Sleeper sofas</a></li>
+            <li><a href="#">Storage</a></li>
+            <li><a href="#">Armchairs & Chaises</a></li>
+            <li><a href="#">Decoration </a></li>
+            <li><a href="#">Kitchen Cabinets</a></li>
+            <li><a href="#">Coffee & Tables</a></li>
+            <li><a href="#">Outdoor Furniture </a></li>
+          </ul>
+          <!-- End .mobile-cats-menu -->
+        </nav>
+        <!-- End .mobile-cats-nav -->
+      </div>
+      <!-- .End .tab-pane -->
+    </div>
+    <!-- End .tab-content -->
+
+    <div class="social-icons">
+      <a href="#" class="social-icon" target="_blank" title="Facebook"
+        ><i class="icon-facebook-f"></i
+      ></a>
+      <a href="#" class="social-icon" target="_blank" title="Twitter"
+        ><i class="icon-twitter"></i
+      ></a>
+      <a href="#" class="social-icon" target="_blank" title="Instagram"
+        ><i class="icon-instagram"></i
+      ></a>
+      <a href="#" class="social-icon" target="_blank" title="Youtube"
+        ><i class="icon-youtube"></i
+      ></a>
+    </div>
+    <!-- End .social-icons -->
+  </div>
+  <!-- End .mobile-menu-wrapper -->
+</div>
+<!-- End .mobile-menu-container -->
+
+<!-- Sign in / Register Modal -->
+<div
+  class="modal fade"
+  id="signin-modal"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true"><i class="icon-close"></i></span>
+        </button>
+
+        <!-- End .form-box -->
+      </div>
+      <!-- End .modal-body -->
+    </div>
+    <!-- End .modal-content -->
+  </div>
+  <!-- End .modal-dialog -->
+</div>
+<!-- End .modal -->
+
+<!-- Plugins JS File -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/jquery.hoverIntent.min.js"></script>
+<script src="assets/js/jquery.waypoints.min.js"></script>
+<script src="assets/js/superfish.min.js"></script>
+<script src="assets/js/owl.carousel.min.js"></script>
+<script src="assets/js/jquery.plugin.min.js"></script>
+<script src="assets/js/jquery.magnific-popup.min.js"></script>
+<script src="assets/js/jquery.countdown.min.js"></script>
+<script
+  src="https://kit.fontawesome.com/c0b612fc07.js"
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+  crossorigin="anonymous"
+></script>
+<!-- Main JS File -->
+<script src="assets/js/main.js"></script>
+<script src="assets/js/demos/demo-2.js"></script>
+<% include('../layouts/footer.ejs') %>

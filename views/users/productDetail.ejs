@@ -63,6 +63,8 @@
 <link rel="stylesheet" href="assets/css/demos/demo-2.css" />
 <link rel="stylesheet" href="/userHome.css" />
 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 <% include('../layouts/center.ejs') %>
 <div class="page-wrapper">
   <!--Header start-->
@@ -222,6 +224,7 @@
                            
                             <div class="col-md-6">
                                 <div class="product-details product-details-centered">
+                                  <input type="hidden" name="productId" id="productId" value="<%= product._id  %>">
                                     <h1 class="product-title"><%= product.name  %></h1><!-- End .product-title -->
                                     <div class="product-single__text mb-3" style="color:black ; font-size: 13px"><p>Pan India - Free Shipping</p></div>
                                     
@@ -252,11 +255,24 @@
 
                                     <div class="product-details-action">
                                         <div class="details-action-col">
+
+
+                                            <% if(product.stockQuantity>0){ %>
+
                                             <div class="product-details-quantity">
-                                                <input type="number" id="qty" class="form-control" value="1" min="1" max="10" step="1" data-decimals="0" required>
+                                                <input type="number" id="quantity" class="form-control" value="1" min="1" max="<%= product.stockQuantity  %>" step="1" data-decimals="0" required>
                                             </div><!-- End .product-details-quantity -->
 
-                                            <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+                                              <a href="#" class="btn-product btn-cart" onclick="addTocart()"><span>add to cart</span></a>
+
+                                           <% }else{ %>
+                                               
+                                            <br>
+                                            <a href="#" class="btn-danger ">Out Of Stock</a>
+
+                                            <% } %>
+
+                                          
                                         </div><!-- End .details-action-col -->
                                          <br>
                                         <div class="details-action-wrapper">
@@ -449,7 +465,7 @@
                                 </div><!-- End .product-action-vertical -->
 
                                 <div class="product-action">
-                                    <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+                                    <a href="/" class="btn-product btn-cart" onclick="addTocart()"><span>add to cart</span></a>
                                 </div><!-- End .product-action -->
                             </figure><!-- End .product-media -->
 
@@ -1092,7 +1108,7 @@
                 role="tabpanel"
                 aria-labelledby="register-tab"
               >
-                <form action="#">
+                <form action="" >
                   <div class="form-group">
                     <label for="register-email">Your email address *</label>
                     <input
@@ -1177,6 +1193,8 @@
 <!-- End .modal -->
 
 <!-- Plugins JS File -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/js/bootstrap.bundle.min.js"></script>
 <script src="assets/js/jquery.hoverIntent.min.js"></script>
@@ -1198,7 +1216,14 @@
 
 
 <!-- for product gallery function -->
-<script>
+
+<script >
+  
+
+
+
+
+
     document.addEventListener('DOMContentLoaded', function () {
         // Get references to elements
         var galleryThumbnails = document.querySelectorAll('#product-zoom-gallery .product-gallery-item');
@@ -1223,7 +1248,91 @@
             });
         });
     });
+
 </script>
+<script >
+async function addTocart() {
+
+  try {
+
+    
+    console.log('Function started');
+
+    const productId = document.getElementById("productId").value;
+    const quantity = document.getElementById("quantity").value;
+
+    const data = {
+      productId: productId,
+      quantity: quantity
+    };
+
+console.log('Data:', data);
+
+
+console.log('Before Axios request');
+const response = await axios.post("/addToCart", data);
+console.log('After Axios request');
+
+
+                  if (response.data.success) {
+                                Swal.fire({
+                                    title: "Success",
+                                    text: "Product added to cart",
+                                    icon: "success",
+                                    showCancelButton: true,
+                                    confirmButtonText: "Go to Cart", // Text for the "Go to Cart" button
+                                    cancelButtonText: "Cancel", // Text for the "Cancel" button
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        // Redirect to the cart page when the "Go to Cart" button is clicked
+                                        window.location.href = "/cart"; // Replace "/cart" with your actual cart page URL
+                                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                                        // Handle the cancel action if needed (not needed in this case)
+                                    }
+                                });
+
+                            } else if (response.data.limited) {
+                                Swal.fire({
+                                    title: "Error",
+                                    text: 'Sorry!Product stock exceeded',
+                                    icon: 'error',
+                                    timer: 2000
+                                })
+
+
+
+                            } else {
+                                Swal.fire({
+                                    title: "Error adding to cart",
+                                    text: "Please login to continue",
+                                    icon: "error",
+                                    showCancelButton: true,
+                                    confirmButtonText: "Login", // Text for the login button
+                                    cancelButtonText: "Cancel", // Text for the cancel button
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        // Redirect to the login section when the "Login" button is clicked
+                                        window.location.href = "/userSignIn"; // Replace "/login" with your actual login page URL
+                                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                                        // Handle the cancel action if needed (not needed in this case)
+                                    }
+                                });
+
+
+                            }
+                        
+
+        }catch (error) {
+  console.error('An error occurred during the request', error);
+}
+
+}
+
+
+</script>
+
+
+
 
 
 

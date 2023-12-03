@@ -306,13 +306,36 @@ const verifyLogin=async(req,res)=>{
       try {
         const id=req.query.id
         console.log('hellobruda'+id);
+        const userData=await User.findOne({_id:req.session.userId})
         const productAll=await Product.find({})
         const  productOne= await Product.findOne({_id:id})
-        res.render('productDetail',{product:productOne,productAll:productAll})
+        res.render('productDetail',{product:productOne,productAll:productAll,user:userData})
       } catch (error) {
         console.log(error.message);
       }
     }
+
+
+
+    const loadCheckout=async(req,res)=>{
+          try {
+            
+            res.render('checkout')
+          } catch (error) {
+            console.log(error.message);
+          }
+    }
+
+
+    const loadAddNewAddress=async(req,res)=>{
+             try {
+              res.render('addNewAddress')
+             } catch (error) {
+              console.log(error.message);
+             }
+    }
+
+
 
   //  const userResendOtp =async(req,res)=>{
   //       try {
@@ -355,5 +378,7 @@ module.exports = {
   loadProductList,
   loadEmailVerifyAfter,
   postEmailVerifyAfter,
-  loadProductDetail
+  loadProductDetail,
+  loadCheckout,
+  loadAddNewAddress,
 };
