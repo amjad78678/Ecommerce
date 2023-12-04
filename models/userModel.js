@@ -30,7 +30,36 @@ const userSchema = new mongoose.Schema({
   },
   is_Blocked:{
     type:Boolean,
-  }
+  },
+    address: [
+    {
+      name: {
+        type: String,
+      },
+
+      street_address: {
+        type: String,
+      },
+      city: {
+        type: String,
+      },
+      state: {
+        type: String,
+      },
+      phone: {
+        type: Number,
+      },
+      pincode: {
+        type: Number,
+      },
+      email:{
+        type:{
+          type: String
+        }
+      }
+    },
+  ],
+
 });
 
 module.exports = mongoose.model('User', userSchema);

@@ -62,6 +62,7 @@
 <link rel="stylesheet" href="assets/css/skins/skin-demo-2.css" />
 <link rel="stylesheet" href="assets/css/demos/demo-2.css" />
 <link rel="stylesheet" href="/userHome.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
 <% include('../layouts/center.ejs') %>
 <div class="page-wrapper">
@@ -93,15 +94,21 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <div class="ms-auto">
           <a class="me-5 text-dark" href="#">Home</a>
-          <a class="me-5 text-dark" <% if(locals.user){ %>
+          <a class="me-5 text-dark" <% if(user){ %>
                 href="/productList">
             <% }else{ %>
               href="/productListN">
               
               <% } %>Shop</a>
           <a class="me-5 text-dark" href="#">About Us</a>
-          <a class="me-4 text-dark" href="#">Blog</a>
+          
           <a class="me-4 text-dark" href="#">Contact Us </a>
+          <a class="me-4 text-dark" href="/cart "><%   if(user){  %>
+            
+            
+            <i class="fas fa-shopping-cart"></i>
+            
+            <% } %></a>
           <a href="#"><i class="me-4 fa-regular fa-heart"></i></a>
 
           <div class="dropdown d-inline">
@@ -113,18 +120,18 @@
               aria-expanded="false"
             >
               <i class="fa-regular fa-user" style="margin-right: 5px;">
-                <% if (locals.user){%>
+                <% if (user){%>
                <%= user.userName%>
                  <%} %></i>
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-              <li><a class="dropdown-item" <% if(locals.user) { %> 
+              <li><a class="dropdown-item" <% if(user) { %> 
                     href="/userProfile">
                 <% }else{ %>
                  href="/userSignIn">
                   <% } %>
                
-                <% if(locals.user){ %>
+                <% if(user){ %>
                    My profile
 
                <%  }else{%>
@@ -132,12 +139,12 @@
 
               <%   }%>
               </a></li>
-              <li><a class="dropdown-item" <% if(locals.user) {%> 
+              <li><a class="dropdown-item" <% if(user) {%> 
                    href="/userLogout">
                 <% }else{ %>
                     href="/userRegister">
                   <% } %>
-                <% if(locals.user){ %>
+                <% if(user){ %>
                    Logout
 
                <%  }else{%> 
@@ -3094,6 +3101,8 @@
 <!-- End .modal -->
 
 <!-- Plugins JS File -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/js/bootstrap.bundle.min.js"></script>
 <script src="assets/js/jquery.hoverIntent.min.js"></script>

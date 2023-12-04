@@ -175,7 +175,13 @@
 	                <div class="container">
 	                	<div class="row">
 	                		<div class="col-lg-9">
-	                			<table class="table table-cart table-mobile">
+
+            <%if (cartDetails && cartDetails.items) { %>
+
+
+  <!-- Add your code to iterate over items or display them as needed -->
+ 
+	                <table class="table table-cart table-mobile">
 									<thead>
 										<tr>
 											<th>Product</th>
@@ -189,8 +195,9 @@
 
 
 <tbody>
-  <% carts.forEach((cart) => { %>
-    <% cart.items.forEach((cartItem) => { %>
+
+
+    <% cartDetails.items.forEach((cartItem) => { %>
       <tr>
         <td class="product-col">
           <div class="product">
@@ -209,9 +216,9 @@
         <td class="price-col"><%= cartItem.price %></td>
         <td class="quantity-col">
          <div class="quantity-controls">
-    <button class="quantity-btn minus" type="button" onclick="increaseQuantity('<%= carts._id%>','<%=cartItem.product_id._id %>',-1)">-</button>
+    <button class="quantity-btn minus" type="button" onclick="increaseQuantity('<%= cartDetails._id%>','<%=cartItem.product_id._id %>',-1)">-</button>
     <input class="qty-input" type="text" value="<%= cartItem.quantity %>" readonly>
-    <button class="quantity-btn plus" type="button" onclick="increaseQuantity('<%= carts._id%>','<%=cartItem.product_id._id %>',1)">+</button>
+    <button class="quantity-btn plus" type="button" onclick="increaseQuantity('<%= cartDetails._id%>','<%=cartItem.product_id._id %>',1)">+</button>
 </div>
 <!-- End .cart-product-quantity -->
         </td>
@@ -219,15 +226,11 @@
         <td class="remove-col"><button class="btn-remove" onclick="removeFromCart('<%= cartItem._id %>')"><i class="icon-close"></i></button></td>
       </tr>
     <% }) %>
-  <% }) %>
+ 
+
 </tbody>
-
-
-
-
-
-
-								</table><!-- End .table table-wishlist -->
+</table><!-- End .table table-wishlist -->
+ 
 
 	                			<div class="cart-bottom">
 			            			<div class="cart-discount">
@@ -240,6 +243,7 @@
 			        						</div><!-- End .input-group -->
 			            				</form>
 			            			</div><!-- End .cart-discount -->
+
 
                                     
 		            			</div><!-- End .cart-bottom -->
@@ -278,15 +282,40 @@
 
 		            			<a href="category.html" class="btn btn-outline-dark-2 btn-block mb-3"><span>CONTINUE SHOPPING</span><i class="icon-refresh"></i></a>
 	                		</aside><!-- End .col-lg-3 -->
+                     
+                         <% }else{ %>
+
+                                  <div class="container-fluid" style="margin-right: -386px;">
+                                    <div class="row ">
+                                      <div class="col-6">
+                                 <h4 class="mb-5" >No products in cart</h4>
+                                 <span><a class="btn btn-primary btn-lg" href="/productList">Continue Shopping</a></span>
+                                        </div>
+                                         
+
+                                      
+                                        
+                                    </div>
+                 
+                                  <% } %>
+                                    </div>
+
+                  
+
+    
+                                 
+                                         
 	                	</div><!-- End .row -->
 	                </div><!-- End .container -->
                 </div><!-- End .cart -->
             </div><!-- End .page-content -->
                </div>
         </main><!-- End .main -->
-
+  
 
         <!-- cart section end -->
+
+
 
 
 

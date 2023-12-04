@@ -61,37 +61,10 @@
 <link rel="stylesheet" href="assets/css/style.css" />
 <link rel="stylesheet" href="assets/css/skins/skin-demo-2.css" />
 <link rel="stylesheet" href="assets/css/demos/demo-2.css" />
-<link rel="stylesheet" href="/userHome.css" />
+<link rel="stylesheet" href="assets/css/userHome.css" />
 
 
- <style>
-        /* Custom CSS to make the table full width */
-        section.bg-white {
-            padding: 40px 0; /* Adjust padding as needed */
-        }
-
-        .main-div {
-            max-width: 100%; /* Set the maximum width */
-            margin: 0 auto; /* Center the content */
-        }
-
-        .shopping__cart__table {
-            width: 100%;
-            overflow-x: auto; /* Enable horizontal scrolling if needed */
-        }
-
-        .shopping__cart__table table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .shopping__cart__table table th,
-        .shopping__cart__table table td {
-            padding: 15px;
-            border: 1px solid #e6e6e6;
-            text-align: center;
-        }
-    </style> 
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 <% include('../layouts/center.ejs') %>
 <div class="page-wrapper">
   <!--Header start-->
@@ -119,9 +92,9 @@
           ><i class="fa-solid fa-bars"></i
         ></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
+     <div class="collapse navbar-collapse" id="navbarNav">
         <div class="ms-auto">
-          <a class="me-5 text-dark" href="#">Home</a>
+          <a class="me-5 text-dark" href="/">Home</a>
           <a class="me-5 text-dark" <% if(locals.user){ %>
                 href="/productList">
             <% }else{ %>
@@ -129,8 +102,14 @@
               
               <% } %>Shop</a>
           <a class="me-5 text-dark" href="#">About Us</a>
-          <a class="me-4 text-dark" href="#">Blog</a>
+          
           <a class="me-4 text-dark" href="#">Contact Us </a>
+          <a class="me-4 text-dark" href="/cart "><%   if(locals.user){  %>
+            
+            
+            <i class="fas fa-shopping-cart"></i>
+            
+            <% } %></a>
           <a href="#"><i class="me-4 fa-regular fa-heart"></i></a>
 
           <div class="dropdown d-inline">
@@ -181,6 +160,7 @@
     </div>
   </header>
 
+
        <main class="main">
     <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
         <div class="container">
@@ -214,34 +194,34 @@
                                             <tr>
                                                 <th>Product</th>
                                                 <th>Quantity</th>
-                                                <th>Size</th>
-                                                <th>Color</th>
+                                                
                                                 <th>Total</th>
                                                 
                                             </tr>
                                         </thead>
                                         
-                                <tbody>
+                                            <tbody>
+                                            
+                                                <% cart.items.forEach((pro)=>{ %>
                                     
-                                                <tr class="cart-item">
-                                                    <td class="product__cart__item">
-                                                        <div class="product__cart__item__pic">
-                                                            <img src="/images/" alt=""
-                                                                style="height: 100px; width: 100px;">
-                                                        </div>
-                                                        
-                                                        <div class="product__cart__item__text">
-                                                            <h6>
-                                                                amjad
-                                                            </h6>
+                                            <tr class="cart-item">
+                                        <td class="product__cart__item">
+                                          <div class="product__cart__item__container ">
+                                            <div class="product__cart__item__pic mx-auto">
+                                              <img src="<%= pro.product_id.imageUrl[0] %>" alt="" style="height: 100px; width: 100px;">
+                                            </div>
+                                            <div class="product__cart__item__text me-auto">
+                                              <h6>
+                                                <%= pro.product_id.name %>
+                                              </h6>
 
-                                                        
+                                                        <br>
 
 
                                                             
-                                                                    <h6><del style="color: rgba(0, 0, 0, 0.372);">₹ 100</del></h6>
+                                                               
 
-                                                                    <h5>₹ 100000
+                                                                    <h5>₹<%= pro.price  %>
                                                                     </h5>
 
 
@@ -253,23 +233,11 @@
                                                     </td>
                                                     <td class="quantity">
 
-                                                        <input type="text" class="form-control-plain"
-                                                            value="10" readonly>
+                                                        <input class="qty-input" type="text" value="<%= pro.quantity %>" readonly>
 
                                                     </td>
-                                                    <td>
-                                                    
-                                                            <strong>18inch</strong>
-                                                            
-                                                    
-                                                    </td>
-                                                    
-                                                    <td>
-                                                    
-                                                            <strong>red</strong>
-                                                    
-                                                    
-                                                    </td>
+                                                 
+                                                 
                                                     
                                                     
 
@@ -277,7 +245,7 @@
 
                                                     
 
-                                                            <td class="cart__price">₹1000
+                                                            <td class="cart__price">₹<%= pro.total_price  %>
 
 
                                                                 
@@ -288,7 +256,9 @@
                                                             </td>
                                                 </tr>
                                                 
-                                        </tbody>    
+                                        </tbody> 
+                                        <% } )%>   
+                                       
                                     </table>
                                 </div>
                         </div>
@@ -315,21 +285,35 @@
                             </div>
                             <hr />
 
+
+                         <% if('user.address') { %>
+                           <% user.forEach((x)=>{ %>
+                            <% x.address.forEach((address)=>{ %>
+
+
                             <div class="border-top address-item" id="addrId1">
                                 <br>
                                 <div class="row">
                                     <div class="col-sm-1">
                                         <div class="form-check">
-                                            <input class="custom-radio-style" type="radio" name="selectedAddress" value="AMJAD, EDAVANNAPPAR, OMANOOR, 673645, 9946782379" id="address1" required>
+                                            <input class="custom-radio-style" id="address" name="selectedAddress" type="radio"  value="<%= address.name  %>, <%= address.street_address  %>,<%= address.phone  %>, <%= address.city  %>, <%= address.pincode  %>,<%= address.state  %>" id="address1" required>
                                         </div>
                                     </div>
                                     <div class="col-sm-8">
-                                        <p class="text-muted mb-1">aMJAD</p>
-                                        <p class="text-muted mb-1">7387458473</p>
-                                        <p class="text-muted mb-1">thattanakanditil, oamr, 6437463</p>
+                                      <input type="hidden" id="total" value="<%= subTotal  %>">
+                                        <p class="text-muted mb-1"><%= address.name  %></p>
+                                        <p class="text-muted mb-1"><%= address.street_address  %></p>
+                                        <p class="text-muted mb-1"><%= address.phone  %>,<%= address.city  %>,<%= address.pincode  %></p>
+                                          <p class="text-muted mb-1"><%= address.state  %></p>
                                     </div>
                                 </div>
                             </div>
+                      <% }) %>
+                      <% }) %>
+                 <% }else{ %>
+                   <p class="text-muted mb-1">No addresses found</p>
+                  <% } %>
+
 
                             <hr />
                         </div>
@@ -346,7 +330,7 @@
                                                 
 		                						<tr class="summary-subtotal">
 		                							<td>Subtotal:</td>
-		                							<td>$160.00</td>
+		                							<td >$<%= subTotal  %></td>
 		                						</tr><!-- End .summary-subtotal -->
 		                						<tr>
 		                							<td>Shipping:</td>
@@ -354,7 +338,7 @@
 		                						</tr>
 		                						<tr class="summary-total">
 		                							<td>Total:</td>
-		                							<td>$160.00</td>
+		                							<td>$<%= subTotal  %></td>
 		                						</tr><!-- End .summary-total -->
 		                					</tbody>
 		                				</table><!-- End .table table-summary -->
@@ -364,36 +348,26 @@
 
 										    <div class="card">
 										        <div class="card-header" id="heading-3">
-										            <h2 class="card-title">
-										                <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
-										                    Cash on delivery
-										                </a>
-										            </h2>
+										           <h6>Select payment method</h6>
+                                                   <ul>
+            <li>
+                <input type="radio"  id="payment" name="payment" value="cod" required>
+                <label for="payment1">Cash on delivery</label>
+            </li>
+            <li>
+                <input type="radio"  id="payment" name="payment" value="razorPay" required>
+                <label for="payment2">RazorPay</label>
+            </li>
+        </ul>
 										        </div><!-- End .card-header -->
-										        <div id="collapse-3" class="collapse" aria-labelledby="heading-3" data-parent="#accordion-payment">
-										            <div class="card-body">Quisque volutpat mattis eros. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. 
-										            </div><!-- End .card-body -->
-										        </div><!-- End .collapse -->
+										      
 										    </div><!-- End .card -->
 
-										    <div class="card">
-										        <div class="card-header" id="heading-4">
-										            <h2 class="card-title">
-										                <a class="collapsed" role="button" data-toggle="collapse" href="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
-										                    Razorpay <small class="float-right paypal-link">What is Razorpay?</small>
-										                </a>
-										            </h2>
-										        </div><!-- End .card-header -->
-										        <div id="collapse-4" class="collapse" aria-labelledby="heading-4" data-parent="#accordion-payment">
-										            <div class="card-body">
-										                Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede. Donec nec justo eget felis facilisis fermentum.
-										            </div><!-- End .card-body -->
-										        </div><!-- End .collapse -->
-										    </div><!-- End .card -->
+										   
 
 										</div><!-- End .accordion -->
 
-		                				<button type="submit" class="btn btn-outline-primary-2 btn-order btn-block">
+		                				<button type="submit" onclick="placeOrdersSelect()" class="btn btn-outline-primary-2 btn-order btn-block">
 		                					<span class="btn-text">Place Order</span>
 		                					<span class="btn-hover-text">Proceed to Checkout</span>
 		                				</button>
@@ -403,6 +377,7 @@
         </div><!-- End .container -->
     </div><!-- End .page-content -->
 </main><!-- End .main -->
+
 
 
 
@@ -915,6 +890,8 @@
 <!-- End .modal -->
 
 <!-- Plugins JS File -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/js/bootstrap.bundle.min.js"></script>
 <script src="assets/js/jquery.hoverIntent.min.js"></script>
@@ -933,6 +910,85 @@
   integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
   crossorigin="anonymous"
 ></script>
+<script>
+function placeOrdersSelect() {
+    const addressRadios = document.getElementsByName('selectedAddress')
+    const paymentRadios = document.getElementsByName('payment')
+
+    let isSelectedAddress = false;
+    let isSelectedPayment = false;
+
+    // Loop through address radio buttons to check if one is selected
+    for (const radio of addressRadios) {
+      if (radio.checked) {
+        isSelectedAddress = true;
+        break;
+      }
+    }
+
+    // Loop through payment radio buttons to check if one is selected
+    for (const radio of paymentRadios) {
+      if (radio.checked) {
+        isSelectedPayment = true;
+        break;
+      }
+    }
+
+    // Validate address selection
+    if (!isSelectedAddress) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Please select an address.'
+      });
+      return; // Prevent further execution of the function
+    }
+
+    // Validate payment selection
+    if (!isSelectedPayment) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Please select a payment method.'
+      });
+      return; // Prevent further execution of the function
+    }
+
+    // If both address and payment are selected, proceed with placing the order
+    if(isSelectedAddress && isSelectedPayment){
+      placeOrder()
+     }
+  }
+
+
+
+function placeOrder() {
+  // Find the selected address
+  const address = document.querySelector('input[name = "selectedAddress"]:checked').value
+  const payment=document.querySelector('input[name = "payment"]:checked').value
+  const total = document.getElementById('total').value
+ 
+
+  // Proceed with placing the order
+  $.ajax({
+    url: '/placeOrder',
+    method: 'post',
+    data: {
+      selectedAddress: address,
+      selectedPayment: payment,
+      subTotal: total
+    },
+    success: (response)=> {
+      if (response.success === true) {
+        const param = response.params;
+        const url = '/order-placed/' + param;
+        window.location.href = url;
+      }
+    }
+  });
+}
+
+</script>
 <!-- Main JS File -->
 <script src="assets/js/main.js"></script>
 <script src="assets/js/demos/demo-2.js"></script>

@@ -62,35 +62,7 @@
 <link rel="stylesheet" href="assets/css/skins/skin-demo-2.css" />
 <link rel="stylesheet" href="assets/css/demos/demo-2.css" />
 <link rel="stylesheet" href="/userHome.css" />
-
-<style>
-    .filter-price {
-        display: flex;
-        align-items: center;
-    }
-
-    .filter-price-text {
-        margin-right: 10px;
-        font-weight: bold;
-    }
-
-    input {
-        padding: 5px 8px; /* Adjusted padding for a shorter length */
-        margin-right: 5px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
-
-    button {
-        padding: 8px 15px;
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-</style>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
 <% include('../layouts/center.ejs') %>
 <div class="page-wrapper">
@@ -122,10 +94,21 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <div class="ms-auto">
           <a class="me-5 text-dark" href="/">Home</a>
-          <a class="me-5 text-dark" href="/productList">Shop</a>
+          <a class="me-5 text-dark" <% if(locals.user){ %>
+                href="/productList">
+            <% }else{ %>
+              href="/productListN">
+              
+              <% } %>Shop</a>
           <a class="me-5 text-dark" href="#">About Us</a>
-          <a class="me-4 text-dark" href="#">Blog</a>
+          
           <a class="me-4 text-dark" href="#">Contact Us </a>
+          <a class="me-4 text-dark" href="/cart "><%   if(locals.user){  %>
+            
+            
+            <i class="fas fa-shopping-cart"></i>
+            
+            <% } %></a>
           <a href="#"><i class="me-4 fa-regular fa-heart"></i></a>
 
           <div class="dropdown d-inline">
@@ -174,7 +157,7 @@
         </div>
       </div>
     </div>
-  </header><!-- End .header -->
+  </header>
 
         <main class="main">
         	<div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">

@@ -5,6 +5,7 @@ const Category= require('../models/categoryModel')
 const Product=require('../models/productModel')
 const nodemailer = require('nodemailer');
 const dotenv=require('dotenv')
+const Cart=require('../models/cartModel')
 dotenv.config();
 
 const securePassword = async (password) => {
@@ -317,23 +318,7 @@ const verifyLogin=async(req,res)=>{
 
 
 
-    const loadCheckout=async(req,res)=>{
-          try {
-            
-            res.render('checkout')
-          } catch (error) {
-            console.log(error.message);
-          }
-    }
-
-
-    const loadAddNewAddress=async(req,res)=>{
-             try {
-              res.render('addNewAddress')
-             } catch (error) {
-              console.log(error.message);
-             }
-    }
+   
 
 
 
@@ -379,6 +364,5 @@ module.exports = {
   loadEmailVerifyAfter,
   postEmailVerifyAfter,
   loadProductDetail,
-  loadCheckout,
-  loadAddNewAddress,
+ 
 };

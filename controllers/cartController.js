@@ -16,19 +16,19 @@ const { ObjectId } = require('mongodb')
       res.redirect('/userSignIn');
     } else {
       // Fetch cart details
-      const cartDetails = await Cart.findOne({ user_id: userId }).populate('items.product_id');
+      const cartDetails = await Cart.findOne({ user_id: userId }).populate({path:'items.product_id'});
       const userData = await User.findOne({ _id: userId });
 
-      let originalAmts = 0;
+      let originalAmts = 0; 
 
-      if (cartDetails && cartDetails.items) {
-        cartDetails.items.forEach((cartItem) => {
+      if (cartDetails) {
+          cartDetails.items.forEach((cartItem) => {
           let itemPrice = cartItem.price;  // Adjust the property based on your data model
           originalAmts += itemPrice * cartItem.quantity;
         });
       }
 
-      res.render('cart', { user: userData, carts: [cartDetails], subTotal: originalAmts });
+      res.render('cart', { user: userData, cartDetails, subTotal: originalAmts });
     }
   } catch (error) {
     console.log(error.message);
