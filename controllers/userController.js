@@ -5,6 +5,7 @@ const Category= require('../models/categoryModel')
 const Product=require('../models/productModel')
 const nodemailer = require('nodemailer');
 const dotenv=require('dotenv')
+const mongoose = require('mongoose');
 const Cart=require('../models/cartModel')
 dotenv.config();
 
@@ -203,6 +204,7 @@ const verifyLogin=async(req,res)=>{
       if (passwordMatch){
         if(userData.is_Verified===true){
         req.session.userId=userData._id
+        req.session.email=userData.email
         res.redirect('/')
 
 
@@ -316,11 +318,41 @@ const verifyLogin=async(req,res)=>{
       }
     }
 
+  const loadProfile=async(req,res)=>{
+        try {
+          const userId=req.session.userId
+      
+          if(userId){
+          const user= await User.findOne({_id:userId})
+          const addresses= user.address
+           console.log(addresses);
+            res.render('profile',{user,addresses})
+          }else{
+            res.redirect('/userSignIn')
+          }
+     
 
+        } catch (error) {
+            console.log(error.message);
+        }
+  }
 
-   
+  const loadEditProfileAddress = async (req, res) => {
+  try {
+    const { userId, addressId} = req.query;
+    const addAddressDetails = await User.findOne(
+      { _id: userId, "address._id": addressId },
+      { "address.$": 1 } // Use  to get the matched address in the array
+    );
+    
 
+    console.log('iam addaddress', addAddressDetails);
 
+    res.render("editProfileAddress", { addAddressDetails});
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 
   //  const userResendOtp =async(req,res)=>{
   //       try {
@@ -364,5 +396,7 @@ module.exports = {
   loadEmailVerifyAfter,
   postEmailVerifyAfter,
   loadProductDetail,
+  loadProfile,
+  loadEditProfileAddress
  
 };

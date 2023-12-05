@@ -153,9 +153,11 @@ const loadOrderPlaced=async(req,res)=>{
 
     const orderId=req.params.id
     const userId=req.session.userId
+    const order= await Order.findOne({_id:orderId})
 
 
-      res.render('orderPlaced',{orderId:orderId,user:userId})
+
+      res.render('orderPlaced',{orderId:orderId,user:userId,orderId,order})
 
    } catch (error) {
     console.log(error.message);

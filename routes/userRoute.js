@@ -53,6 +53,8 @@ userRouter.post('/deleteItems',cartController.postDeleteItems)
 userRouter.post('/changeQuantity',cartController.postChangeQuantity)
 userRouter.post('/placeOrder',checkoutController.postOrderPlaced)
 userRouter.get('/order-placed/:id',checkoutController.loadOrderPlaced)
+userRouter.get('/userProfile',userController.loadProfile)
+userRouter.get('/editAddress',userController.loadEditProfileAddress)
 
 
 
