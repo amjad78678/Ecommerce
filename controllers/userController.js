@@ -353,6 +353,32 @@ const verifyLogin=async(req,res)=>{
     console.log(error.message);
   }
 };
+const postEditAddress=async(req,res)=>{
+     try {
+         
+    //  const userId= req.query.userId
+    //  const addressId=req.query.addressId
+
+     const {name,phone,streetAddress,city,state,pincode,email,userId,addressId}=req.body
+       
+      await User.updateOne({_id:userId,'address._id':addressId},{$set:{
+        'address.$.name':name,
+        'address.$.phone':phone,
+        'address.$.street_address':streetAddress,
+        'address.$.city':city,
+        'address.$.state':state,
+        'address.$.pincode':pincode,
+        'address.$.email':email
+
+      }})
+      res.redirect('/userProfile')
+           
+     } catch (error) {
+      console.log(error.message);
+     }
+}
+
+
 
   //  const userResendOtp =async(req,res)=>{
   //       try {
@@ -397,6 +423,7 @@ module.exports = {
   postEmailVerifyAfter,
   loadProductDetail,
   loadProfile,
-  loadEditProfileAddress
+  loadEditProfileAddress,
+  postEditAddress
  
 };
