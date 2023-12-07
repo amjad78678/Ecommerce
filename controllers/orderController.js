@@ -6,17 +6,24 @@ const Cart = require('../models/cartModel')
 const Order=require('../models/orderModel')
 
 
-const loadOrders=async(req,res)=>{
-   try {
-   const userId= req.session.userId
- const userData= await Order.find({user_id:userId}).sort({ date: -1 });
+const loadOrders = async (req, res) => {
+  try {
+    const userId = req.session.userId;
+    const page = parseInt(req.query.page) || 1;
+    const pageSize = parseInt(req.query.pageSize) || 10; // Adjust the page size as needed
 
+    const skip = (page - 1) * pageSize;
+    const userData = await Order.find({ user_id: userId })
+      .sort({ date: -1 })
+      .skip(skip)
+      .limit(pageSize);
 
- res.render('orders',{userData,user:userData})
-   } catch (error) {
-      console.log(error.message);
-   }
-}
+    res.render('orders', { userData, user: userData, page, pageSize });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 
 
 

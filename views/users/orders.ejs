@@ -171,7 +171,7 @@
                 <h5 class="card-title">Orders</h5>
                 <hr />
                 <div class="table-responsive">
-                           <table id="myTable" class="table table-bordered table-hover">
+                 <table id="myTable" class="table table-bordered table-hover">
                     <thead class="thead-light">
                       <tr>
                         <th>Date and Time</th>
@@ -250,6 +250,23 @@
                    
 
                   </table>
+                  <!-- Add this section after your table -->
+<div class="pagination">
+  <ul class="pagination">
+    <% if (page > 1) { %>
+      <li class="page-item">
+        <a class="page-link" href="?page=<%= page - 1 %>&pageSize=<%= pageSize %>">&laquo; Previous</a>
+      </li>
+    <% } %>
+
+    <% if (userData.length === pageSize) { %>
+      <li class="page-item">
+        <a class="page-link" href="?page=<%= page + 1 %>&pageSize=<%= pageSize %>">Next &raquo;</a>
+      </li>
+    <% } %>
+  </ul>
+</div>
+
                 </div>
               </div>
             </div>

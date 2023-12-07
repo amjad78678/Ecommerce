@@ -102,7 +102,7 @@ const postRegister = async (req, res) => {
         <div style="margin: 50px auto; width: 70%; padding: 20px 0">
           <div style="border-bottom: 1px solid #eee">
             <a href="" style="font-size: 1.4em; color: #82AE46; text-decoration: none; font-weight: 600">
-              Fresh Pick
+              Cornerstone
             </a>
           </div>
           <p style="font-size: 1.1em">Hi,</p>
@@ -172,7 +172,7 @@ const verifyOtp=async(req,res)=>{
         const userOtpVerificationRecords= await userOtpVerification.find({userId})
          const resendLink=`/resend-otp?id=${userId}`;
         if(!userOtpVerificationRecords.length){
-          return res.render('userOtpRegister',{ message:  `Otp expired <a href="${resendLink}" style="color:blue;">Resend Otp</a> `  })
+          return res.render('userOtpRegister',{ message:  `Otp expired <a href="${resendLink}" style="color:blue;">Resend Otp</a> `,id:userId})
         }
       
           //user otp record exists
@@ -193,7 +193,7 @@ const verifyOtp=async(req,res)=>{
              }else{
               
             //case otp invalid
-                return res.render('userOtpRegister',{message:'Invalid Otp Please try again'})
+                return res.render('userOtpRegister',{message:'Invalid Otp Please try again',id:userId})
              }
 
          
