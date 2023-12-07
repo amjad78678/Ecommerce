@@ -267,8 +267,21 @@ const verifyLogin=async(req,res)=>{
     const loadProductList=async(req,res)=>{
       try {
            
-        const product=await Product.find({})
-        const  category= await Category.find({})
+     const categoryName= req.query.name
+     const category= await Category.find({})
+
+
+        
+        let product=[] 
+      
+        if(categoryName){
+         product = await Product.find({category:categoryName})
+
+         }else{
+         product = await Product.find({})
+         }
+    
+        // const  category= await Category.find({})
         let userData=await User.findOne({_id:req.session.userId})   
         res.render('productList',{user:userData,category:category,product:product})
 
@@ -379,6 +392,112 @@ const postEditAddress=async(req,res)=>{
 }
 
 
+const deleteAddress=async(req,res)=>{
+   try {
+      
+        const userId=req.session.userId
+       const {addressId}= req.body
+        await User.updateOne({_id:userId},{$pull:{address:{_id:addressId}}})
+        res.send({success:true});
+   } catch (error) {
+    console.log(error.message);
+     res.status(500).send({ success: false }); // Send an error response if deletion fails
+   }
+}
+
+const loadProfileNewAddress = async(req,res)=>{
+     try {
+        res.render('profileNewAddress')
+     } catch (error) {
+      console.log(err.message);
+     }
+}
+
+const postProfileNewAddress =async(req,res)=>{
+      try {
+        const {name,phone,streetAddress,city,state,pincode,email}=req.body
+
+         const user =await User.findOne({_id:req.session.userId})
+         if(user){
+           await User.updateOne({_id:req.session.userId},{$push:{address:{
+                name:name,
+                phone:phone,
+                street_address:streetAddress,
+                city:city,
+                state:state,
+                pincode:pincode,
+                email:email,
+
+
+            }}})
+            res.redirect('/userProfile')
+         }else{
+            res.redirect('/userSignIn')
+         }
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+const postEditProfile=async(req,res)=>{
+       try {
+      
+     const {profileUserId,profileName,profileMobile} = req.body
+    await User.updateOne({_id:profileUserId},{$set:{userName:profileName,mobileNumber:profileMobile}})
+    res.redirect('/userProfile')
+        
+       } catch (error) {
+        console.log(error.message);
+       }
+}
+
+const loadChangePassword=async(req,res)=>{
+  try {
+   const userId= req.session.userId
+   const message=req.session.message
+   req.session.message='' 
+   const user= await User.findOne({_id:userId})
+     
+
+     res.render('changePassword',{user,message})
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+
+const postChangePasssword=async(req,res)=>{
+      try {
+      const {userId,currentPassword,newPassword,confirmNewPassword}= req.body 
+         
+    const userData=  await User.findOne({_id:userId})
+    const passwordMatch=  await bcrypt.compare(currentPassword,userData.password)
+
+    if(passwordMatch){
+      if(newPassword===confirmNewPassword){
+        const hashedPassword=await bcrypt.hash(newPassword,10)
+         await User.updateOne({_id:userId},{$set:{password:hashedPassword}})
+         res.redirect('/userProfile')
+      }else{
+        req.session.message='Password doesnt match'
+        res.redirect('/changePassword')
+      }
+      
+     
+    }else{
+      req.session.message='Password doesnt match'
+      res.redirect('/changePassword')
+    }
+          
+      } catch (error) {
+        console.log(error.message)
+      }
+}
+
+
+
+
 
   //  const userResendOtp =async(req,res)=>{
   //       try {
@@ -424,6 +543,13 @@ module.exports = {
   loadProductDetail,
   loadProfile,
   loadEditProfileAddress,
-  postEditAddress
+  postEditAddress,
+  deleteAddress,
+  loadProfileNewAddress,
+  postProfileNewAddress,
+  postEditProfile,
+  loadChangePassword,
+  postChangePasssword,
+
  
 };

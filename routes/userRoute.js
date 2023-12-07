@@ -4,6 +4,7 @@ const path = require('path');
 const userController = require('../controllers/userController');
 const cartController=require('../controllers/cartController');
 const checkoutController=require('../controllers/checkoutController');
+const orderController=require('../controllers/orderController');
 const bodyParser = require('body-parser');
 const auth=require('../middleware/auth')
 const session= require('express-session')
@@ -56,6 +57,17 @@ userRouter.get('/order-placed/:id',checkoutController.loadOrderPlaced)
 userRouter.get('/userProfile',userController.loadProfile)
 userRouter.get('/editAddress',userController.loadEditProfileAddress)
 userRouter.post('/editAddress',userController.postEditAddress)
+userRouter.put('/deleteAddress',userController.deleteAddress)
+userRouter.get('/profileNewAddress',userController.loadProfileNewAddress)
+userRouter.post('/profileNewAddress',userController.postProfileNewAddress)
+userRouter.post('/editProfile',userController.postEditProfile)
+userRouter.get('/orders',orderController.loadOrders)
+userRouter.patch('/cancelOrder',orderController.patchCancelOrder)
+userRouter.get('/changePassword',userController.loadChangePassword)
+userRouter.post('/changePassword',userController.postChangePasssword)
+userRouter.get('/viewOrdered',orderController.loadViewOrdered)
+
+
 
 
 

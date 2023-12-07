@@ -69,6 +69,10 @@ adminRoute.get('/editProduct',auth.isLogin,adminController.loadEditProduct)
 adminRoute.post('/editProduct',upload,adminController.postEditProduct)
 adminRoute.post('/products/deleteProducts/:id',adminController.deleteProducts)
 adminRoute.get('/logout',auth.isLogin,adminController.loadLogout)
+adminRoute.get('/orders',adminController.loadOrders)
+adminRoute.patch('/updatedStatus',adminController.updatedStatus)
+adminRoute.get('/orderDetails',adminController.loadOrderDetails)
+
 
 
 

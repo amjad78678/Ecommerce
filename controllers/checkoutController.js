@@ -96,11 +96,12 @@ const postOrderPlaced=async(req,res)=>{
    
 
    const userData=await User.findOne({_id:userId})
-   console.log(userData);
+
 
    const cartData=  await Cart.findOne({user_id:userId})
    const cartProducts=  cartData.items
-   console.log(cartProducts);
+
+   console.log('iam cart products'+cartProducts);
 
    const date=new Date()
    const orderDate=date.toLocaleString()
@@ -135,10 +136,11 @@ const postOrderPlaced=async(req,res)=>{
       console.log('iamproductids'+productId);
       const count=cartProducts[i].quantity
        console.log('iamcountsis'+count);
-
-     await Product.findByIdAndUpdate({_id:productId},{$inc:{stockQuantity:-count}})
+        
+     await Product.updateOne({_id:productId},{$inc:{stockQuantity:-count}})
     }
-      res.json({success:true,params:orderId})
+    res.json({success:true,params:orderId})
+
     
    }
 

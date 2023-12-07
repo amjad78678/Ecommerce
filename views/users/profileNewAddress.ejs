@@ -62,7 +62,6 @@
 <link rel="stylesheet" href="assets/css/skins/skin-demo-2.css" />
 <link rel="stylesheet" href="assets/css/demos/demo-2.css" />
 <link rel="stylesheet" href="/userHome.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
 <% include('../layouts/center.ejs') %>
 <div class="page-wrapper">
@@ -93,7 +92,7 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <div class="ms-auto">
-          <a class="me-5 text-dark" href="/">Home</a>
+          <a class="me-5 text-dark" href="#">Home</a>
           <a class="me-5 text-dark" <% if(locals.user){ %>
                 href="/productList">
             <% }else{ %>
@@ -101,14 +100,8 @@
               
               <% } %>Shop</a>
           <a class="me-5 text-dark" href="#">About Us</a>
-          
+          <a class="me-4 text-dark" href="#">Blog</a>
           <a class="me-4 text-dark" href="#">Contact Us </a>
-          <a class="me-4 text-dark" href="/cart "><%   if(locals.user){  %>
-            
-            
-            <i class="fas fa-shopping-cart"></i>
-            
-            <% } %></a>
           <a href="#"><i class="me-4 fa-regular fa-heart"></i></a>
 
           <div class="dropdown d-inline">
@@ -162,264 +155,89 @@
         <main class="main">
         	<div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
         		<div class="container">
-        			<h1 class="page-title">Furnitures<span>Shop</span></h1>
+        			<h1 class="page-title">New Address<span>Profile</span></h1>
         		</div><!-- End .container -->
         	</div><!-- End .page-header -->
-            <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
+            <nav aria-label="breadcrumb" class="breadcrumb-nav">
                 <div class="container">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#">Shop</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Grid 3 Columns</li>
+                        <li class="breadcrumb-item"><a href="#">Profile</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">New Address</li>
                     </ol>
                 </div><!-- End .container -->
             </nav><!-- End .breadcrumb-nav -->
 
             <div class="page-content">
-                <div class="container">
-                	<div class="row">
-                		<div class="col-lg-9">
-                			<div class="toolbox">
-                				<div class="toolbox-left">
-                					<div class="toolbox-info">
-                						Showing <span>9 of 56</span> Products
-                					</div><!-- End .toolbox-info -->
-                				</div><!-- End .toolbox-left -->
+            	<div class="checkout">
+	                <div class="container">
+            			<div class="checkout-discount">
+            				
+            			</div><!-- End .checkout-discount -->
+            			<form action="#" method="post">
+		                	<div class="row">
+		                		<div class="col-lg-12">
+		                			<h2 class="checkout-title">New Details</h2><!-- End .checkout-title -->
+		                				<div class="row">
+		                					<div class="col-sm-12">
+		                						<label> Name *</label>
+		                						<input type="text" name="name" class="form-control" required>
+		                					</div><!-- End .col-sm-6 -->
 
-                				<div class="toolbox-right">
-                					<div class="toolbox-sort">
-                						<label for="sortby">Sort by:</label>
-                						<div class="select-custom">
-											<select name="sortby" id="sortby" class="form-control">
-												<option value="popularity" selected="selected">Most Popular</option>
-												<option value="rating">Most Rated</option>
-												<option value="date">Date</option>
-											</select>
-										</div>
-                					</div><!-- End .toolbox-sort -->
-                					<div class="toolbox-layout">
-                						<a href="category-list.html" class="btn-layout">
-                							<svg width="16" height="10">
-                								<rect x="0" y="0" width="4" height="4" />
-                								<rect x="6" y="0" width="10" height="4" />
-                								<rect x="0" y="6" width="4" height="4" />
-                								<rect x="6" y="6" width="10" height="4" />
-                							</svg>
-                						</a>
+		                					
+		                				</div><!-- End .row --> 
 
-                						<a href="category-2cols.html" class="btn-layout">
-                							<svg width="10" height="10">
-                								<rect x="0" y="0" width="4" height="4" />
-                								<rect x="6" y="0" width="4" height="4" />
-                								<rect x="0" y="6" width="4" height="4" />
-                								<rect x="6" y="6" width="4" height="4" />
-                							</svg>
-                						</a>
+	            						
 
-                						<a href="category.html" class="btn-layout active">
-                							<svg width="16" height="10">
-                								<rect x="0" y="0" width="4" height="4" />
-                								<rect x="6" y="0" width="4" height="4" />
-                								<rect x="12" y="0" width="4" height="4" />
-                								<rect x="0" y="6" width="4" height="4" />
-                								<rect x="6" y="6" width="4" height="4" />
-                								<rect x="12" y="6" width="4" height="4" />
-                							</svg>
-                						</a>
+	            						<label>Phone Number *</label>
+	            						<input type="text" name="phone" class="form-control" required>
 
-                						<a href="category-4cols.html" class="btn-layout">
-                							<svg width="22" height="10">
-                								<rect x="0" y="0" width="4" height="4" />
-                								<rect x="6" y="0" width="4" height="4" />
-                								<rect x="12" y="0" width="4" height="4" />
-                								<rect x="18" y="0" width="4" height="4" />
-                								<rect x="0" y="6" width="4" height="4" />
-                								<rect x="6" y="6" width="4" height="4" />
-                								<rect x="12" y="6" width="4" height="4" />
-                								<rect x="18" y="6" width="4" height="4" />
-                							</svg>
-                						</a>
-                					</div><!-- End .toolbox-layout -->
-                				</div><!-- End .toolbox-right -->
-                			</div><!-- End .toolbox -->
+	            						<label>Street address *</label>
+	            						<input type="text" name="streetAddress" class="form-control" placeholder="House name and Street name" required>
+	            					
 
-                            <div class="products mb-3">
-                                <div class="row justify-content-center">
+	            						<div class="row">
+		                					<div class="col-sm-6">
+		                						<label> City *</label>
+		                						<input type="text" name="city" class="form-control" required>
+		                					</div><!-- End .col-sm-6 -->
+
+		                					<div class="col-sm-6">
+		                						<label>State  *</label>
+		                						<input name="state" type="text" class="form-control" required>
+		                					</div><!-- End .col-sm-6 -->
+		                				</div><!-- End .row -->
+
+		                				<div class="row">
+		                					<div class="col-sm-6">
+		                						<label>Pin Code *</label>
+		                						<input type="text" name="pincode" class="form-control" required>
+		                					</div><!-- End .col-sm-6 -->
+
+		                					<div class="col-sm-6">
+		                						<label>Email *</label>
+		                						<input type="text" name="email" class="form-control" required>
+		                					</div><!-- End .col-sm-6 -->
+		                				</div><!-- End .row -->
+                               <br>
+	                        <button class="btn btn-primary" type="submit">Add New</button>
 
 
 
+	        							
 
+										
 
-
-
-
-
-               <%
-               // Create a mapping of category IDs to is_Listed status
-               const categoryMap = {};
-               for (let j = 0; j < category.length; j++) {
-                 categoryMap[category[j].name] = category[j].is_Listed==true;
-                }
-               %>
-
-<% if(product.length > 0) { %>
-  <div class="row">
-    <% for(let i = 0; i < product.length; i++) { %>
-    
-      <% const categoryIsListed = categoryMap[product[i].category]; %>
-
-      <% if(product[i].is_Listed==true && categoryIsListed) { %>
-        <div class="col-6 col-md-4 col-lg-4">
-          <div class="product product-7 text-center">
-            <figure class="product-media">
-              <span class="product-label label-new">New</span>
-              <a href="/productDetail?id=<%= product[i]._id %>">
-                <img src="<%= product[i].imageUrl[0] %>" alt="<%= product[i].imageUrl %>" class="product-image">
-              </a>
-
-              <div class="product-action-vertical">
-                <a href="#" class="btn-product-icon btn-wishlist btn-expandable"><span>add to wishlist</span></a>
-                <a href="popup/quickView.html" class="btn-product-icon btn-quickview" title="Quick view"><span>Quick view</span></a>
-                <a href="#" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a>
-              </div><!-- End .product-action-vertical -->
-
-              <div class="product-action">
-                <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
-              </div><!-- End .product-action -->
-            </figure><!-- End .product-media -->
-
-            <div class="product-body">
-              <div class="product-cat">
-                <a href="#"><%= product[i].category %></a>
-              </div><!-- End .product-cat -->
-              <h3 class="product-title"><a href="/productDetail?id=<%= product[i]._id %>"><%= product[i].name %></a></h3><!-- End .product-title -->
-              <div class="product-price">
-                <%= product[i].price %>
-              </div><!-- End .product-price -->
-              <div class="ratings-container">
-                <div class="ratings">
-                  <div class="ratings-val" style="width: 20%;"></div><!-- End .ratings-val -->
-                </div><!-- End .ratings -->
-                <span class="ratings-text">( 2 Reviews )</span>
-              </div><!-- End .rating-container -->
-
-              <!-- End .product-nav -->
-            </div><!-- End .product-body -->
-          </div><!-- End .product -->
-        </div><!-- End .col-sm-6 col-lg-4 -->
-      <% } %>
-    <% } %>
-  </div><!-- End .row -->
-<% } %>
-
-                             
-                                 
-                                    
-                                    
-                                    
-                                    
-                                    <!-- End .col-sm-6 col-lg-4 -->
-                                </div><!-- End .row -->
-                            </div><!-- End .products -->
-
-                			<nav aria-label="Page navigation">
-							    <ul class="pagination justify-content-center">
-							        <li class="page-item disabled">
-							            <a class="page-link page-link-prev" href="#" aria-label="Previous" tabindex="-1" aria-disabled="true">
-							                <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Prev
-							            </a>
-							        </li>
-							        <li class="page-item active" aria-current="page"><a class="page-link" href="#">1</a></li>
-							        <li class="page-item"><a class="page-link" href="#">2</a></li>
-							        <li class="page-item"><a class="page-link" href="#">3</a></li>
-							        <li class="page-item-total">of 6</li>
-							        <li class="page-item">
-							            <a class="page-link page-link-next" href="#" aria-label="Next">
-							                Next <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
-							            </a>
-							        </li>
-							    </ul>
-							</nav>
-                		</div><!-- End .col-lg-9 -->
-                		<aside class="col-lg-3 order-lg-first">
-                			<div class="sidebar sidebar-shop">
-                				<div class="widget widget-clean">
-                					<label>Filters:</label>
-                					<a href="#" class="sidebar-filter-clear">Clean All</a>
-                				</div><!-- End .widget widget-clean -->
-
-                				<div class="widget widget-collapsible">
-    								<h3 class="widget-title">
-									    <a data-toggle="collapse" href="#widget-1" role="button" aria-expanded="true" aria-controls="widget-1">
-									        Category
-									    </a>
-									</h3><!-- End .widget-title -->
-
-									<div class="collapse show" id="widget-1">
-										<div class="widget-body">
-											<div class="filter-items filter-items-count">
-
-                <% if(category.length>0 ){ %>
-                  <% for(i=0;i<category.length;i++) { %>
-                      <% if(category[i].is_Listed==true) { %>
-												<div class="filter-item">
-													<div class="custom-control custom-checkbox">
-												   <a href="/productList?name=<%= category[i].name  %>">* <%= category[i].name  %></a>
-													
-													</div><!-- End .custom-checkbox -->
-
-
-													<!-- <span class="item-count"><%= category.length  %></span> -->
-
-
-												</div><!-- End .filter-item -->
-                   <% } %>
-                   <% } %>
-                   <% } %>
-
-											</div><!-- End .filter-items -->
-										</div><!-- End .widget-body -->
-									</div><!-- End .collapse -->
-        						</div><!-- End .widget -->
-
-        						
-
-        					
-
-        					
-
-        						<div class="widget widget-collapsible">
-    <h3 class="widget-title">
-        <a data-toggle="collapse" href="#widget-5" role="button" aria-expanded="true" aria-controls="widget-5">
-            Price
-        </a>
-    </h3>
-    <div class="collapse show" id="widget-5">
-        <div class="widget-body">
-            <div class="filter-price">
-                <div class="filter-price-text mb-5">
-                    Price Range:
-                </div>
-                <div>
-                    <input type="number" id="min-price" placeholder="Min Price"  style="width: 40%" />
-                    <span class="mx-2">to</span>
-                    <input type="number" id="max-price" placeholder="Max Price"  style="width: 40%"/>
-                    <br>
-                    <button class="mt-2" onclick="applyPriceFilter()">Apply</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- End .widget -->
-                			</div><!-- End .sidebar sidebar-shop -->
-                		</aside><!-- End .col-lg-3 -->
-                	</div><!-- End .row -->
-                </div><!-- End .container -->
+                                        
+		                		</div><!-- End .col-lg-9 -->
+		                		
+		                	</div><!-- End .row -->
+            			</form>
+	                </div><!-- End .container -->
+                </div><!-- End .checkout -->
             </div><!-- End .page-content -->
         </main><!-- End .main -->
-
-        <footer class="">
+ <footer class="">
     <div class="container-fluid border-top border-bottom">
       <div class="row">
         <div class="col-xl-3 mb-3">
@@ -560,7 +378,7 @@
 <div class="mobile-menu-overlay"></div>
 <!-- End .mobil-menu-overlay -->
 
-<div class="mobile-menu-container mobile-menu-light">
+<div class="mobile-menu-container mobile-menu-light">g
   <div class="mobile-menu-wrapper">
     <span class="mobile-menu-close"><i class="icon-close"></i></span>
 
@@ -701,9 +519,9 @@
               </ul>
             </li>
             <li>
-              <a href="/productDetail" class="sf-with-ul">Product</a>
+              <a href="product.html" class="sf-with-ul">Product</a>
               <ul>
-                <li><a href="/productDetail">Default</a></li>
+                <li><a href="product.html">Default</a></li>
                 <li><a href="product-centered.html">Centered</a></li>
                 <li>
                   <a href="product-extended.html"
@@ -913,193 +731,6 @@
           <span aria-hidden="true"><i class="icon-close"></i></span>
         </button>
 
-        <div class="form-box">
-          <div class="form-tab">
-            <ul class="nav nav-pills nav-fill" role="tablist">
-              <li class="nav-item">
-                <a
-                  class="nav-link active"
-                  id="signin-tab"
-                  data-toggle="tab"
-                  href="#signin"
-                  role="tab"
-                  aria-controls="signin"
-                  aria-selected="true"
-                  >Sign In</a
-                >
-              </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link"
-                  id="register-tab"
-                  data-toggle="tab"
-                  href="#register"
-                  role="tab"
-                  aria-controls="register"
-                  aria-selected="false"
-                  >Register</a
-                >
-              </li>
-            </ul>
-            <div class="tab-content" id="tab-content-5">
-              <div
-                class="tab-pane fade show active"
-                id="signin"
-                role="tabpanel"
-                aria-labelledby="signin-tab"
-              >
-                <form action="#">
-                  <div class="form-group">
-                    <label for="singin-email"
-                      >Username or email address *</label
-                    >
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="singin-email"
-                      name="singin-email"
-                      required
-                    />
-                  </div>
-                  <!-- End .form-group -->
-
-                  <div class="form-group">
-                    <label for="singin-password">Password *</label>
-                    <input
-                      type="password"
-                      class="form-control"
-                      id="singin-password"
-                      name="singin-password"
-                      required
-                    />
-                  </div>
-                  <!-- End .form-group -->
-
-                  <div class="form-footer">
-                    <button type="submit" class="btn btn-outline-primary-2">
-                      <span>LOG IN</span>
-                      <i class="icon-long-arrow-right"></i>
-                    </button>
-
-                    <div class="custom-control custom-checkbox">
-                      <input
-                        type="checkbox"
-                        class="custom-control-input"
-                        id="signin-remember"
-                      />
-                      <label class="custom-control-label" for="signin-remember"
-                        >Remember Me</label
-                      >
-                    </div>
-                    <!-- End .custom-checkbox -->
-
-                    <a href="#" class="forgot-link">Forgot Your Password?</a>
-                  </div>
-                  <!-- End .form-footer -->
-                </form>
-                <div class="form-choice">
-                  <p class="text-center">or sign in with</p>
-                  <div class="row">
-                    <div class="col-sm-6">
-                      <a href="#" class="btn btn-login btn-g">
-                        <i class="icon-google"></i>
-                        Login With Google
-                      </a>
-                    </div>
-                    <!-- End .col-6 -->
-                    <div class="col-sm-6">
-                      <a href="#" class="btn btn-login btn-f">
-                        <i class="icon-facebook-f"></i>
-                        Login With Facebook
-                      </a>
-                    </div>
-                    <!-- End .col-6 -->
-                  </div>
-                  <!-- End .row -->
-                </div>
-                <!-- End .form-choice -->
-              </div>
-              <!-- .End .tab-pane -->
-              <div
-                class="tab-pane fade"
-                id="register"
-                role="tabpanel"
-                aria-labelledby="register-tab"
-              >
-                <form action="#">
-                  <div class="form-group">
-                    <label for="register-email">Your email address *</label>
-                    <input
-                      type="email"
-                      class="form-control"
-                      id="register-email"
-                      name="register-email"
-                      required
-                    />
-                  </div>
-                  <!-- End .form-group -->
-
-                  <div class="form-group">
-                    <label for="register-password">Password *</label>
-                    <input
-                      type="password"
-                      class="form-control"
-                      id="register-password"
-                      name="register-password"
-                      required
-                    />
-                  </div>
-                  <!-- End .form-group -->
-
-                  <div class="form-footer">
-                    <button type="submit" class="btn btn-outline-primary-2">
-                      <span>SIGN UP</span>
-                      <i class="icon-long-arrow-right"></i>
-                    </button>
-
-                    <div class="custom-control custom-checkbox">
-                      <input
-                        type="checkbox"
-                        class="custom-control-input"
-                        id="register-policy"
-                        required
-                      />
-                      <label class="custom-control-label" for="register-policy"
-                        >I agree to the <a href="#">privacy policy</a> *</label
-                      >
-                    </div>
-                    <!-- End .custom-checkbox -->
-                  </div>
-                  <!-- End .form-footer -->
-                </form>
-                <div class="form-choice">
-                  <p class="text-center">or sign in with</p>
-                  <div class="row">
-                    <div class="col-sm-6">
-                      <a href="#" class="btn btn-login btn-g">
-                        <i class="icon-google"></i>
-                        Login With Google
-                      </a>
-                    </div>
-                    <!-- End .col-6 -->
-                    <div class="col-sm-6">
-                      <a href="#" class="btn btn-login btn-f">
-                        <i class="icon-facebook-f"></i>
-                        Login With Facebook
-                      </a>
-                    </div>
-                    <!-- End .col-6 -->
-                  </div>
-                  <!-- End .row -->
-                </div>
-                <!-- End .form-choice -->
-              </div>
-              <!-- .End .tab-pane -->
-            </div>
-            <!-- End .tab-content -->
-          </div>
-          <!-- End .form-tab -->
-        </div>
         <!-- End .form-box -->
       </div>
       <!-- End .modal-body -->
@@ -1129,11 +760,6 @@
   integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
   crossorigin="anonymous"
 ></script>
-
-
-
-
-
 <!-- Main JS File -->
 <script src="assets/js/main.js"></script>
 <script src="assets/js/demos/demo-2.js"></script>

@@ -1,8 +1,10 @@
 const User=require('../models/userModel')
 const Category= require('../models/categoryModel')
 const Product=require('../models/productModel')
+const Order=require('../models/orderModel')
 const bcrypt=require('bcrypt')
 const mongoose = require('mongoose');
+const { OrderedBulkOperation } = require('mongodb');
 
 
 const loadAdminLogin=async(req,res)=>{
@@ -444,6 +446,41 @@ const loadLogout=async(req,res)=>{
       }
 }
 
+const loadOrders=async(req,res)=>{
+        try {
+       const user_id= req.session.user_id
+        const orderData=  await Order.find({user_id:user_id}).populate('items.product_id')
+        console.log(orderData);
+          res.render('orders',{orderData})
+        } catch (error) {
+          console.log(error.message);
+      }
+}
+
+const updatedStatus=async(req,res)=>{
+    try {
+      console.log(req.body);
+   const {status,orderId}= req.body
+      await Order.updateOne({_id:orderId},{$set:{status:status}})
+    
+    
+     res.send({success:true})
+    } catch (error) {
+      console.log(error.message);
+    }
+}
+
+
+const loadOrderDetails=async(req,res)=>{
+    try {
+    const userId=req.query.id
+    const orderData = await Order.findById({_id:userId}).populate('items.product_id')
+  
+      res.render('orderDetails',{orderData})
+    } catch (error) {
+      console.log(error.message);
+    }
+}
 module.exports={
        loadAdminHome,
        loadAdminLogin,
@@ -468,5 +505,8 @@ module.exports={
        loadEditProduct,
        postEditProduct,
        deleteProducts,
-       loadLogout
+       loadLogout,
+       loadOrders,
+       updatedStatus,
+       loadOrderDetails
     }
