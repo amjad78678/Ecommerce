@@ -66,6 +66,7 @@ userRouter.patch('/cancelOrder',orderController.patchCancelOrder)
 userRouter.get('/changePassword',userController.loadChangePassword)
 userRouter.post('/changePassword',userController.postChangePasssword)
 userRouter.get('/viewOrdered',orderController.loadViewOrdered)
+userRouter.get('/resend-otp',userController.resendOtp)
 
 
 

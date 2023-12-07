@@ -236,12 +236,12 @@
                       <span>SIGN UP</span>
                       <i class="icon-long-arrow-right"></i>
                     </button>
-
+                
                     <!-- End .custom-checkbox -->
                   </div>
                   <!-- End .form-footer -->
                 </form>
-
+                <span id="mainError" class="error text-center"></span>
                 <% if (typeof message!=='undefined'){ %>
                 <p class="text-center text-success"><%- message%></p>
                 <% } %>
@@ -606,7 +606,7 @@
        let email=document.getElementById('email').value.toLowerCase()
        let mobileNumber=document.getElementById('mobileNumber').value
        let password=document.getElementById('password').value
-       let confirmPassword=document.getElementById('password').value
+       let confirmPassword=document.getElementById('confirmPassword').value
 
 
 
@@ -640,6 +640,12 @@
         return false
     }else{
         document.getElementById('passwordError').innerHTML=''
+    }
+    if(password!==confirmPassword){
+     document.getElementById('mainError').innerHTML='Password should not match'
+     return false
+    }else{
+        document.getElementById('mainError').innerHTML=''
     }
     if(confirmPassword.includes(' ')){
         document.getElementById('confirmPasswordError').innerHTML='Password should not contain spaces'

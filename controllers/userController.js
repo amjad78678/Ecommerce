@@ -45,21 +45,20 @@ const postRegister = async (req, res) => {
       res.render('userRegister',{message:'User already exists enter new details or  <a href="/userSignIn?id=existingUser._id">Login Now</a> '})//-------------------------------------------------------
       
     }else{
-    sPassword = await securePassword(req.body.password);
-    sConfirmPassword = await securePassword(req.body.confirmPassword);
+    const bodyPassword =req.body.password
+    sPassword = await securePassword(bodyPassword);
+    
     const user =new User({
       userName: req.body.userName,
       email: req.body.email,
       mobileNumber: req.body.mobileNumber,
       password: sPassword,
-      confirmPassword: sConfirmPassword,
+      confirmPassword: req.body.confirmPassword,
       is_Admin: 0,
       is_Blocked:false,
       is_Verified: false,
     });
-    if (req.body.password!==req.body.confirmPassword){
-     res.render('userRegister',{message:'Password doesnt match enter again'})
-    }else{
+
     const userData = await user.save().then((result) => {
       sentOtpVerificationMail(result, res);
     });
@@ -67,7 +66,7 @@ const postRegister = async (req, res) => {
     if (userData) {
       await sentOtpVerificationMail(userData.email, userData._id)
     }
-  } 
+  
 }
 }
   catch (error) {
@@ -79,11 +78,11 @@ const postRegister = async (req, res) => {
   const sentOtpVerificationMail = async ({ _id, email }, res) => {
 
 
-    console.log(_id +'email'+email)    //-----------------------------------------------------------------------
+ console.log(_id +'email'+email)    //-----------------------------------------------------------------------
     try {
-      const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
+ const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
       //---------------NODEMAILER TRANSPORT
-  let transporter = nodemailer.createTransport({
+  const transporter = nodemailer.createTransport({
     service:'gmail',
     host: 'smtp.gmail.com',
     port:587,
@@ -99,7 +98,27 @@ const postRegister = async (req, res) => {
         from: process.env.AUTH_EMAIL,
         to: email,
         subject: 'Verify your email for Cornerstone',
-        html: `<p>Enter <b>${otp} </b>in the app to verify your email address and complete your registration </p><p>This code <b>expires in 2 minutes</b></p>`,
+        html: `     <div style="font-family: Helvetica, Arial, sans-serif; min-width: 1000px; overflow: auto; line-height: 2">
+        <div style="margin: 50px auto; width: 70%; padding: 20px 0">
+          <div style="border-bottom: 1px solid #eee">
+            <a href="" style="font-size: 1.4em; color: #82AE46; text-decoration: none; font-weight: 600">
+              Fresh Pick
+            </a>
+          </div>
+          <p style="font-size: 1.1em">Hi,</p>
+          <p>Thank you for choosing Cornerstone . Use the following OTP to complete your Sign Up procedures. OTP is valid for a few minutes</p>
+          <h2 style="background: #82AE46; margin: 0 auto; width: max-content; padding: 0 10px; color: white; border-radius: 4px;">
+            ${otp}
+          </h2>
+          <p style="font-size: 0.9em;">Regards,<br />Fresh Pick</p>
+          <hr style="border: none; border-top: 1px solid #eee" />
+          <div style="float: right; padding: 8px 0; color: #aaa; font-size: 0.8em; line-height: 1; font-weight: 300">
+            <p>Fresh Pick</p>
+            <p>1600 Ocean Of Heaven</p>
+            <p>Pacific</p>
+          </div>
+        </div>
+      </div>`,
       };
 
       //----hash-the-otp
@@ -148,12 +167,12 @@ const verifyOtp=async(req,res)=>{
     const Otp= req.body.Otp
     const userId=req.body.id
      
-     
+
         console.log(`this is session ${userId}`);
         const userOtpVerificationRecords= await userOtpVerification.find({userId})
-     
+         const resendLink=`/resend-otp?id=${userId}`;
         if(!userOtpVerificationRecords.length){
-          return res.render('userOtpRegister',{ message:  `Otp expired <a href="/emailVerifyAfter" style="color:blue;">verifyOtp</a> `  })
+          return res.render('userOtpRegister',{ message:  `Otp expired <a href="${resendLink}" style="color:blue;">Resend Otp</a> `  })
         }
       
           //user otp record exists
@@ -169,13 +188,13 @@ const verifyOtp=async(req,res)=>{
           console.log(enteredOtp);
           console.log(hashedOtp);
            const validOtp = await bcrypt.compare(enteredOtp, hashedOtp);
-          if (userId){
-            req.session.userId=userId
-          }
-           if(!validOtp){
+             if(validOtp){
+               req.session.userId=userId
+             }else{
+              
             //case otp invalid
-           return res.render('userOtpRegister',{message:'Invalid Otp Please try again'})
-           }
+                return res.render('userOtpRegister',{message:'Invalid Otp Please try again'})
+             }
 
          
          //update user to mask is verified true
@@ -497,6 +516,26 @@ const postChangePasssword=async(req,res)=>{
 
 
 
+// Add a new route for OTP resend
+const resendOtp=async (req, res) => {
+  try {
+    const userId = req.query.id;
+
+    // Fetch user details based on the userId
+    const user = await User.findById({_id:userId});
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Resend OTP verification email
+    await sentOtpVerificationMail(user, res);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
 
 
   //  const userResendOtp =async(req,res)=>{
@@ -550,6 +589,7 @@ module.exports = {
   postEditProfile,
   loadChangePassword,
   postChangePasssword,
+  resendOtp
 
  
 };
