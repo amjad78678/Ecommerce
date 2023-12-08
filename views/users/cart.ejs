@@ -845,7 +845,7 @@
   crossorigin="anonymous"
 ></script>
   <script>
-                    function removeFromCart(productId) {
+  function removeFromCart(productId) {
 
                         Swal.fire({
                             title: 'Are you sure?',
@@ -861,7 +861,7 @@
                                     url: '/deleteItems',
                                     data: {
                                         productOgId: productId
-                                    },
+                                    },    
                                     method: 'post',
                                     success: (response) => {
                                         if (response.success) {

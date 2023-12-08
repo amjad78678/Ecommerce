@@ -15,6 +15,7 @@
         <!-- Template CSS -->
         <link href="assetsAdmin/css/main.css?v=1.1" rel="stylesheet" type="text/css" />
         <link href="assetsAdmin/css/addProduct.css" rel="stylesheet" type="text/css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
     </head>
 
     <body>
@@ -213,21 +214,53 @@
                         </div>
                         <!-- card end// -->
                         <div class="card mb-4">
-                            <div class="card-body">
-                                
-                                <div class="input-upload">
-                                     <img class="imgProduct" src="<%= product.imageUrl[0] %>" width="500px" height="250px" alt="<%= product.imageUrl %>">
-                                    <input class="form-control" type="file" name="image" multiple />
+                          <div class="card-body">
+                                <div class="row">
+                                  <% for (let i = 0; i < product.imageUrl.length; i++) { %>
+                                    <div class="col-3" id="pdtImage_<%= i %>">
+                                      <div class="image-container">
+                                        <img
+                                          class="img-fluid img-thumbnail"
+                                          id="prdtimage_<%= i %>"
+                                          src="<%= product.imageUrl[i] %>"
+                                          alt=""
+                                        />
+                                        <a
+                                          href="#"
+                                          onclick="deleteImg(event, '<%= product.imageUrl[i] %>', '<%= product._id %>', '<%= i %>')"
+                                          class="btn btn-danger btn-sm delete-button mb-3"
+                                        >Delete</a>
+                                      </div>
+                                    </div>
+                                  <% } %>
                                 </div>
+                                <div class="input-upload">
+                                  <input
+                                    class="form-control"
+                                    type="file"
+                                    name="image"
+                                    id="imageInput"
+                                    multiple
+                                    onchange="viewImage(event)"
+                                    accept="image/*"
+                                  />
+                                </div>
+                                <!-- Add this element to display the selected image -->
+                                <!-- Add this div to display newly selected images -->
+                                
+
                             
-                            </div>  
+
+                              </div>
                         </div>
+
+                       <% if (typeof message!=='undefined'){ %>
+                       <p class="text-center text-success"><%- message%></p>
+                       <% } %>
                         <!-- card end// -->
                     </div>
                     
-                      <% if (typeof message!=='undefined'){ %>
-                   <p class="text-center text-success"><%- message%></p>
-                   <% } %>
+                   
 
 
                     <div class="col-lg-3">
@@ -270,11 +303,6 @@
 </section>
 
 
-
-            
-            
-                    
-
             <footer class="main-footer font-xs">
                 <div class="row pb-30 pt-15">
                     <div class="col-sm-6">
@@ -288,13 +316,64 @@
                     </div>
                 </div>
             </footer>
-        </main>
+        </main> 
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script src="assetsAdmin/js/vendors/jquery-3.6.0.min.js"></script>
         <script src="assetsAdmin/js/vendors/bootstrap.bundle.min.js"></script>
         <script src="assetsAdmin/js/vendors/select2.min.js"></script>
         <script src="assetsAdmin/js/vendors/perfect-scrollbar.js"></script>
         <script src="assetsAdmin/js/vendors/jquery.fullscreen.min.js"></script>
 
+
+
+        <script>
+    function deleteImg(event,img,productId,index){
+         console.log("event:",event);
+          console.log("img",img);
+          console.log('prdid'+productId);
+          console.log("ind",index);
+
+          event.preventDefault();
+
+                   Swal.fire({
+                            title: 'Are you sure?',
+                            text: "You want to delete!",
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButton: '#3085d6',
+                            cancelButton: '#d33',
+                            confirmButtonText: 'Yes, remove!'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $.ajax({
+                                    url: '/admin/deleteImg',
+                                    data: {
+                                        productId: productId,
+                                        img:img,
+                                        index:index
+                                    },
+                                    method: 'put',
+
+                                       success: (response) => {
+                                         console.log(response); 
+                                        if (response.success) {
+                                           
+                                           const imageContainer=document.getElementById(`pdtImage_${index}`)
+                                          
+                                             imageContainer.style.display='none';
+                                         
+                                           
+                                        }
+                                    }
+                                })
+
+                            }
+                        })
+    }
+
+
+        </script>
         <!-- Main Script -->
         <script src="assetsAdmin/js/main.js?v=1.1" type="text/javascript"></script>
     </body>

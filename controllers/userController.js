@@ -288,7 +288,7 @@ const verifyLogin=async(req,res)=>{
            
      const categoryName= req.query.name
      const category= await Category.find({})
-
+     const userId=req.session.userId
 
         
         let product=[] 
@@ -302,10 +302,11 @@ const verifyLogin=async(req,res)=>{
     
         // const  category= await Category.find({})
         let userData=await User.findOne({_id:req.session.userId})   
-        res.render('productList',{user:userData,category:category,product:product})
+        res.render('productList',{user:userData,category:category,product:product,userId})
 
     
     
+        
       } catch (error) {
         console.log(error.message);
       }
@@ -538,34 +539,10 @@ const resendOtp=async (req, res) => {
 }
 
 
-  //  const userResendOtp =async(req,res)=>{
-  //       try {
-  //         res.render('userOtpRegister')
-  //       } catch (error) {
-  //         console.log(error.message);
-  //       }
-  //  }
-  //   const postUserResendOtp=async(req,res)=>{
-  //     try {
-  //         let {userId,email}=req.body
-  //         console.log('this'+userId);
-  //         console.log(email);
-  //         if(!userId || !email){
-  //           res.render('userOtpRegister',{message:'Empty user details are not allowed'})
-  //         }else{
-  //           //delete existing records and resend
-
-  //            await userOtpVerification.deleteMany({userId})
-  //            sentOtpVerificationMail({_id:userId,email})
-  //         }
-  //     } catch (error) {
-  //       console.log(error.message);
-  //     }
-  //   }
 
 
 
-module.exports = {
+ module.exports = {
   loadHome,
   loadRegister,
   postRegister,
@@ -589,7 +566,5 @@ module.exports = {
   postEditProfile,
   loadChangePassword,
   postChangePasssword,
-  resendOtp
-
- 
+  resendOtp,
 };

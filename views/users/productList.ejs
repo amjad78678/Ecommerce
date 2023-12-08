@@ -264,6 +264,7 @@
 
 <% if(product.length > 0) { %>
   <div class="row">
+  
     <% for(let i = 0; i < product.length; i++) { %>
     
       <% const categoryIsListed = categoryMap[product[i].category]; %>
@@ -283,7 +284,9 @@
                 <a href="#" class="btn-product-icon btn-compare" title="Compare"><span>Compare</span></a>
               </div><!-- End .product-action-vertical -->
 
-         
+           <div class="product-action">
+                <a href="#" class="btn-product btn-cart"><span>add to cart</span></a>
+              </div><!-- End .product-action -->
             </figure><!-- End .product-media -->
 
             <div class="product-body">
@@ -357,13 +360,27 @@
 										<div class="widget-body">
 											<div class="filter-items filter-items-count">
 
+
+                         <% if(userId){ %>
+                            <a class="ms-4" href="/productList">* All Products</a>
+                         <% }else{ %>
+                           <a class="ms-4" href="/productListN">* All Products</a>
+                           <% } %>
+
+                    
                 <% if(category.length>0 ){ %>
                   <% for(i=0;i<category.length;i++) { %>
                       <% if(category[i].is_Listed==true) { %>
 												<div class="filter-item">
 													<div class="custom-control custom-checkbox">
+
+                            <% if (userId){ %>
 												   <a href="/productList?name=<%= category[i].name  %>">* <%= category[i].name  %></a>
-													
+													  <% }else{ %>
+                               <a href="/productListN?name=<%= category[i].name  %>">* <%= category[i].name  %></a>
+                              <% } %>
+
+                              
 													</div><!-- End .custom-checkbox -->
 
 
@@ -373,7 +390,7 @@
 												</div><!-- End .filter-item -->
                    <% } %>
                    <% } %>
-                   <% } %>
+                   <% } %>  
 
 											</div><!-- End .filter-items -->
 										</div><!-- End .widget-body -->

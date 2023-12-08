@@ -224,9 +224,7 @@
                         <!-- card end// -->
                     </div>
                     
-                      <% if (typeof message!=='undefined'){ %>
-                   <p class="text-center text-success"><%- message%></p>
-                   <% } %>
+                      
 
 
                     <div class="col-lg-3">
@@ -267,8 +265,11 @@
          
                            
     </form>
-</section>
 
+<% if (typeof message!=='undefined'){ %>
+                   <p class="text-center text-success"><%- message%></p>
+                   <% } %>
+</section>
 
 
             

@@ -324,7 +324,11 @@ const postAddProduct=async(req,res)=>{
         const quantity=req.body.quantity
         const category=req.body.category
 
-      const product=new Product({
+        if(req.files.length!==5||req.files.length>5){
+        let category=await Category.find({is_Listed:true})
+          res.render('addProduct',{message:'Only 5 images allowed',category})
+        }else{
+            const product=new Product({
              name:name,
              description:description,
              imageUrl:image,
@@ -361,6 +365,12 @@ if (!productData){
 }else{
   res.redirect('/admin/products')
 }
+
+
+}
+
+    
+
 
  } catch (error) {
       console.log(error.message);
@@ -411,15 +421,40 @@ const loadEditProduct=async(req,res)=>{
 
 const postEditProduct=async(req,res)=>{
        try {
-     console.log(req.body);
-     console.log(req.query.id);
-    
-    
-      await Product.findByIdAndUpdate({_id:req.body.id},{name:req.body.name,description:req.body.description,price:req.body.price,category:req.body.category, imageUrl : req.files.map(file => file.filename),stockQuantity:req.body.quantity,wood:req.body.wood})
-      res.redirect('/admin/products')
-     
-   
+ 
+ console.log(req.query.id);
+ const product =await Product.findOne({_id:req.body.id})
+ const categ =await Product.find({is_Listed:1})
 
+  
+ console.log('files',req.files.length);
+
+     if(req.files){
+     const existingCount=(await Product.findById(req.body.id)).imageUrl.length
+     console.log('existCount'+existingCount);
+     if(existingCount+req.files.length!==5||existingCount+req.files.length>5){
+       res.render('editProduct',{message:'Only 5 images  allowed',product,categ})
+     }else{
+
+  await Product.findByIdAndUpdate(
+  { _id: req.body.id },
+  {
+    $push: { imageUrl: { $each: req.files.map(file => file.filename) } },
+    name: req.body.name,
+    description: req.body.description,
+    price: req.body.price,
+    category: req.body.category,
+    stockQuantity: req.body.quantity,
+    wood: req.body.wood
+  }
+);
+
+ res.redirect('/admin/products')
+     
+
+     }
+     }
+    
            
        } catch (error) {
         console.log(error.message);
@@ -481,6 +516,18 @@ const loadOrderDetails=async(req,res)=>{
       console.log(error.message);
     }
 }
+
+const postDeleteImg=async(req,res)=>{
+      try { 
+       const {productId,img,index}= req.body
+       console.log(productId+img+index);
+
+      await Product.updateOne({_id:productId},{$pull:{imageUrl:img}})
+       res.send({success:true})
+      } catch (error) {
+        console.log(error.message);
+      }
+}
 module.exports={
        loadAdminHome,
        loadAdminLogin,
@@ -508,5 +555,6 @@ module.exports={
        loadLogout,
        loadOrders,
        updatedStatus,
-       loadOrderDetails
+       loadOrderDetails,
+       postDeleteImg
     }

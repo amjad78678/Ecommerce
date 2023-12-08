@@ -29,7 +29,7 @@ const storage = multer.diskStorage({
     cb(null, name);
   },
 });
-const upload = multer({ storage: storage }).array('image',5);
+const upload = multer({ storage: storage }).array('image');
 
 
 
@@ -72,6 +72,7 @@ adminRoute.get('/logout',auth.isLogin,adminController.loadLogout)
 adminRoute.get('/orders',adminController.loadOrders)
 adminRoute.patch('/updatedStatus',adminController.updatedStatus)
 adminRoute.get('/orderDetails',adminController.loadOrderDetails)
+adminRoute.put('/deleteImg',adminController.postDeleteImg)
 
 
 
