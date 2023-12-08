@@ -19,7 +19,7 @@
 
     <body>
         <div class="screen-overlay"></div>
-        <aside class="navbar-aside" id="offcanvas_aside">
+         <aside class="navbar-aside" id="offcanvas_aside">
             <div class="aside-top">
                 <a href="index.html" class="brand-wrap">
                     <img src="https://imgs.search.brave.com/IS3ECAw-N7V5vfLuJOPJQwYn0zPRLDKKDI5LT2JFpxU/rs:fit:860:0:0/g:ce/aHR0cHM6Ly93d3cu/Y3NvZGJyYW5kLmNv/bS93cC1jb250ZW50/L3VwbG9hZHMvMjAy/MS8xMC9Db3JuZXJz/dG9uZS1Mb2dvLUhv/cml6b250YWwucG5n" class="logo" alt="Nest Dashboard" />
@@ -59,16 +59,12 @@
                         
                     </li>
 
-                      <li class="menu-item has-submenu">
-                        <a class="menu-link" href="page-orders-1.html">
+                      <li class="menu-item ">
+                        <a class="menu-link" href="/admin/orders">
                             <i class="icon material-icons md-shopping_cart"></i>
                             <span class="text">Orders</span>
                         </a>
-                        <div class="submenu">
-                            <a href="page-orders-1.html">Order list 1</a>
-                            <a href="page-orders-2.html">Order list 2</a>
-                            <a href="page-orders-detail.html">Order detail</a>
-                        </div>
+                      
                     </li>
                    
                     <li class="menu-item has-submenu">
@@ -186,7 +182,7 @@
                            
                         </div>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 pb-5">
                         <div class="card mb-4">
                             <div class="card-body">
                           <form action="" method="post" enctype="multipart/form-data">
@@ -215,8 +211,24 @@
                             <div class="card-body">
                                 
                                <div class="input-upload">
-                               <img id="" src="" alt="" />
-                               <input class="form-control" type="file" name="image" multiple />
+                               <div class="row">
+                                <div class="col-6">
+                                    <img width="100%" id="img1" src="" alt="" />
+                                </div>
+                                <div class="col-6">
+                                    <img width="100%" id="img2" src="" alt="" />
+                                </div>
+                                 <div class="col-6">
+                                    <img width="100%" id="img3" src="" alt="" />
+                                </div>
+                                <div class="col-6">
+                                    <img width="100%" id="img4" src="" alt="" />
+                                </div>
+                                 <div class="col-6">
+                                    <img width="100%" id="img5" src="" alt="" />
+                                </div>
+                               </div>
+                               <input class="form-control" type="file" name="image" onchange="viewImage(event)" multiple />
                            </div>
                             
                             </div>
@@ -269,7 +281,13 @@
 <% if (typeof message!=='undefined'){ %>
                    <p class="text-center text-success"><%- message%></p>
                    <% } %>
+
+
 </section>
+
+
+
+
 
 
             
@@ -298,7 +316,20 @@
 
         <!-- to preview image when add  -->
 
+<script>
+    function viewImage(event){
+        const images=document.querySelectorAll('[id ^="img"]')
 
+        for (let i=0;i<images.length;i++){
+            if(event.target.files[i]){
+                images[i].src=URL.createObjectURL(event.target.files[i])
+            }else{
+                images[i].src=''
+            }
+        }
+     
+    }
+</script>   
 
 
 

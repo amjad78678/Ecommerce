@@ -41,13 +41,30 @@ const { ObjectId } = require('mongodb')
 
 const   postAddToCart = async (req, res) => {
   try {
+    console.log('hellobruda');
     const userId = req.session.userId;
 
     if (userId) {
       const productId = req.body.productId;
       const quantity = req.body.quantity || 1;
+      console.log('iam quantity'+quantity);
 
-      const product = await Product.findById(productId);
+   const product = await Product.findById(productId);
+   console.log('iam the product'+product);
+
+const cartData = await Cart.findOne({
+  user_id: userId,
+  'items.product_id': productId
+},{'items.$':1})  // Projection to only retrieve the matching item
+
+  console.log('cartdata'+cartData);
+
+     if (cartData && cartData.items[0].quantity>=product.stockQuantity) {  
+     console.log('Product stock exceeded');
+    return res.json({ limited: true, message: 'Product stock exceeded' });
+   }else{
+
+
 
       if (!product) {
         return res.status(404).json({ error: "Product not found" });
@@ -88,6 +105,11 @@ const   postAddToCart = async (req, res) => {
       }
 
       return res.json({ success: true });
+    
+   }
+  
+  
+
     } else {
       return res.json({ success: false });
     }

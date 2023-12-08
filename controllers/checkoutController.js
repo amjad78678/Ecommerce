@@ -12,9 +12,11 @@ const Order = require('../models/orderModel')
             
               const userId=req.session.userId
               const cart= await Cart.findOne({user_id:userId}).populate({path:'items.product_id'})
+
               if(userId && cart ){
            
-
+       
+        
 
       let originalAmts = 0;
 

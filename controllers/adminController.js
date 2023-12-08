@@ -492,18 +492,27 @@ const loadOrders=async(req,res)=>{
       }
 }
 
-const updatedStatus=async(req,res)=>{
-    try {
-      console.log(req.body);
-   const {status,orderId}= req.body
-      await Order.updateOne({_id:orderId},{$set:{status:status}})
-    
-    
-     res.send({success:true})
-    } catch (error) {
-      console.log(error.message);
+const updatedStatus = async (req, res) => {
+  try {
+    const { status, orderId } = req.body;
+    await Order.updateOne({ _id: orderId }, { $set: { status: status } });
+
+    if (status === 'cancelled'||'returned') {
+      const orderData = await Order.findOne({ _id: orderId }).populate('items.product_id');
+      for (let i = 0; i < orderData.items.length; i++) {
+        const productId = orderData.items[i].product_id._id;
+        const productQuantity = orderData.items[i].quantity;
+        await Product.updateOne({ _id: productId }, { $inc: { stockQuantity: -productQuantity } });
+      }
     }
-}
+
+    res.send({ success: true });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send({ success: false, message: 'Internal server error.' });
+  }
+};
+
 
 
 const loadOrderDetails=async(req,res)=>{

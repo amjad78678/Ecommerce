@@ -186,32 +186,30 @@
 
 
                       
-                                <div class="product-gallery product-gallery-vertical">
-                                    <div class="row">
-                                        <figure class="product-main-image">
-                                            <img id="product-zoom" src="<%= product.imageUrl[0] %>" data-zoom-image="assets/images/products/single/centered/1-big.jpg" alt="product image">
+                                  <div class="product-gallery product-gallery-vertical" style="overflow: hidden;">
+                                      <div class="row">
+                                          <figure  class="product-main-image ">
+                                              <img id="productZoom" src="<%= product.imageUrl[0] %>"    alt="product image">
 
-                                            <a href="#" id="btn-product-gallery" class="btn-product-gallery">
-                                                <i class="icon-arrows"></i>
-                                            </a>
+
                                         </figure><!-- End .product-main-image -->
 
                                         <div id="product-zoom-gallery" class="product-image-gallery">
-                                            <a class="product-gallery-item active" href="#" data-image="<%= product.imageUrl[1]  %>" data-zoom-image="assets/images/products/single/centered/1-big.jpg">
-                                                <img src="<%= product.imageUrl[1]  %>" alt="product side">
-                                            </a>
+                                            
+                                                <img src="<%= product.imageUrl[1]  %>" onclick="changeMainImage(this)" alt="product side">
+                                           
 
-                                            <a class="product-gallery-item" href="#" data-image="<%= product.imageUrl[2]  %>" data-zoom-image="assets/images/products/single/centered/2-big.jpg">
-                                                <img src="<%= product.imageUrl[2]  %>" alt="product cross">
-                                            </a>
+                                            
+                                                <img src="<%= product.imageUrl[2]  %>" onclick="changeMainImage(this)" alt="product cross">
 
-                                            <a class="product-gallery-item" href="#" data-image="<%= product.imageUrl[3]  %>" data-zoom-image="assets/images/products/single/centered/3-big.jpg">
-                                                <img src="<%= product.imageUrl[3]  %>" alt="product with model">
-                                            </a>
 
-                                            <a class="product-gallery-item" href="#" data-image="<%= product.imageUrl[4]  %>" data-zoom-image="assets/images/products/single/centered/4-big.jpg">
-                                                <img src="<%= product.imageUrl[4]  %>" alt="product back">
-                                            </a>
+                                           
+                                                <img src="<%= product.imageUrl[3]  %>" onclick="changeMainImage(this)" alt="product with model">
+                                           
+
+                                            
+                                                <img src="<%= product.imageUrl[4]  %>" onclick="changeMainImage(this)" alt="product back">
+                                            
                                         </div><!-- End .product-image-gallery -->
                                     </div><!-- End .row -->
                                 </div><!-- End .product-gallery -->
@@ -950,41 +948,50 @@
 ></script>
 
 
-<!-- for product gallery function -->
 
-<script >
-  
+<script>
 
 
+// <!-- for product gallery function -->
+ function changeMainImage(element) {
+       var mainImage = document.getElementById('productZoom');
+       mainImage.src = element.src;
+      }
 
+// for Zoom image 
+ const img = document.getElementById('productZoom');
+let isZoomed = false;
 
+img.addEventListener('mouseenter', function () {
+    // Apply zoom effect on mouseenter
+    if (!isZoomed) {
+        img.style.transform = 'scale(2.5)';
+        img.style.transition = 'transform 0.5s ease'; // Optional: Add a transition for smooth effect
+        isZoomed = true;
+    } 
+});
 
-    document.addEventListener('DOMContentLoaded', function () {
-        // Get references to elements
-        var galleryThumbnails = document.querySelectorAll('#product-zoom-gallery .product-gallery-item');
-        var mainImage = document.getElementById('product-zoom');
+img.addEventListener('mousemove', function (e) {
+    if (isZoomed) {
+        const boundingBox = img.getBoundingClientRect();
+        const offsetX = (e.clientX - boundingBox.left) / boundingBox.width;
+        const offsetY = (e.clientY - boundingBox.top) / boundingBox.height;
 
-        // Add click event listeners to each thumbnail
-        galleryThumbnails.forEach(function (thumbnail) {
-            thumbnail.addEventListener('click', function (event) {
-                event.preventDefault();
+        // Move the image according to mouse movement
+        img.style.transformOrigin = `${offsetX * 100}% ${offsetY * 100}%`;
+    }
+});
 
-                // Update the main image with the clicked thumbnail's data
-                mainImage.src = thumbnail.dataset.image;
-                mainImage.dataset.zoomImage = thumbnail.dataset.zoomImage;
-
-                // Remove 'active' class from all thumbnails
-                galleryThumbnails.forEach(function (thumb) {
-                    thumb.classList.remove('active');
-                });
-
-                // Add 'active' class to the clicked thumbnail
-                thumbnail.classList.add('active');
-            });
-        });
-    });
+img.addEventListener('mouseleave', function () {
+    // Reset to normal size on mouseleave
+    img.style.transform = '';
+    isZoomed = false;
+});
 
 </script>
+
+
+
 <script >
 async function addTocart() {
 
@@ -1033,8 +1040,6 @@ console.log('After Axios request');
                                     icon: 'error',
                                     timer: 2000
                                 })
-
-
 
                             } else {
                                 Swal.fire({
