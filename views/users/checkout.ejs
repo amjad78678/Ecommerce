@@ -652,7 +652,7 @@
 
 
 <script>
-function placeOrdersSelect() {
+async function placeOrdersSelect() {
     const addressRadios = document.getElementsByName('selectedAddress')
     const paymentRadios = document.getElementsByName('payment')
 
@@ -703,7 +703,7 @@ function placeOrdersSelect() {
 
 
 
-function placeOrder() {
+async function placeOrder() {
   // Find the selected address
   const address = document.querySelector('input[name = "selectedAddress"]:checked').value
   const payment=document.querySelector('input[name = "payment"]:checked').value

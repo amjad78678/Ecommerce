@@ -150,13 +150,21 @@ const loadLogin = async (req, res) => {
     console.log(error.message);
   }
 };
+
 const loadOtp = async (req, res) => {
+
   try {
+    
     User.findOne({is_Verified:false})
-    const id = req.query.id
+  const id = req.query.id
+  const userId= req.query.id
+  const resendLink = `/resend-otp?id=${userId}`;
+
+  const timeRemaining = 30; //
+
     // req.session.userId=req.query.id
     // console.log(`this is session${req.session.userId}`);
-    res.render('userOtpRegister',{id:id});
+    res.render('userOtpRegister',{id:id,timeRemaining,resendLink,userId});
 
   } catch (error) {
     console.log(error.message);

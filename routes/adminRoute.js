@@ -5,6 +5,7 @@ const userController = require('../controllers/adminController');
 const bodyParser = require('body-parser');
 const auth=require('../middleware/adminAuth')
 const adminController=require('../controllers/adminController')
+const {upload}=require('../middleware/uploadImages')
 const session= require('express-session')
 
 
@@ -18,18 +19,7 @@ adminRoute.use(express.static(path.join(__dirname, '..', 'public', 'styles')));
 adminRoute.use(
   express.static(path.join(__dirname, '..', 'public', 'assetsAdmin','imgs','products')),
 );
-const multer = require('multer');
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '..', 'public', 'assetsAdmin','imgs','products'));
-  },
-  filename: (req, file, cb) => {
-    const name = Date.now() + '-' + file.originalname;
-    cb(null, name);
-  },
-});
-const upload = multer({ storage: storage }).array('image');
 
 
 
@@ -69,9 +59,9 @@ adminRoute.get('/editProduct',auth.isLogin,adminController.loadEditProduct)
 adminRoute.post('/editProduct',upload,adminController.postEditProduct)
 adminRoute.post('/products/deleteProducts/:id',adminController.deleteProducts)
 adminRoute.get('/logout',auth.isLogin,adminController.loadLogout)
-adminRoute.get('/orders',adminController.loadOrders)
+adminRoute.get('/orders',auth.isLogin,adminController.loadOrders)
 adminRoute.patch('/updatedStatus',adminController.updatedStatus)
-adminRoute.get('/orderDetails',adminController.loadOrderDetails)
+adminRoute.get('/orderDetails',auth.isLogin,adminController.loadOrderDetails)
 adminRoute.put('/deleteImg',adminController.postDeleteImg)
 
 

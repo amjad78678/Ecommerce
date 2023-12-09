@@ -71,5 +71,5 @@ const loadViewOrdered=async(req,res)=>{
 module.exports={
   loadOrders,
   patchCancelOrder,
-    loadViewOrdered
+  loadViewOrdered
 }

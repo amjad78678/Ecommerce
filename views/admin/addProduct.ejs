@@ -278,9 +278,11 @@
                            
     </form>
 
-<% if (typeof message!=='undefined'){ %>
-                   <p class="text-center text-success"><%- message%></p>
-                   <% } %>
+              <% if (message) { %>
+             <div class="error-message text-center text-danger">
+            <%= message %>
+            </div>
+            <% } %>
 
 
 </section>
@@ -318,6 +320,7 @@
 
 <script>
     function viewImage(event){
+    event.preventDefault()
         const images=document.querySelectorAll('[id ^="img"]')
 
         for (let i=0;i<images.length;i++){

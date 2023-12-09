@@ -188,7 +188,7 @@ const postAddCategory=async(req,res)=>{
         if (!name || !description) {
             return res.render('addCategory', { message: 'Invalid data provided' });
         }
-         const cateData=await Category.find({name:name})
+         const cateData=await Category.find({name:{$regex:new RegExp(name,'i')}})
          if(cateData.length>0){
            res.render('addCategory',{message:'The category already exists'})
          }else{
@@ -231,7 +231,7 @@ const loadEditCategory=async(req,res)=>{
 const postEditCategory=async(req,res)=>{
         try {
 
-      let existData =await Category.findOne({name:req.body.name,_id:{$ne:req.body.id}})
+      let existData =await Category.findOne({name:{$regex:new RegExp(req.body.name,'i')},_id:{$ne:req.body.id}})
        console.log(existData);
       if (!existData){
         await Category.findByIdAndUpdate({_id:req.body.id},{name:req.body.name,description:req.body.description})
@@ -307,7 +307,9 @@ const loadAddProduct=async(req,res)=>{
        try {
 
    const category=await Category.find({})
-           res.render('addProduct',{category:category})
+        const message= req.session.message
+        req.session.message=''
+        res.render('addProduct',{category:category,message})
        } catch (error) {
         console.log(error.message);
        }
@@ -325,8 +327,11 @@ const postAddProduct=async(req,res)=>{
         const category=req.body.category
 
         if(req.files.length!==5||req.files.length>5){
-        let category=await Category.find({is_Listed:true})
-          res.render('addProduct',{message:'Only 5 images allowed',category})
+      
+             req.session.message='only 5 images allowed'
+             res.redirect('/admin/addProduct')
+
+          // res.render('addProduct',{message:'Only 5 images allowed',category})
         }else{
             const product=new Product({
              name:name,
@@ -517,9 +522,12 @@ const updatedStatus = async (req, res) => {
 
 const loadOrderDetails=async(req,res)=>{
     try {
-    const userId=req.query.id
-    const orderData = await Order.findById({_id:userId}).populate('items.product_id')
-  
+  const orderId=req.query.id
+
+  const orderData = await Order.findOne({ _id: orderId })
+  .populate('items.product_id');
+
+    console.log('orderData'+orderData);
       res.render('orderDetails',{orderData})
     } catch (error) {
       console.log(error.message);

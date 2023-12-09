@@ -223,7 +223,7 @@
                                 <% } %>
                                 <% if(order.status=='placed'){  %>
                              
-                                  <button  class="btn-md btn-danger ms-3 " onclick="cancel('<%=order._id%>')">
+                                  <button  class="btn-md btn-danger ms-3 " onclick="cancel(event,'<%=order._id%>')">
                                   Cancel
                               </button>
                               <% } %>
@@ -726,7 +726,7 @@
 
 
 <script>
-const cancel=async(orderId)=>{
+async function cancel(event,orderId){
      event.preventDefault()      
      console.log('started click');
   

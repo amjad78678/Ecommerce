@@ -50,7 +50,7 @@ const   postAddToCart = async (req, res) => {
       console.log('iam quantity'+quantity);
 
    const product = await Product.findById(productId);
-   console.log('iam the product'+product);
+   
 
 const cartData = await Cart.findOne({
   user_id: userId,
@@ -80,7 +80,7 @@ const cartData = await Cart.findOne({
           'items.product_id': productId
         },
         {
-          $inc: { 'items.$.quantity': quantity ,'items.$.total_price':product.price}
+          $inc: { 'items.$.quantity': quantity ,'items.$.total_price':totalPrice}
          
         },
         { new: true }
@@ -102,6 +102,7 @@ const cartData = await Cart.findOne({
           },
           { upsert: true, new: true }
         );
+        
       }
 
       return res.json({ success: true });

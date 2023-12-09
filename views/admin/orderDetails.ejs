@@ -196,6 +196,7 @@
                                 <div class="table-responsive">
                                   
                                     <table class="table ">
+                                        
                                           <% orderData.items.forEach((orders)=>{ %>
                                         <thead>
                                             <tr>
@@ -211,7 +212,7 @@
                                                 <td>
                                                     <a class="itemside" href="#">
                                                         <div class="left">
-                                                            <img src="<%=orders.product_id.imageUrl[0]  %>" width="40" height="40" class="img-xs" alt="Item" />
+                                                            <img src="<%=orders.product_id.imageUrl[0]  %>" width="220px" height="180px" class="img" alt="Item" />
                                                         </div>
                                                         <div class="info"><%= orders.product_id.name  %></div>
                                                     </a>
@@ -221,7 +222,7 @@
                                                 <td class="text-end">$<%= orders.total_price  %></td>
                                         
                                                
-                                            
+                                             <% }) %>
                                           
                                             <tr>
                                                 <td colspan="4">
@@ -248,7 +249,7 @@
                                                     </article>
                                                 </td>
                                             </tr>
-                                            <% }) %>
+                                           
                                         </tbody>
                                          
                                     </table>
