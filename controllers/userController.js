@@ -60,7 +60,7 @@ const postRegister = async (req, res) => {
     });
 
     const userData = await user.save().then((result) => {
-      sentOtpVerificationMail(result, res);
+        sentOtpVerificationMail(result, res);
     });
 
     if (userData) {
@@ -150,21 +150,15 @@ const loadLogin = async (req, res) => {
     console.log(error.message);
   }
 };
-
 const loadOtp = async (req, res) => {
-
   try {
-    
     User.findOne({is_Verified:false})
-  const id = req.query.id
-  const userId= req.query.id
-  const resendLink = `/resend-otp?id=${userId}`;
-
-  const timeRemaining = 30; //
-
+    const id = req.query.id
     // req.session.userId=req.query.id
     // console.log(`this is session${req.session.userId}`);
-    res.render('userOtpRegister',{id:id,timeRemaining,resendLink,userId});
+   const errorMessage = req.session.errorMessage
+     req.session.errorMessage=''
+    res.render('userOtpRegister',{id:id,errorMessage});
 
   } catch (error) {
     console.log(error.message);
@@ -196,13 +190,12 @@ const verifyOtp=async(req,res)=>{
           console.log(enteredOtp);
           console.log(hashedOtp);
            const validOtp = await bcrypt.compare(enteredOtp, hashedOtp);
-             if(validOtp){
-               req.session.userId=userId
-             }else{
-              
-            //case otp invalid
-                return res.render('userOtpRegister',{message:'Invalid Otp Please try again',id:userId})
-             }
+           if (validOtp) {
+  req.session.userId = userId;
+  res.json({ success: true });
+} else {
+     req.session.errorMessage='invalid Otp '
+}
 
          
          //update user to mask is verified true
@@ -529,7 +522,7 @@ const postChangePasssword=async(req,res)=>{
 const resendOtp=async (req, res) => {
   try {
     const userId = req.query.id;
-
+    
     // Fetch user details based on the userId
     const user = await User.findById({_id:userId});
 

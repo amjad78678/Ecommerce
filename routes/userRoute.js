@@ -37,6 +37,8 @@ userRouter.get('/userSignIn',auth.isLogout, userController.loadLogin);
 userRouter.post('/userSignIn',userController.verifyLogin)
 userRouter.get('/authentication', auth.isLogout,userController.loadOtp);
 userRouter.post('/authentication',userController.verifyOtp);
+
+
 userRouter.get('/userLogout',auth.isLogin,userController.userLogout);
 userRouter.get('/loginWithOtp',auth.isLogout,userController.loginWithOtp)
 userRouter.post('/loginWithOtp',userController.verifyLoginWithOtp)
@@ -66,7 +68,8 @@ userRouter.patch('/cancelOrder',orderController.patchCancelOrder)
 userRouter.get('/changePassword',auth.isLogin,userController.loadChangePassword)
 userRouter.post('/changePassword',userController.postChangePasssword)
 userRouter.get('/viewOrdered',auth.isLogin,orderController.loadViewOrdered)
-userRouter.get('/resend-otp',auth.isLogout,userController.resendOtp)
+userRouter.get('/resend-otp', auth.isLogout, userController.resendOtp);
+
 
 
 

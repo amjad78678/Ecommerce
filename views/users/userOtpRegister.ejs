@@ -165,7 +165,7 @@
                 role="tabpanel"
                 aria-labelledby="register-tab-2"
               >
-                <form action="/authentication" method="post">
+                <form action="/authentication" id="otp-form" method="post">
                   <div class="form-group">
 
                     <!-- hidden aayi pass cheyyaaan -->
@@ -201,14 +201,19 @@
                   <!-- End .form-footer -->
                 </form>
 
-                <p class="text-center" id="timer" data-resend-link="<%= resendLink %>">
-  <span class="text-danger" id="countdown"></span>
-</p>
-
+                 <p class="text-center" id="timer"> <span class="text-danger" id="countdown"> </span> </p>
 
                 <% if (typeof message!=='undefined'){ %>
                 <p class="text-center text-success"><%- message%></p>
                 <% } %>
+              <div>
+  <% if (errorMessage) { %>
+    <p><%= errorMessage %></p>
+  <% } %>
+  <!-- Your other HTML content here -->
+</div>
+
+
 
                 <!-- End .form-choice -->
               </div>
@@ -562,8 +567,10 @@
   integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
   crossorigin="anonymous"
 ></script>
+
+
 <script>
-var countDownStart = 100;
+var countDownStart = 70;
 
 function updateButtonText() {
     if (countDownStart > 0) {
@@ -571,14 +578,18 @@ function updateButtonText() {
         countDownStart--;
         setTimeout(updateButtonText, 1000); // Update every 1 second
     } else {
-        // OTP expired, update the inner HTML with the resend link
-        var resendLink = document.getElementById('timer').getAttribute('data-resend-link');
-        document.getElementById('countdown').innerHTML = '<span class="text-danger">Otp expired</span> <a href="' + resendLink + '">Resend Otp</a>';
+        // You may want to handle the case when the countdown reaches zero
+        document.getElementById('countdown').innerHTML = 'Otp expired <a href="' + resendLink + '" style="color:blue;">Resend Otp</a>';
     } 
 }
 
 updateButtonText(); // Start the countdown
+
+
+
+
 </script>
+
 
 <!-- Main JS File -->
 <script src="assets/js/main.js"></script>
