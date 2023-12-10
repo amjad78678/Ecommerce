@@ -6,7 +6,8 @@ const Product=require('../models/productModel')
 const nodemailer = require('nodemailer');
 const dotenv=require('dotenv')
 const mongoose = require('mongoose');
-const Cart=require('../models/cartModel')
+const Cart=require('../models/cartModel');
+const { search } = require('../routes/userRoute');
 dotenv.config();
 
 const securePassword = async (password) => {
@@ -191,7 +192,7 @@ const loadOtp = async (req, res) => {
           if (expiresAt < Date.now()) {
 
             //otp expired so
-            return res.json({ message: "otp expired resent otp" });
+            return res.json({ message: "Otp expired resent otp" });
           }
             const enteredOtp=Otp
             //compare the entered otp
@@ -209,7 +210,7 @@ const loadOtp = async (req, res) => {
                 
               //case otp invalid
                 
-              return res.json({ message: "otp doesnt match" });
+              return res.json({ message: "Otp doesnt match" });
 
               }
 
@@ -293,9 +294,38 @@ const verifyLogin=async(req,res)=>{
          }
     }
 
-    const loadProductList=async(req,res)=>{
+  const loadProductList=async(req,res)=>{
       try {
            
+     let {searchInput}= req.body
+     
+    if (searchInput) {
+      let isSearch = await Product.find({
+        name: { $regex: searchInput, $options: 'i' },
+      });
+
+      console.log('Search Result:', isSearch);
+
+      if (isSearch.length > 0) {
+        req.session.searchInput = searchInput;
+      }
+
+      return res.json({ success: true });
+    } else {
+
+    let condition ={list:true}
+
+    
+    if(req.session){
+     const searchInput=req.session.searchInput
+     if (searchInput){
+      condition={name:{$regex: searchInput, $options: 'i'}}
+     }
+     delete req.session.searchInput
+
+   }
+
+   
      const categoryName= req.query.name
      const category= await Category.find({})
      const userId=req.session.userId
@@ -303,19 +333,28 @@ const verifyLogin=async(req,res)=>{
         
         let product=[] 
       
-        if(categoryName){
-         product = await Product.find({category:categoryName})
+if (categoryName) {
+    // If there's a category filter, apply it
+    product = await Product.find({ category: categoryName });
 
-         }else{
-         product = await Product.find({})
-         }
+  }  // If there's also a search condition, filter the products further
+   if (condition && condition.name) {
+    // If there's only a search condition, apply it to all products
+    product = await Product.find(condition);
+} else {
+    // If no filters are specified, get all products
+    product = await Product.find({});
+}
+       
+         
     
         // const  category= await Category.find({})
         let userData=await User.findOne({_id:req.session.userId})   
         res.render('productList',{user:userData,category:category,product:product,userId})
 
-    
-    
+     
+  }
+
         
       } catch (error) {
         console.log(error.message);

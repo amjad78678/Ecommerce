@@ -179,10 +179,10 @@
                 </div><!-- End .container -->
             </nav><!-- End .breadcrumb-nav -->
 
-            <div class="page-content">
+            <div class="page-content"  id="reloadDiv">
                 <div class="container">
                 	<div class="row">
-                		<div class="col-lg-9">
+                		<div class="col-lg-9" >
                 			<div class="toolbox">
                 				<div class="toolbox-left">
                 					<div class="toolbox-info">
@@ -308,11 +308,11 @@
            <div class="input-group">
     <form id="searchForm" action="" class="d-flex">
         <input type="text" id="searchInput" class="form-control" placeholder="Search for products" name="Search" />
-        <button class="searchBtn btn-md btn-primary mb-2" type="submit">
-        <i class="fas fa-search"></i>
-        </button>
+       <button class="searchBtn btn-md btn-primary mb-2" type="button" onclick="searchForm(event)">
+  <i class="fas fa-search"></i>
+</button>
     </form>
-</div>
+</div>  
 
             <br>
 
@@ -1198,34 +1198,41 @@ console.log('After Axios request');
 
 
 // for applying search products
+// for applying search products
+async function searchForm(event) {
+    event.preventDefault();
+    const searchInput = document.getElementById('searchInput').value;
 
-const searchForm=document.getElementById('searchForm')
-    searchForm.addEventListener('submit',function(event){
-      event.preventDefault()
+    try {
+        const response1 = await $.ajax({
+            url: '/productList',
+            method: 'post',
+            data: {
+                searchInput
+            }
+        });
+         const response2 = await $.ajax({
+            url: '/productListN',
+            method: 'post',
+            data: {
+                searchInput
+            }
+        });
 
-    const searchInput=document.getElementById('searchInput').value
-     applyFilter(searchInput)
+        console.log(response);
 
-    })
-
-function applyFilter(searchInput){
-
-      $.ajax({
-        url:'/searchInput',
-        method:'post',
-        data:{
-        searchInput
-        },
-        success: (response)=>{
-          
+        if (response1.success) {
+            // Use a callback function to reload content after AJAX success
+            $('#reloadDiv').load('/productList #reloadDiv', function () {
+                // Additional logic if needed after reloading content
+                console.log('Reloaded content successfully');
+            });
         }
-
-      })
-
+      
+    } catch (error) {
+        console.error('Error:', error);
+    }
 }
-   
-
-
 
 
 
