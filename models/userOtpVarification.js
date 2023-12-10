@@ -8,11 +8,14 @@ const userOtpVerificationSchema = new mongoose.Schema({
     type: String,
   },
   createdDate: {
-    type: Date,
-    default:Date.now()
+    type: Date
+    
+  },
+  expiresAt:{
+    type:Date
   }
 });
-userOtpVerificationSchema.index({ createdDate: 1 }, { expireAfterSeconds: 120 });
+
   
 
 module.exports = mongoose.model(

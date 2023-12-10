@@ -121,17 +121,25 @@ const loadRegister = async (req, res) => {
       };
 
       //----hash-the-otp
-      const saltRounds = 10;
-      let hashedOtp = await bcrypt.hash(otp, saltRounds);
-      const newOtpVerification = new userOtpVerification({
-        userId: _id,
-        otp: hashedOtp,
-        createdDate: new Date()
-      // expiryDate: Date.now() + 300000,
-      }); 
-      //----save otp record
-      
-      await newOtpVerification.save();
+  const saltRounds = 10;
+  let hashedOtp = await bcrypt.hash(otp, saltRounds);
+  const filter = { userId: _id };
+  const update = {
+  userId: _id,
+  otp: hashedOtp,
+  createdDate: Date.now(),
+  expiresAt: Date.now() + 60000,
+};
+
+// Use findOneAndUpdate with upsert option
+const result = await userOtpVerification.findOneAndUpdate(filter, update, {
+  upsert: true,
+  new: true, // If set to true, returns the modified document rather than the original
+});
+
+// If you want to access the saved or updated document, you can use 'result'
+console.log(result);
+
       await transporter.sendMail(mailOptions);
       res.redirect(`/authentication?id=${_id}`)
 
@@ -170,20 +178,20 @@ const verifyOtp=async(req,res)=>{
        const resendLink=`/resend-otp?id=${userId}`;
 
         console.log(`this is session ${userId}`);
-        const userOtpVerificationRecords= await userOtpVerification.find({userId})
+        const userOtpVerificationRecords= await userOtpVerification.findOne({userId})
          
-        if(!userOtpVerificationRecords.length){
-          return res.render('userOtpRegister',{ message:  `Otp expired <a href="${resendLink}" style="color:blue;">Resend Otp</a> `,id:userId})
-        }
+       
       
           //user otp record exists
-         const {otp:hashedOtp}=userOtpVerificationRecords[0];
+         const {otp:hashedOtp}=userOtpVerificationRecords;
         // console.log(expiryDate);
-        //  if (expiryDate < Date.now()) {
 
-        //   //otp expired so
-        //   res.render('userOtpRegister',{message:'OTP has expired, please request a new one'})
-        //  }
+         const expiresAt=userOtpVerificationRecords.expiresAt
+         if (expiresAt < Date.now()) {
+
+          //otp expired so
+          res.render('userOtpRegister',{message:'OTP has expired, please request a new one',resendLink:resendLink})
+         }
           const enteredOtp=Otp
           //compare the entered otp
           console.log(enteredOtp);
@@ -202,7 +210,6 @@ const verifyOtp=async(req,res)=>{
          //update user to mask is verified true
           await User.updateOne({_id:userId},{$set:{is_Verified:true }})
           //delete the used otp of otp database 
-          await userOtpVerification.deleteOne({userId})
           return res.redirect('/home')
         
       
