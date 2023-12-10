@@ -37,8 +37,7 @@ const loadRegister = async (req, res) => {
   } catch (error) {
     console.log(error.message);
   }
-};
-const postRegister = async (req, res) => {
+};const postRegister = async (req, res) => {
   try {
     const existingUser = await User.findOne({email:req.body.email})
     if (existingUser){
@@ -60,7 +59,7 @@ const postRegister = async (req, res) => {
     });
 
     const userData = await user.save().then((result) => {
-        sentOtpVerificationMail(result, res);
+      sentOtpVerificationMail(result, res);
     });
 
     if (userData) {
@@ -152,13 +151,13 @@ const loadLogin = async (req, res) => {
 };
 const loadOtp = async (req, res) => {
   try {
+   
     User.findOne({is_Verified:false})
     const id = req.query.id
+    const resendLink=`/resend-otp?id=${id}`;
     // req.session.userId=req.query.id
     // console.log(`this is session${req.session.userId}`);
-   const errorMessage = req.session.errorMessage
-     req.session.errorMessage=''
-    res.render('userOtpRegister',{id:id,errorMessage});
+    res.render('userOtpRegister',{id:id,resendLink:resendLink});
 
   } catch (error) {
     console.log(error.message);
@@ -168,11 +167,11 @@ const verifyOtp=async(req,res)=>{
   try {
     const Otp= req.body.Otp
     const userId=req.body.id
-     
+       const resendLink=`/resend-otp?id=${userId}`;
 
         console.log(`this is session ${userId}`);
         const userOtpVerificationRecords= await userOtpVerification.find({userId})
-         const resendLink=`/resend-otp?id=${userId}`;
+         
         if(!userOtpVerificationRecords.length){
           return res.render('userOtpRegister',{ message:  `Otp expired <a href="${resendLink}" style="color:blue;">Resend Otp</a> `,id:userId})
         }
@@ -190,12 +189,14 @@ const verifyOtp=async(req,res)=>{
           console.log(enteredOtp);
           console.log(hashedOtp);
            const validOtp = await bcrypt.compare(enteredOtp, hashedOtp);
-           if (validOtp) {
-  req.session.userId = userId;
-  res.json({ success: true });
-} else {
-     req.session.errorMessage='invalid Otp '
-}
+             if(validOtp){
+            req.session.userId=userId
+             }else{
+              
+            //case otp invalid
+               
+             return res.render('userOtpRegister',{message:'Invalid Otp Please try again',resendLink:resendLink,id:userId})
+             }
 
          
          //update user to mask is verified true
@@ -521,14 +522,10 @@ const postChangePasssword=async(req,res)=>{
 // Add a new route for OTP resend
 const resendOtp=async (req, res) => {
   try {
-    const userId = req.query.id;
+    const id = req.query.id;
+  const user= await User.findOne({_id:id})
     
     // Fetch user details based on the userId
-    const user = await User.findById({_id:userId});
-
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
 
     // Resend OTP verification email
     await sentOtpVerificationMail(user, res);

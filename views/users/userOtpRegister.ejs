@@ -195,23 +195,22 @@
                     </button>
 
                     <!-- <a class="text-decoration-none" href="/userResendOtp">Resend Otp</a> -->
-                   
+                        
                     <!-- End .custom-checkbox -->
                   </div>
                   <!-- End .form-footer -->
                 </form>
 
                  <p class="text-center" id="timer"> <span class="text-danger" id="countdown"> </span> </p>
-
+               
+                 <a style="display: none;" class="text-center ms-1 mt-1" id="resend" href="<%= resendLink  %>">Resend Otp</a>
                 <% if (typeof message!=='undefined'){ %>
                 <p class="text-center text-success"><%- message%></p>
                 <% } %>
-              <div>
-  <% if (errorMessage) { %>
-    <p><%= errorMessage %></p>
-  <% } %>
+            
+
   <!-- Your other HTML content here -->
-</div>
+
 
 
 
@@ -568,7 +567,6 @@
   crossorigin="anonymous"
 ></script>
 
-
 <script>
 var countDownStart = 70;
 
@@ -577,19 +575,17 @@ function updateButtonText() {
         document.getElementById('countdown').innerHTML = "Expires in " + countDownStart +' seconds...';
         countDownStart--;
         setTimeout(updateButtonText, 1000); // Update every 1 second
+        
     } else {
-        // You may want to handle the case when the countdown reaches zero
-        document.getElementById('countdown').innerHTML = 'Otp expired <a href="' + resendLink + '" style="color:blue;">Resend Otp</a>';
+        // OTP expired, update the inner HTML with the resend link
+        var resendLink = document.getElementById('timer').getAttribute('data-resend-link');
+        document.getElementById('countdown').innerHTML = '<span class="text-danger">Otp expired</span>';
+        document.getElementById('resend').style.display='block'
     } 
 }
 
 updateButtonText(); // Start the countdown
-
-
-
-
 </script>
-
 
 <!-- Main JS File -->
 <script src="assets/js/main.js"></script>
