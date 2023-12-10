@@ -65,6 +65,8 @@
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-vk1wKoy4gcNivt7LDypHT9w0wgeLh4g06ulGYFZhI5hBIk2LlAMTNUgtsfLC2JKRkXqOgX7fnXf5J6p5RxWcVg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 
 <% include('../layouts/center.ejs') %>
 <div class="page-wrapper">
@@ -301,6 +303,19 @@
                 					<label>Filters:</label>
                 		
                 				</div><!-- End .widget widget-clean -->
+
+
+           <div class="input-group">
+    <form id="searchForm" action="" class="d-flex">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search for products" name="Search" />
+        <button class="searchBtn btn-md btn-primary mb-2" type="submit">
+        <i class="fas fa-search"></i>
+        </button>
+    </form>
+</div>
+
+            <br>
+
 
                 				<div class="widget widget-collapsible">
     								<h3 class="widget-title">
@@ -1180,6 +1195,41 @@ console.log('After Axios request');
 }
 
 }
+
+
+// for applying search products
+
+const searchForm=document.getElementById('searchForm')
+    searchForm.addEventListener('submit',function(event){
+      event.preventDefault()
+
+    const searchInput=document.getElementById('searchInput').value
+     applyFilter(searchInput)
+
+    })
+
+function applyFilter(searchInput){
+
+      $.ajax({
+        url:'/searchInput',
+        method:'post',
+        data:{
+        searchInput
+        },
+        success: (response)=>{
+          
+        }
+
+      })
+
+}
+   
+
+
+
+
+
+
 </script>
 
 
