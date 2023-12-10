@@ -171,54 +171,55 @@ const loadOtp = async (req, res) => {
     console.log(error.message);
   }
 };
-const verifyOtp=async(req,res)=>{
-  try {
-    const Otp= req.body.Otp
-    const userId=req.body.id
-       const resendLink=`/resend-otp?id=${userId}`;
+  const verifyOtp=async(req,res)=>{
+    try {
+      const Otp= req.body.Otp
+      const userId=req.body.id
 
-        console.log(`this is session ${userId}`);
-        const userOtpVerificationRecords= await userOtpVerification.findOne({userId})
-         
-       
-      
-          //user otp record exists
-         const {otp:hashedOtp}=userOtpVerificationRecords;
-        // console.log(expiryDate);
+      console.log('lastOtp'+Otp);
 
-         const expiresAt=userOtpVerificationRecords.expiresAt
-         if (expiresAt < Date.now()) {
 
-          //otp expired so
-          res.render('userOtpRegister',{message:'OTP has expired, please request a new one',resendLink:resendLink})
-         }
-          const enteredOtp=Otp
-          //compare the entered otp
-          console.log(enteredOtp);
-          console.log(hashedOtp);
-           const validOtp = await bcrypt.compare(enteredOtp, hashedOtp);
-             if(validOtp){
-            req.session.userId=userId
-             }else{
+          console.log(`this is session ${userId}`);
+          const userOtpVerificationRecords= await userOtpVerification.findOne({userId})
+          
               
-            //case otp invalid
-               
-             return res.render('userOtpRegister',{message:'Invalid Otp Please try again',resendLink:resendLink,id:userId})
-             }
+            //user otp record exists
+          const {otp:hashedOtp}=userOtpVerificationRecords;
+          // console.log(expiryDate);
 
-         
-         //update user to mask is verified true
-          await User.updateOne({_id:userId},{$set:{is_Verified:true }})
-          //delete the used otp of otp database 
-          return res.redirect('/home')
-        
-      
- 
+          const expiresAt=userOtpVerificationRecords.expiresAt
+          if (expiresAt < Date.now()) {
 
-  } catch (error) {
-    console.log(error.message);
+            //otp expired so
+            return res.json({ message: "otp expired resent otp" });
+          }
+            const enteredOtp=Otp
+            //compare the entered otp
+            console.log(enteredOtp);
+            console.log(hashedOtp);
+            const validOtp = await bcrypt.compare(enteredOtp, hashedOtp);
+              if(validOtp){
+              req.session.userId=userId
+              //update user to mask is verified true
+              await User.updateOne({_id:userId},{$set:{is_Verified:true }})
+               return res.json({ success:true });
+              //delete the used otp of otp database 
+              
+              }else{
+                
+              //case otp invalid
+                
+              return res.json({ message: "otp doesnt match" });
+
+              }
+
+          
+          
+
+    } catch (error) {
+      console.log(error.message);
+    }
   }
-}
 
 const verifyLogin=async(req,res)=>{
      try {

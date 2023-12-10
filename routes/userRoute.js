@@ -35,6 +35,7 @@ userRouter.get('/userRegister',auth.isLogout, userController.loadRegister);
 userRouter.post('/userRegister', userController.postRegister);
 userRouter.get('/userSignIn',auth.isLogout, userController.loadLogin);
 userRouter.post('/userSignIn',userController.verifyLogin)
+
 userRouter.get('/authentication', auth.isLogout,userController.loadOtp);
 userRouter.post('/authentication',userController.verifyOtp);
 

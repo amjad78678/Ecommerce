@@ -165,7 +165,7 @@
                 role="tabpanel"
                 aria-labelledby="register-tab-2"
               >
-                <form action="/authentication" id="otp-form" method="post">
+                <form action="/authentication" id="otp-form">
                   <div class="form-group">
 
                     <!-- hidden aayi pass cheyyaaan -->
@@ -189,7 +189,7 @@
                   <!-- End .form-group -->
 
                   <div class="form-footer">
-                    <button type="submit" class="btn btn-outline-primary-2">
+                    <button id="verifyOtpBtn" type="submit" onclick="verifyOtp(event)" class="btn btn-outline-primary-2">
                       <span>Submit</span>
                       <i class="icon-long-arrow-right"></i>
                     </button>
@@ -201,8 +201,10 @@
                   <!-- End .form-footer -->
                 </form>
 
-                 <p class="text-center" id="timer"> <span class="text-danger" id="countdown"> </span> </p>
-               
+               <p class="text-center" id="timer"> <span class="text-danger" id="countdown"> </span> </p>
+               <!-- for withot refresh error message -->
+               <div id="otpMessage" style="color: #2ecc71; font-size: smaller;"></div>
+           
                  <a style="display: none;" class="text-center ms-1 mt-1" id="resend" href="<%= resendLink  %>">Resend Otp</a>
                 <% if (typeof message!=='undefined'){ %>
                 <p class="text-center text-success"><%- message%></p>
@@ -585,6 +587,35 @@ function updateButtonText() {
 }
 
 updateButtonText(); // Start the countdown
+
+
+
+
+
+
+async function verifyOtp(event){
+
+     event.preventDefault()
+      var verifyData = $("#otp-form").serialize();
+
+      $.ajax({
+        type: "POST",
+        url: "/authentication", // Update the URL to your server endpoint
+        data: verifyData,
+        success: function (response) {
+          console.log(response.message);
+          $("#otpMessage").html(response.message);
+
+          if(response.success){
+             window.location.href = '/home';
+          }
+         
+        },
+        error: function () {
+          $("#otpMessage").html("Error verifying OTP");
+        }
+      });
+}
 </script>
 
 <!-- Main JS File -->
