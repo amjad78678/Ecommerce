@@ -294,58 +294,70 @@ const verifyLogin=async(req,res)=>{
          }
     }
 
-  const loadProductList=async(req,res)=>{
-      try {
-           
-     let {searchInput}= req.body
-     
-    if (searchInput) {
-      let isSearch = await Product.find({
-        name: { $regex: searchInput, $options: 'i' },
-      });
+const loadProductList = async (req, res) => {
+    try {
+        let { searchInput, minPrice, maxPrice } = req.body;
 
-      console.log('Search Result:', isSearch);
+        if (searchInput || minPrice || maxPrice) {
+            if (searchInput) {
+                let isSearch = await Product.find({
+                    name: { $regex: searchInput, $options: 'i' },
+                });
 
-      if (isSearch.length > 0) {
-        req.session.searchInput = searchInput;
-      }
+                if (isSearch.length > 0) {
+                    req.session.searchInput = searchInput;
+                }
+            }
 
-      return res.json({ success: true });
-    } else {
+            if (minPrice && maxPrice) {
+                let productsInRange = await Product.find({
+                    price: { $gte: minPrice, $lte: maxPrice },
+                });
 
-    let condition ={list:true}
 
-    
-    if(req.session){
-     const searchInput=req.session.searchInput
-     if (searchInput){
-      condition={name:{$regex: searchInput, $options: 'i'}}
-     }
-     delete req.session.searchInput
+                if (productsInRange.length > 0) {
+                    req.session.minPrice = minPrice;
+                    req.session.maxPrice = maxPrice;
+                }
+            }
 
-   }
+            return res.json({ success: true });
+        } else {
+            let condition = {};
 
-   
-     const categoryName= req.query.name
-     const category= await Category.find({})
-     const userId=req.session.userId
+            if (req.session.searchInput) {
+                condition.name = {
+                    $regex: req.session.searchInput,
+                    $options: 'i',
+                };
+                delete req.session.searchInput;
+            }
 
-        
-        let product=[] 
-      
-if (categoryName) {
-    // If there's a category filter, apply it
-    product = await Product.find({ category: categoryName });
+            const categoryName = req.query.name;
+            const category = await Category.find({});
+            const userId = req.session.userId;
 
-  }  // If there's also a search condition, filter the products further
-   if (condition && condition.name) {
-    // If there's only a search condition, apply it to all products
-    product = await Product.find(condition);
-} else {
-    // If no filters are specified, get all products
-    product = await Product.find({});
-}
-       
+            if (req.session.minPrice !== undefined && req.session.maxPrice !== undefined) {
+                condition.price = {
+                    $gte: req.session.minPrice,
+                    $lte: req.session.maxPrice,
+                };
+                delete req.session.minPrice;
+                delete req.session.maxPrice;
+            }
+
+            let product = [];
+
+            if (categoryName) {
+                // If there's a category filter, apply it
+                product = await Product.find({ category: categoryName});
+            } else if (condition.name || condition.price) {
+                // If there's a search or price condition, apply it to all products
+                product = await Product.find(condition);
+            } else {
+                // If no filters are specified, get all products
+                product = await Product.find({});
+            }
          
     
         // const  category= await Category.find({})

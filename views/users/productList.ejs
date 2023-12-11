@@ -101,7 +101,7 @@
           <a class="me-5 text-dark" <% if(locals.user){ %>
                 href="/productList">
             <% }else{ %>
-              href="/productListN">
+              href="/productList">
               
               <% } %>Shop</a>
           <a class="me-5 text-dark" href="#">About Us</a>
@@ -332,7 +332,7 @@
                          <% if(userId){ %>
                             <a class="ms-4" href="/productList">* All Products</a>
                          <% }else{ %>
-                           <a class="ms-4" href="/productListN">* All Products</a>
+                           <a class="ms-4" href="/productList">* All Products</a>
                            <% } %>
 
                     
@@ -345,7 +345,7 @@
                             <% if (userId){ %>
 												   <a href="/productList?name=<%= category[i].name  %>">* <%= category[i].name  %></a>
 													  <% }else{ %>
-                               <a href="/productListN?name=<%= category[i].name  %>">* <%= category[i].name  %></a>
+                               <a href="/productList?name=<%= category[i].name  %>">* <%= category[i].name  %></a>
                               <% } %>
 
 
@@ -388,7 +388,7 @@
                     <span class="mx-2">to</span>
                     <input type="number" id="max-price" placeholder="Max Price"  style="width: 40%"/>
                     <br>
-                    <button class="mt-2" onclick="applyPriceFilter()">Apply</button>
+                    <button class="mt-2" onclick="applyPriceFilter(event)">Apply</button>
                 </div>
             </div>
         </div>
@@ -1204,24 +1204,18 @@ async function searchForm(event) {
     const searchInput = document.getElementById('searchInput').value;
 
     try {
-        const response1 = await $.ajax({
+        const response = await $.ajax({
             url: '/productList',
             method: 'post',
             data: {
                 searchInput
             }
         });
-         const response2 = await $.ajax({
-            url: '/productListN',
-            method: 'post',
-            data: {
-                searchInput
-            }
-        });
+     
 
         console.log(response);
 
-        if (response1.success) {
+        if (response.success) {
             // Use a callback function to reload content after AJAX success
             $('#reloadDiv').load('/productList #reloadDiv', function () {
                 // Additional logic if needed after reloading content
@@ -1234,7 +1228,28 @@ async function searchForm(event) {
     }
 }
 
+async function applyPriceFilter(event){
+  event.preventDefault()
 
+  const minPrice=  document.getElementById('min-price').value
+   const maxPrice=  document.getElementById('max-price').value
+    try {
+   const response=await $.ajax({
+    url:'/productList',
+    method:'post',
+    data:{
+      minPrice,
+      maxPrice
+    }
+   })
+   console.log(response);
+   if(response.success){
+       $('#reloadDiv').load('/productList #reloadDiv')
+   }
+  } catch(error){
+    console.log(error.message);
+  }
+}
 
 
 </script>
