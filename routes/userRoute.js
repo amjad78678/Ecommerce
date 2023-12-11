@@ -71,7 +71,7 @@ userRouter.get('/changePassword',auth.isLogin,userController.loadChangePassword)
 userRouter.post('/changePassword',userController.postChangePasssword)
 userRouter.get('/viewOrdered',auth.isLogin,orderController.loadViewOrdered)
 userRouter.get('/resend-otp', auth.isLogout, userController.resendOtp);
-userRouter.post('/verify-payment',checkoutController.verifyPayment)
+userRouter.post('/verify-payment',userController.verifyPayment)
 
 
 

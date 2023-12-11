@@ -2,24 +2,15 @@ const User = require('../models/userModel');
 const bcrypt = require('bcrypt');
 const userOtpVerification = require('../models/userOtpVarification');
 const Category= require('../models/categoryModel')
-const Order = require('../models/orderModel')
+const Order= require('../models/orderModel')
 const Product=require('../models/productModel')
 const nodemailer = require('nodemailer');
 const dotenv=require('dotenv')
 const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 const Cart=require('../models/cartModel');
 const { search } = require('../routes/userRoute');
 dotenv.config();
-
-
-const Razorpay = require('razorpay');
-
-var instance = new Razorpay({
-  key_id: process.env.RAZ_KEYID,
-  key_secret: process.env.RAZ_KEYSECRET,
-});
-
-
 
 const securePassword = async (password) => {
   try {
@@ -31,6 +22,7 @@ const securePassword = async (password) => {
 };
 const loadHome = async (req, res) => {
   try {
+    
     
       const userData=await User.findOne({_id:req.session.userId})
       console.log(req.session.userId);
@@ -608,6 +600,69 @@ const resendOtp=async (req, res) => {
 
 
 
+
+const verifyPayment=async(req,res)=>{
+  try {
+
+    const cartData=await Cart.findOne({user_id:req.session.userId})
+    const cartProducts= cartData.items
+    const details =req.body 
+
+  console.log(details);
+
+const crypto = require('crypto');
+
+// Your secret key from the environment variable
+const secretKey = process.env.RAZ_KEYSECRET;
+
+// Creating an HMAC with SHA-256
+const hmac = crypto.createHmac('sha256', secretKey);
+console.log(hmac);
+
+// Updating the HMAC with the data
+hmac.update(details.payment.razorpay_order_id + '|' + details.payment.razorpay_payment_id );
+
+// Getting the hexadecimal representation of the HMAC
+const hmacFormat = hmac.digest('hex');
+
+console.log(hmacFormat);
+console.log(details.payment.razorpay_signature);
+       if (hmacFormat==details.payment.razorpay_signature){
+        await Order.findByIdAndUpdate({_id:details.order.receipt},{$set:{paymentId:details.payment.razorpay_payment_id}})
+       
+
+       for(let i=0;i<cartProducts.length;i++){
+        let count=cartProducts[i].quantity
+       await Product.findByIdAndUpdate({_id:cartProducts[i].product_id},{$inc:{stockQuantity:-count}})
+       }
+
+       await Order.findByIdAndUpdate({_id:details.order.receipt},{$set:{status:'placed'}})
+
+ 
+      const userData= await User.findOne({_id:req.session.userId})
+        await Cart.deleteOne({user_id:userData._id})
+
+         res.json({success:true, params:details.order.receipt })
+
+       }else{
+        await Order.findByIdAndDelete({_id:details.order.receipt})
+         res.json({ success: false }); 
+       }
+
+
+
+   
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+
+
+
+
+
+
  module.exports = {
   loadHome,
   loadRegister,
@@ -633,6 +688,5 @@ const resendOtp=async (req, res) => {
   loadChangePassword,
   postChangePasssword,
   resendOtp,
-
-
+  verifyPayment
 };

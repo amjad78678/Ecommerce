@@ -776,9 +776,7 @@ async function placeOrder() {
                     }
 
 
-    function verifyPayment(resPayment,order){
-      console.log('Before AJAX call in verifyPayment');
-      console.log(resPayment, order);
+    function verifyPayment(payment,order){
       $.ajax({
         url:'/verify-payment',
         method:'post',
@@ -789,21 +787,20 @@ async function placeOrder() {
         success:(response)=>{
           if (response.success==true){
              const param = response.params
+             console.log('iamparam'+param);
             const url = '/order-placed/' + param
            window.location.href = url;
           }else{
              Swal.fire({
-                                        icon: 'error',
-                                        title: 'Payment has failed',
-                                        showConfirmButton: false,
-                                        timer: 1500
-                        })
+              icon: 'error',
+              title: 'Payment has failed',
+              showConfirmButton: false,
+              timer: 1500
+              })
           }
         }
       })
-      console.log('After AJAX call in verifyPayment');
     }
-
 
 </script>
 <% include('../layouts/footer.ejs') %>
