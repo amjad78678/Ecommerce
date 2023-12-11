@@ -4,6 +4,12 @@ const Product=require('../models/productModel')
 const bcrypt=require('bcrypt')
 const Cart = require('../models/cartModel')
 const Order = require('../models/orderModel')
+const Razorpay = require('razorpay');
+
+var instance = new Razorpay({
+  key_id: 'YOUR_KEY_ID',
+  key_secret: 'YOUR_KEY_SECRET',
+});
 
 
 
@@ -95,7 +101,9 @@ const postOrderPlaced=async(req,res)=>{
   const userId=req.session.userId
                    
  const status=selectedPayment=='cod'?'placed':'pending'
-   
+
+
+ 
 
    const userData=await User.findOne({_id:userId})
 
@@ -144,6 +152,21 @@ const postOrderPlaced=async(req,res)=>{
     res.json({success:true,params:orderId})
 
     
+   }else{
+    const orderId=orderData._id
+    const totalAmount=orderData.total_amount
+   
+     var options={
+      amount:totalAmount*100,
+      currency:'INR',
+      reciept:'' + orderId
+
+     };
+
+
+
+
+     
    }
 
       } catch (error) {
