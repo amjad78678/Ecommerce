@@ -2,6 +2,7 @@ const User = require('../models/userModel');
 const bcrypt = require('bcrypt');
 const userOtpVerification = require('../models/userOtpVarification');
 const Category= require('../models/categoryModel')
+const Order = require('../models/orderModel')
 const Product=require('../models/productModel')
 const nodemailer = require('nodemailer');
 const dotenv=require('dotenv')
@@ -9,6 +10,16 @@ const mongoose = require('mongoose');
 const Cart=require('../models/cartModel');
 const { search } = require('../routes/userRoute');
 dotenv.config();
+
+
+const Razorpay = require('razorpay');
+
+var instance = new Razorpay({
+  key_id: process.env.RAZ_KEYID,
+  key_secret: process.env.RAZ_KEYSECRET,
+});
+
+
 
 const securePassword = async (password) => {
   try {
@@ -20,7 +31,6 @@ const securePassword = async (password) => {
 };
 const loadHome = async (req, res) => {
   try {
-    
     
       const userData=await User.findOne({_id:req.session.userId})
       console.log(req.session.userId);
@@ -598,7 +608,6 @@ const resendOtp=async (req, res) => {
 
 
 
-
  module.exports = {
   loadHome,
   loadRegister,
@@ -624,4 +633,6 @@ const resendOtp=async (req, res) => {
   loadChangePassword,
   postChangePasssword,
   resendOtp,
+
+
 };

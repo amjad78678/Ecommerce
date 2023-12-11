@@ -4,11 +4,14 @@ const Product=require('../models/productModel')
 const bcrypt=require('bcrypt')
 const Cart = require('../models/cartModel')
 const Order = require('../models/orderModel')
+const dotenv=require('dotenv')
+dotenv.config();
+
 const Razorpay = require('razorpay');
 
 var instance = new Razorpay({
-  key_id: 'YOUR_KEY_ID',
-  key_secret: 'YOUR_KEY_SECRET',
+  key_id: process.env.RAZ_KEYID,
+  key_secret: process.env.RAZ_KEYSECRET,
 });
 
 
@@ -157,15 +160,21 @@ const postOrderPlaced=async(req,res)=>{
     const totalAmount=orderData.total_amount
    
      var options={
-      amount:totalAmount*100,
+      amount:totalAmount*100,  // Ensure amount is an integer
       currency:'INR',
-      reciept:'' + orderId
+      receipt:'' + orderId
 
      };
 
+     instance.orders.create(options,function(err,order){
+      if(err){
+        console.log(err);
+      }else{
+        console.log('newOrders', JSON.stringify(order));
+        return res.json({ success: false, order: order });
+      }
 
-
-
+     })
      
    }
 
@@ -191,6 +200,46 @@ const loadOrderPlaced=async(req,res)=>{
    }
 }
 
+const verifyPayment=async(req,res)=>{
+  try {
+   console.log('not wuyusgfsygfhdszghfghghfg');
+    const cartData=await Cart.findOne({user_id:req.session.userId})
+    const cartProducts= cartData.items
+    const {resPayment,order} =req.body 
+
+   console.log('iambody man'+req.body);
+
+   const crypto=require('crypto')
+   const hmac=crypto.createHmac('sha256',process.env.RAZ_KEYSECRET)
+       hmac.update(resPayment.razorpay_payment_id+'|'+resPayment.razorpay_order_id)
+       const hmac_format=hmac.digest('hex')
+       if (hmac_format==resPayment.razorpay_signature){
+        await Order.findByIdAndUpdate({_id:order.receipt},{$set:{paymentId:resPayment.razorpay_payment_id}})
+       
+
+       for(let i=0;i<cartProducts.length;i++){
+        let count=cartProducts[i].quantity
+       await Product.findByIdAndUpdate({_id:cartProducts[i].product_id},{$inc:{stockQuantity:-count}})
+       }
+
+       await Order.findByIdAndUpdate({_id:order.receipt},{$set:{status:'placed'}})
+       await Cart.findByIdAndDelete({user_id:req.session.userId})
+
+         res.json({success:true, params:order.receipt })
+
+       }else{
+        await Order.findByIdAndDelete({_id:order.receipt})
+         res.json({ success: false }); 
+       }
+
+
+
+   
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
 
 
 
@@ -199,6 +248,8 @@ module.exports={
     loadAddNewAddress,
     postAddNewAddress,
     loadOrderPlaced,
-    postOrderPlaced
+    postOrderPlaced,
+    verifyPayment
+ 
 
 }

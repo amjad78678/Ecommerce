@@ -650,7 +650,7 @@
 <script src="assets/js/main.js"></script>
 <script src="assets/js/demos/demo-2.js"></script>
 
-
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
 async function placeOrdersSelect() {
     const addressRadios = document.getElementsByName('selectedAddress')
@@ -724,10 +724,86 @@ async function placeOrder() {
         const param = response.params;
         const url = '/order-placed/' + param;
         window.location.href = url;
+      }else{
+        razorpayPayment(response.order)
       }
     }
   });
 }
+
+
+
+
+                    function razorpayPayment(order) {
+                        var options = {
+                            "key": "rzp_test_bc32rCVTwnCmDc", // Enter the Key ID generated from the Dashboard
+                            "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                            "currency": "INR",
+                            "name": "Cornerstone", //your business name
+                            "description": "Test Transaction",
+                            "image": "https://example.com/your_logo",
+                            "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                            // "callback_url": "https://eneqd3r9zrjok.x.pipedream.net/",
+                            "handler": function (response) {
+
+
+                              //  alert(response.razorpay_payment_id);
+                              //  alert(response.razorpay_order_id);
+                              //  alert(response.razorpay_signature)
+
+
+
+                                verifyPayment(response, order)
+
+
+                            },
+                            "prefill": {
+                                "name": 'customersName', //your customer's name
+                                "email": "gaurav.kumar@example.com",
+                                "contact": "9000090000"
+                            },
+                            "notes": {
+                                "address": "Razorpay Corporate Office"
+                            },
+                            "theme": {
+                                "color": "#3399cc"
+                            }
+
+                        };
+
+                        var rzp1 = new Razorpay(options);
+                        rzp1.open();
+                    }
+
+
+    function verifyPayment(resPayment,order){
+      console.log('Before AJAX call in verifyPayment');
+      console.log(resPayment, order);
+      $.ajax({
+        url:'/verify-payment',
+        method:'post',
+        data:{
+           payment,
+           order
+        },
+        success:(response)=>{
+          if (response.success==true){
+             const param = response.params
+            const url = '/order-placed/' + param
+           window.location.href = url;
+          }else{
+             Swal.fire({
+                                        icon: 'error',
+                                        title: 'Payment has failed',
+                                        showConfirmButton: false,
+                                        timer: 1500
+                        })
+          }
+        }
+      })
+      console.log('After AJAX call in verifyPayment');
+    }
+
 
 </script>
 <% include('../layouts/footer.ejs') %>
