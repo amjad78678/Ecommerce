@@ -314,56 +314,32 @@
     </form>
 </div>  
 
-            <br>
+      
 
+               <div class="shop__sidebar__categories">
 
-                				<div class="widget widget-collapsible">
-    								<h3 class="widget-title">
-									    <a data-toggle="collapse" href="#widget-1" role="button" aria-expanded="true" aria-controls="widget-1">
-									        Category
-									    </a>
-									</h3><!-- End .widget-title -->
+                                                        <ul class="category-checkboxes">
+                                                            <li>
+                                                                <label>
+                                                                    <input type="radio" value="All"
+                                                                        class="category-checkbox" name="selectedCategory">
+                                                                    All Categories
+                                                                </label>
+                                                            </li>
 
-									<div class="collapse show" id="widget-1">
-										<div class="widget-body">
-											<div class="filter-items filter-items-count">
+                                                            <% for (let i=0;i<category.length;i++) { %>
+                                                                <li>
+                                                                    <label>
+                                                                        <input type="radio" value="<%= category[i].name %>"
+                                                                            class="category-checkbox"
+                                                                            name="selectedCategory">
+                                                                        <%= category[i].name %>
+                                                                    </label>
+                                                                </li>
+                                                                <% } %>
+                                                        </ul>
 
-
-                         <% if(userId){ %>
-                            <a class="ms-4" href="/productList">* All Products</a>
-                         <% }else{ %>
-                           <a class="ms-4" href="/productList">* All Products</a>
-                           <% } %>
-
-                    
-                <% if(category.length>0 ){ %>
-                  <% for(i=0;i<category.length;i++) { %>
-                      <% if(category[i].is_Listed==true) { %>
-												<div class="filter-item">
-													<div class="custom-control custom-checkbox">
-
-                            <% if (userId){ %>
-												   <a href="/productList?name=<%= category[i].name  %>">* <%= category[i].name  %></a>
-													  <% }else{ %>
-                               <a href="/productList?name=<%= category[i].name  %>">* <%= category[i].name  %></a>
-                              <% } %>
-
-
-													</div><!-- End .custom-checkbox -->
-
-
-													<!-- <span class="item-count"><%= category.length  %></span> -->
-
-
-												</div><!-- End .filter-item -->
-                   <% } %>
-                   <% } %>
-                   <% } %>  
-
-											</div><!-- End .filter-items -->
-										</div><!-- End .widget-body -->
-									</div><!-- End .collapse -->
-        						</div><!-- End .widget -->
+                                                </div>
 
         						
 
@@ -388,7 +364,7 @@
                     <span class="mx-2">to</span>
                     <input type="number" id="max-price" placeholder="Max Price"  style="width: 40%"/>
                     <br>
-                    <button class="mt-2" onclick="applyPriceFilter(event)">Apply</button>
+                    <button class="mt-2 btn-sm btn-outline-dark form-control rounded" onclick="applyPriceFilter(event)">Apply Filters</button>
                 </div>
             </div>
         </div>
@@ -1233,13 +1209,16 @@ async function applyPriceFilter(event){
 
   const minPrice=  document.getElementById('min-price').value
    const maxPrice=  document.getElementById('max-price').value
+   const selectedCategoryCheckbox=document.querySelector('input[name="selectedCategory"]:checked');
+   const selectedCateg=selectedCategoryCheckbox?selectedCategoryCheckbox.value:null
     try {
    const response=await $.ajax({
     url:'/productList',
     method:'post',
     data:{
       minPrice,
-      maxPrice
+      maxPrice,
+      selectedCateg
     }
    })
    console.log(response);

@@ -298,9 +298,9 @@ const verifyLogin=async(req,res)=>{
 
 const loadProductList = async (req, res) => {
     try {
-        let { searchInput, minPrice, maxPrice } = req.body;
+        let { searchInput, minPrice, maxPrice,selectedCateg } = req.body;
 
-        if (searchInput || minPrice || maxPrice) {
+        if (searchInput || minPrice || maxPrice ||selectedCateg) {
             if (searchInput) {
                 let isSearch = await Product.find({
                     name: { $regex: searchInput, $options: 'i' },
@@ -322,8 +322,24 @@ const loadProductList = async (req, res) => {
                     req.session.maxPrice = maxPrice;
                 }
             }
+            if(selectedCateg=='All'){
+            const allProduct= await Product.find({})
+            if(allProduct.length>0){
+              req.session.allProduct=true
+            }
+           
+            }else{
 
-            return res.json({ success: true });
+            const selectedCat= await Product.find({category:selectedCateg})
+            console.log(selectedCat);
+            if (selectedCat.length>0){
+              req.session.selectedCategory=selectedCateg
+              req.session.allProduct=false
+            }
+            }
+             console.log('iamsession'+req.session.selectedCategory);
+
+         return res.json({ success: true });
         } else {
             let condition = {};
 
@@ -335,9 +351,7 @@ const loadProductList = async (req, res) => {
                 delete req.session.searchInput;
             }
 
-            const categoryName = req.query.name;
-            const category = await Category.find({});
-            const userId = req.session.userId;
+            
 
             if (req.session.minPrice !== undefined && req.session.maxPrice !== undefined) {
                 condition.price = {
@@ -347,30 +361,38 @@ const loadProductList = async (req, res) => {
                 delete req.session.minPrice;
                 delete req.session.maxPrice;
             }
+            if (req.session.selectedCategory) {
+                // If there's a category filter, apply it
+              condition.category=req.session.selectedCategory;
+              delete req.session.selectedCategory
+              }else if(req.session.allProduct){
+                delete req.session.allProduct
+              }
+        
 
             let product = [];
 
-            if (categoryName) {
-                // If there's a category filter, apply it
-                product = await Product.find({ category: categoryName});
-            } else if (condition.name || condition.price) {
+            
+             if (condition.name || condition.price ||condition.category) {
                 // If there's a search or price condition, apply it to all products
                 product = await Product.find(condition);
             } else {
                 // If no filters are specified, get all products
                 product = await Product.find({});
             }
+            
          
-    
+            const category = await Category.find({});
+            const userId = req.session.userId;
         // const  category= await Category.find({})
         let userData=await User.findOne({_id:req.session.userId})   
         res.render('productList',{user:userData,category:category,product:product,userId})
 
-     
+  
   }
 
         
-      } catch (error) {
+      } catch (error) { 
         console.log(error.message);
       }
     }
