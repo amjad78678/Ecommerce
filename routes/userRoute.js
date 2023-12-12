@@ -72,6 +72,7 @@ userRouter.post('/changePassword',userController.postChangePasssword)
 userRouter.get('/viewOrdered',auth.isLogin,orderController.loadViewOrdered)
 userRouter.post('/resend-otp', auth.isLogout, userController.resendOtp);
 userRouter.post('/verify-payment',userController.verifyPayment)
+userRouter.get('/walletHistory',userController.loadWalletHistory)
 
 
 

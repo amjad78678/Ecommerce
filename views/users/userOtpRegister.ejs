@@ -609,7 +609,7 @@ async function resendOtp(event) {
   if (response.message) {
     $("#otpSented").css("display", "block").html(response.message);
   }
-}
+} 
 ,
     error: function (error) {
       console.error(error);

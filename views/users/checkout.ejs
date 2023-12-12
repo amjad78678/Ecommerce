@@ -316,9 +316,16 @@
 
 
                             <hr />
+            
                         </div>
+                        
                     </div>
+                                            
+       	
+      
                 </div>
+
+       
 
                    <aside class="col-lg-3">
 		                			<div class="summary">
@@ -330,7 +337,7 @@
                                                 
 		                						<tr class="summary-subtotal">
 		                							<td>Subtotal:</td>
-		                							<td >$<%= subTotal  %></td>
+		                							<td >₹<%= subTotal  %></td>
 		                						</tr><!-- End .summary-subtotal -->
 		                						<tr>
 		                							<td>Shipping:</td>
@@ -338,10 +345,28 @@
 		                						</tr>
 		                						<tr class="summary-total">
 		                							<td>Total:</td>
-		                							<td>$<%= subTotal  %></td>
+		                							<td>₹<%= subTotal  %></td>
 		                						</tr><!-- End .summary-total -->
 		                					</tbody>
 		                				</table><!-- End .table table-summary -->
+
+   <button data-toggle="modal" data-target="#discountModal"
+  type="button"
+  class="rounded-full form-control mt-3 mb-3   bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+   >
+  Available Coupens
+</button>
+
+                            <div class="cart-discount">
+			            				<form action="#">
+			            					<div class="input-group">
+				        						<input type="text" class="form-control" required placeholder="coupon code">
+				        						<div class="input-group-append">
+													<button class="btn btn-outline-primary-2" type="submit"><i class="icon-long-arrow-right"></i></button>
+												</div><!-- .End .input-group-append -->
+			        						</div><!-- End .input-group -->
+			            				</form>
+			            			</div><!-- End .cart-discount -->
 
 		                				<div class="accordion-summary" id="accordion-payment">
 										   
@@ -358,7 +383,16 @@
                 <input type="radio"  id="payment" name="payment" value="razorPay" required>
                 <label for="payment2">RazorPay</label>
             </li>
-        </ul>
+            <% if(wallet>0){ %>
+     
+             <li>
+                <input type="radio"  id="payment" name="payment" value="walletPayment" required>
+                <label for="payment2">Wallet  </label>
+            </li>
+
+            <span class="float-start ms-2">Wallet balance  : <span class="ms-1 text-primary "><%= wallet  %></span></span>
+           <% } %>
+            </ul>
 										        </div><!-- End .card-header -->
 										      
 										    </div><!-- End .card -->
@@ -623,6 +657,40 @@
   <!-- End .modal-dialog -->
 </div>
 <!-- End .modal -->
+<div class="modal fade mt-5" id="discountModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+
+        <div class="modal-content rounded-0">
+          <div class="modal-body text-center">
+            <div class="icon text-danger">
+              <i class="fas fa-gift"></i>
+            </div>
+            <div class="notice">
+              <h4>Get 10000 Discount</h4>
+              <p>This coupon is only available for purchases above ₹500</p>
+              <p>Valid from 14/2/20004 to 15/23/2005 </p>
+              <p>Use promo code <span style="font-size: medium;" class="badge badge-info">VISHU</span></p>
+            </div>
+            <div class="code"></div>
+          </div>
+        </div>
+
+      <div class="modal-content rounded-0">
+        <div class="modal-body text-center">
+          <div class="icon text-danger">
+            <i class="fas fa-times-circle fa-5x"></i>
+          </div>
+          <div class="notice mt-3">
+            <h4 class="text-danger">No Available Coupons for You</h4>
+            <p class="lead">Unfortunately, there are no coupons currently available for your purchases.</p>
+          </div>
+          <div class="code"></div>
+        </div>
+      </div>
+      
+ 
+  </div>
+</div>
 
 <!-- Plugins JS File -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -717,13 +785,19 @@ async function placeOrder() {
     data: {
       selectedAddress: address,
       selectedPayment: payment,
-      subTotal: total
+      subTotal: total,
     },
     success: (response)=> {
       if (response.success === true) {
         const param = response.params;
         const url = '/order-placed/' + param;
         window.location.href = url;
+      }else if(response.walletFailed==true){
+            Swal.fire({
+            icon: 'error',
+            title: 'Insufficient Balance',
+            text: 'Please select another payment option .'
+      });
       }else{
         razorpayPayment(response.order)
       }

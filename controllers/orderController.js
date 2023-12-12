@@ -32,13 +32,24 @@ const patchCancelOrder=async(req,res)=>{
         console.log('hiii');
         const {orderId}=req.body
         console.log('iam orderid'+orderId);
-       const statusOfOrder = 'Cancelled'
+        const statusOfOrder = 'Cancelled'
          const orderData= await Order.findOne({_id:orderId}).populate('items.product_id')
          console.log('hellobro'+orderData);
          await Order.updateOne({_id:orderId},{$set:{status:statusOfOrder}})
          for (let products of orderData.items) {
          await Product.updateOne({_id:products.product_id},{$inc:{stockQuantity:products.quantity}})
          }
+         if(orderData.payment=='razorPay'||orderData.payment=='cod'){
+          await User.updateOne({_id:req.session.userId},
+                               {$inc:{wallet:orderData.total_amount}, 
+                                $push:{wallet_history:{date:new Date(),
+                                amount:orderData.total_amount,
+                                description:`Refunded for Order cancel - Order ${orderId}`,
+                              }}})
+
+         }
+         
+          
          res.send({success:true,status:statusOfOrder})
 
     
@@ -53,9 +64,9 @@ const loadViewOrdered=async(req,res)=>{
      try {
       const orderId = req.query.id
      const userId= req.session.userId
-  const user= await  User.findOne({_id:userId})
+  const userData= await  User.findOne({_id:userId})
   const orders= await Order.findOne({_id:orderId}).populate('items.product_id')
-      res.render('viewOrdered',{orders,user})
+      res.render('viewOrdered',{orders,user:userData})
      } catch (error) {
       console.log(error.message);
      }

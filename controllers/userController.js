@@ -7,7 +7,6 @@ const Product=require('../models/productModel')
 const nodemailer = require('nodemailer');
 const dotenv=require('dotenv')
 const mongoose = require('mongoose');
-const ObjectId = mongoose.Types.ObjectId;
 const Cart=require('../models/cartModel');
 const { search } = require('../routes/userRoute');
 dotenv.config();
@@ -716,7 +715,24 @@ console.log(details.payment.razorpay_signature);
 }
 
 
+const loadWalletHistory=async(req,res)=>{
+   try {
+    const {userId}=req.session
+   const userData=await User.findOne({_id:req.session.userId})
 
+   console.log(req.session.userId);
+   const walletHistory = await User.aggregate([
+      { $match: { _id: new mongoose.Types.ObjectId(userId) } },
+      {$project:{wallet_history:1}},
+      { $unwind: "$wallet_history" },
+      { $sort: { "wallet_history.date": -1 } },
+    ]);
+console.log('walletHistorires'+walletHistory);
+      res.render('wallet',{user:userData,walletHistory})
+   } catch (error) {
+    console.log(error.message);
+   }
+}
 
 
 
@@ -746,5 +762,6 @@ console.log(details.payment.razorpay_signature);
   loadChangePassword,
   postChangePasssword,
   resendOtp,
-  verifyPayment
+  verifyPayment,
+  loadWalletHistory
 };

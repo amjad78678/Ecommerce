@@ -131,7 +131,7 @@
                  href="/userSignIn">
                   <% } %>
                
-                <% if(user){ %>
+                <% if(locals.user){ %>
                    My profile
 
                <%  }else{%>
@@ -144,7 +144,7 @@
                 <% }else{ %>
                     href="/userRegister">
                   <% } %>
-                <% if(user){ %>
+                <% if(locals.user){ %>
                    Logout
 
                <%  }else{%> 
@@ -158,170 +158,61 @@
       </div>
     </div>
   </header>
-    <div class="container light-style flex-grow-1 container-p-y">
-        <h4 class="font-weight-bold py-3 mb-4">
-            Account settings
-        </h4>
-        <form action="/editProfile" method="post">
-        <div class="card overflow-hidden">
-            <div class="row no-gutters row-bordered row-border-light">
-                <div class="col-md-3 pt-0">
-                    <div class="list-group list-group-flush account-settings-links">
-                        <a class="list-group-item list-group-item-action active" data-toggle="list"
-                            href="#account-general">General</a>
-                      
-                        
-                        <a class="list-group-item list-group-item-action" data-toggle="list"
-                            href="#account-social-links">Edit Profile</a>
-                      
-                        <a class="list-group-item list-group-item-action" data-toggle="list"
-                            href="#account-notifications">Manage Address</a>
-                            <a class="list-group-item list-group-item-action"
-                            href="/walletHistory">Wallet History</a>
-                         <a class="list-group-item list-group-item-action"
-                            href="/orders">Orders</a>
-
-                    </div>
-                </div>
-                <div class="col-md-9">
-                    <div class="tab-content">
-                        <div class="tab-pane fade active show" id="account-general">
-                            <div class="card-body media align-items-center">
-                                <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt
-                                    class="d-block ui-w-80">
-                                <div class="media-body ml-4">
-                                    <label class="btn btn-outline-primary">
-                                        Upload new photo
-                                        <input type="file" class="account-settings-fileinput">
-                                    </label> &nbsp;
-                             
-                                    <div class="text-light small mt-1">Allowed JPG, GIF or PNG. Max size of 800K</div>
-                                </div>
-                            </div>
-                            <hr class="border-light m-0">
-                            <div class="card-body"> 
-                                <div class="form-group">
-                                    <label class="form-label">Full Name</label>
-                                    <input type="text" class="form-control mb-1" value="<%= user.userName   %>" readonly>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Email;</label>
-                                    <input type="text" class="form-control" value="<%= user.email  %>" readonly>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Mobile</label>
-                                    <input type="text" class="form-control mb-1" value="<%= user.mobileNumber  %>" readonly>
-                                    <!-- <div class="alert alert-warning mt-3">
-                                        Your email is not confirmed. Please check your inbox.<br>
-                                        <a href="javascript:void(0)">Resend confirmation</a>
-                                    </div> -->
-                                </div>
-                                 <div class="form-group">
-                                    <label class="form-label">Action:</label>
-                                        <a href="/changePassword" class="btn btn-primary ms-3">Change password</a> 
-                                </div>
-                             
-                            </div>
-                        </div>
-                   
-                     
- 
-                        <div class="tab-pane fade" id="account-social-links">
-                            <div class="card-body"> 
-                                <div class="form-group">
-                                    <label class="form-label"  >Full Name</label>
-                                    <input type="hidden" name="profileUserId" value="<%= user._id  %>">
-                                    <input type="text" name="profileName" class="form-control mb-1" value="<%=user.userName  %>" >
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Email</label>
-                                    <input type="text" name="profileEmail" class="form-control" value="<%= user.email  %>" readonly>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Mobile</label>
-                                    <input type="text" name="profileMobile" class="form-control mb-1" value="<%= user.mobileNumber  %>" >
-                                    <!-- <div class="alert alert-warning mt-3">
-                                        Your email is not confirmed. Please check your inbox.<br>
-                                        <a href="javascript:void(0)">Resend confirmation</a>
-                                    </div> -->
-                                </div>
-                                  <button class="btn btn-primary" type="submit">Edit Profile</button>
-                             
-                            </div>
-                        </div>
-                      
-
-                   
 
 
 
+<div class="container mt-4">
+  <div class="d-flex align-items-center justify-content-between">
+    <h3></h3>
+    <a href="/userProfile" class="btn btn-md btn-success mt-3">Back</a>
+  </div>
+  <br>
+  <div class="card">
+  <div class="card-body">
+    <h5 class="card-title mb-1">Wallet Balance</h5>
+    <p class="card-text">₹<%= user.wallet  %></p>
+    <!-- You can replace $500.00 with your actual wallet balance value -->
 
-
-            <div class="tab-pane fade" id="account-notifications">
-                           
+    <!-- Add any additional information or buttons as needed -->
+  </div>
+</div>
+<br>
+  <div class="row">
+    <div class="col-12">
+      <h3>Wallet History</h3>
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover text-center">
+          <thead class="thead-dark">
+            <tr>
+              <th class="ms-2">Date</th>
+              <th>Amount</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+       <% walletHistory.forEach((wallet)=>{ %>
+              <tr> 
+              <td class="ms-2"><%= wallet.wallet_history.date.toISOString().substr(0, 10)  %></td>
+                  <% if(wallet.wallet_history.amount>0){  %>
+                 <td class="text-success">₹<%= wallet.wallet_history.amount  %></td>
+                  <% }else{ %>
+                   <td class="text-danger">₹<%= wallet.wallet_history.amount  %></td>
+                    <% } %>
+                  <!-- <td class="text-danger">₹10000</td> -->
           
-            <div class="card-body">
-           <span>   <h5 class="card-title  "><b> Address Details</b>   <a class="float-end  btn-success" href="">Back</a></h5></span>
-             
-              <hr />
+                <td><%= wallet.wallet_history.description  %></td>
+              </tr>
+              <% }) %>
 
-
-          
-
-
-              <% addresses.forEach((address)=>{ %>
-                <div id="dltAddress">
-                  <div class="row">
-                  
-                    <div class="col-sm-3">
-                      <p class="mb-0 fw-bold text-dark-emphasis"><b> Address Line :</b></p>
-                    </div>
-                    <div class="col-sm-9">
-                      <p class="text-muted mb-0"><%= address.name  %> ,<%= address.street_address  %>, <%= address.city  %>,<br> <%= address.state  %>, <%= address.pincode  %>, <%= address.phone  %>
-                         </p>
-                    </div>
-                  </div>
-               
-                  <div class="row mt-3 mb-3">
-                    <div class="col-sm-9 offset-sm-3">
-                    <a href="/editAddress?userId=<%= user._id %>&addressId=<%= address._id %>&check=someValue" class="btn btn-primary btn-sm mr-2">Edit</a>
-
-                      <a href="#" onclick="handleDeleteAddress('<%=address._id%>')" class="btn btn-danger btn-sm">Remove</a>
-                  
-                    </div>
-                  
-                  </div>
-                </div>
-                <% }) %>
-             
-             
-              <hr />
-     
-
-
-
-            </div>
-            
-            <div class="card-body">
-              <a href="/profileNewAddress" class="btn btn-primary btn-sm">Add New Address</a>
-            </div>         
-          </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            </form>
-        </div>
-   
+          </tbody>
+        </table>
+      </div>
     </div>
-    <br>
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript">
+  </div>
+</div>
 
-    </script>
- <footer class="">
+
+  <footer class="">
     <div class="container-fluid border-top border-bottom">
       <div class="row">
         <div class="col-xl-3 mb-3">
@@ -580,43 +471,7 @@
   crossorigin="anonymous"
 ></script>
 
-<script>
-const handleDeleteAddress=async(addressId)=> {
 
-     try {
-      event.preventDefault();
-      console.log('started');
-   
-      // Display the confirmation message
-      Swal.fire({
-            title: "Remove Address",
-            text: "Are you sure you want to remove this address?",
-            icon: "warning",
-            showCancelButton: true, // This property is used to display the "Cancel" button
-            confirmButtonText: "OK",
-            cancelButtonText: "Cancel",
-            dangerMode: true,
-      }).then(async (willDelete) => {
-        if (willDelete.isConfirmed) {
-          // User clicked "OK" button, perform the delete action
-          const response = await axios.put('/deleteAddress', { addressId });
-
-          if (response.data.success) {
-            // Remove the deleted element from the DOM
-            const elementToRemove = document.getElementById('dltAddress');
-            elementToRemove.parentNode.removeChild(elementToRemove);
-          }
-        }
-      });
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-                    
-
-
-
-</script>
 <!-- Main JS File -->
 <script src="assets/js/main.js"></script>
 <script src="assets/js/demos/demo-2.js"></script>

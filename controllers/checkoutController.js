@@ -19,10 +19,8 @@ var instance = new Razorpay({
               const userId=req.session.userId
               const cart= await Cart.findOne({user_id:userId}).populate({path:'items.product_id'})
 
-              if(userId && cart ){
+        if(userId && cart ){
            
-       
-        
 
       let originalAmts = 0;
 
@@ -34,9 +32,9 @@ var instance = new Razorpay({
       }
 
             const user= await User.findOne({_id:req.session.userId})
-   
+              const wallet= user.wallet
 
-            res.render('checkout',{cart,subTotal:originalAmts,user:[user]})
+            res.render('checkout',{cart,subTotal:originalAmts,user:[user],wallet})
               }else{
                 res.redirect('/')
               }
@@ -100,7 +98,7 @@ const postOrderPlaced=async(req,res)=>{
   const {selectedAddress,selectedPayment,subTotal}=req.body
   const userId=req.session.userId
                    
- const status=selectedPayment=='cod'?'placed':'pending'
+ const status=selectedPayment=='cod'||selectedPayment=='walletPayment'?'placed':'pending'
 
 
  
@@ -139,18 +137,41 @@ const postOrderPlaced=async(req,res)=>{
    const orderId=orderData._id
 
    if(orderData.status=='placed'){
-    await  Cart.deleteOne({user_id:userId})
+
+      if(selectedPayment=='walletPayment'){
+        if(userData.wallet>subTotal){
+      await User.updateOne({_id:userId},{$inc:{wallet:-subTotal},$push:{wallet_history:{date:new Date(),amount:-subTotal,description:"Order Payment using Wallet Amount"}}})
+    
+
+       await  Cart.deleteOne({user_id:userId})
 
     for(i=0;i<cartData.items.length;i++){
       const productId=cartProducts[i].product_id
-      console.log('iamproductids'+productId);
+
       const count=cartProducts[i].quantity
        console.log('iamcountsis'+count);
         
      await Product.updateOne({_id:productId},{$inc:{stockQuantity:-count}})
     }
     res.json({success:true,params:orderId})
+  }else{
+    res.json({walletFailed:true})
+  }
 
+
+      }else if(selectedPayment=='cod'){
+    await  Cart.deleteOne({user_id:userId})
+
+    for(i=0;i<cartData.items.length;i++){
+      const productId=cartProducts[i].product_id
+
+      const count=cartProducts[i].quantity
+       console.log('iamcountsis'+count);
+        
+     await Product.updateOne({_id:productId},{$inc:{stockQuantity:-count}})
+    }
+    res.json({success:true,params:orderId})
+  }
     
    }else{
     const orderId=orderData._id
