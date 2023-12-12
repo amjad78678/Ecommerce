@@ -186,7 +186,7 @@
                 			<div class="toolbox">
                 				<div class="toolbox-left">
                 					<div class="toolbox-info">
-                						Showing <span><%= product.length  %></span> Products
+                						Showing <span><%= product.length  %> Of <%= count  %></span> Products
                 					</div><!-- End .toolbox-info -->
                 				</div><!-- End .toolbox-left -->
 
@@ -279,22 +279,16 @@
                             </div><!-- End .products -->
 
                 			<nav aria-label="Page navigation">
-							    <ul class="pagination justify-content-center">
-							        <li class="page-item disabled">
-							            <a class="page-link page-link-prev" href="#" aria-label="Previous" tabindex="-1" aria-disabled="true">
-							                <span aria-hidden="true"><i class="icon-long-arrow-left"></i></span>Prev
-							            </a>
-							        </li>
-							        <li class="page-item active" aria-current="page"><a class="page-link" href="#">1</a></li>
-							        <li class="page-item"><a class="page-link" href="#">2</a></li>
-							        <li class="page-item"><a class="page-link" href="#">3</a></li>
-							        <li class="page-item-total">of 6</li>
-							        <li class="page-item">
-							            <a class="page-link page-link-next" href="#" aria-label="Next">
-							                Next <span aria-hidden="true"><i class="icon-long-arrow-right"></i></span>
-							            </a>
-							        </li>
-							    </ul>
+							  <ul class="pagination justify-content-center">
+    <% for(let i=1      ; i<=totalPages; i++){ %>
+        <li class="page-item <%= currentPage === i ? 'active' : '' %>" aria-current="page">
+            <a class="page-link" href="#" onclick="pagination('<%= i %>')">
+                <%= i %> <!-- Add 1 to start the page numbering from 1 instead of 0 -->
+            </a>
+        </li>
+    <% } %>
+</ul>
+
 							</nav>
                 		</div><!-- End .col-lg-9 -->
                 		<aside class="col-lg-3 order-lg-first">
@@ -328,6 +322,7 @@
                                                             </li>
 
                                                             <% for (let i=0;i<category.length;i++) { %>
+                                                              <% if(category[i].is_Listed==true){ %>
                                                                 <li>
                                                                     <label>
                                                                         <input type="radio" value="<%= category[i].name %>"
@@ -336,6 +331,7 @@
                                                                         <%= category[i].name %>
                                                                     </label>
                                                                 </li>
+                                                                <% } %>
                                                                 <% } %>
                                                         </ul>
 
@@ -364,7 +360,7 @@
                     <span class="mx-2">to</span>
                     <input type="number" id="max-price" placeholder="Max Price"  style="width: 40%"/>
                     <br>
-                    <button class="mt-2 btn-sm btn-outline-dark form-control rounded" onclick="applyPriceFilter(event)">Apply Filters</button>
+                    <button class="mt-2 btn-md form-control btn-primary" onclick="applyPriceFilter(event)">Apply Filters</button>
                 </div>
             </div>
         </div>
@@ -1229,6 +1225,41 @@ async function applyPriceFilter(event){
     console.log(error.message);
   }
 }
+
+
+
+                  async function pagination(pageno) {
+
+                       const minPrice=  document.getElementById('min-price').value
+                       const maxPrice=  document.getElementById('max-price').value
+                      const selectedCategoryCheckbox=document.querySelector('input[name="selectedCategory"]:checked');
+                       const selectedCateg=selectedCategoryCheckbox?selectedCategoryCheckbox.value:null
+                        try {
+                        const response=await $.ajax({
+                         url:'/productList',
+                         method:'post',
+                         data:{
+                           minPrice,
+                           maxPrice,
+                           selectedCateg,
+                           pageno
+                         }
+                        })
+   console.log(response);
+   if(response.success){
+       $('#reloadDiv').load('/productList #reloadDiv')
+   }
+  } catch(error){
+    console.log(error.message);
+  }
+}
+
+
+
+
+
+
+
 
 
 </script>

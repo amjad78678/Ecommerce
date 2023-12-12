@@ -298,9 +298,9 @@ const verifyLogin=async(req,res)=>{
 
 const loadProductList = async (req, res) => {
     try {
-        let { searchInput, minPrice, maxPrice,selectedCateg } = req.body;
+        let { searchInput, minPrice, maxPrice,selectedCateg,pageno } = req.body;
 
-        if (searchInput || minPrice || maxPrice ||selectedCateg) {
+        if (searchInput || minPrice || maxPrice ||selectedCateg||pageno) {
             if (searchInput) {
                 let isSearch = await Product.find({
                     name: { $regex: searchInput, $options: 'i' },
@@ -337,11 +337,16 @@ const loadProductList = async (req, res) => {
               req.session.allProduct=false
             }
             }
-             console.log('iamsession'+req.session.selectedCategory);
+
+            if(pageno){
+              req.session.pageno=pageno
+            }
+             
 
          return res.json({ success: true });
         } else {
             let condition = {};
+            let skip=0
 
             if (req.session.searchInput) {
                 condition.name = {
@@ -368,6 +373,14 @@ const loadProductList = async (req, res) => {
               }else if(req.session.allProduct){
                 delete req.session.allProduct
               }
+
+
+              if(req.session.pageno){
+                let page=pageno==undefined || pageno === 1 ? 1 :pageno;
+                skip=page===1?0:(page-1)*9  ;
+
+                delete req.session.pageno;
+              }
         
 
             let product = [];
@@ -375,18 +388,24 @@ const loadProductList = async (req, res) => {
             
              if (condition.name || condition.price ||condition.category) {
                 // If there's a search or price condition, apply it to all products
-                product = await Product.find(condition);
+                product = await Product.find(condition).skip(skip).limit(9)
             } else {
                 // If no filters are specified, get all products
-                product = await Product.find({});
+                product = await Product.find({}).skip(skip).limit(9)
             }
+
+            const productsCount=await Product.find(condition).count()
+            console.log('procount'+productsCount);
+            let totalPages=Math.ceil(productsCount/9)
+            const count=await Product.find(condition).count()
+            const currentPage='productList'
             
          
             const category = await Category.find({});
             const userId = req.session.userId;
         // const  category= await Category.find({})
         let userData=await User.findOne({_id:req.session.userId})   
-        res.render('productList',{user:userData,category:category,product:product,userId})
+        res.render('productList',{user:userData,category:category,product:product,userId,currentPage,count,productsCount,totalPages})
 
   
   }
