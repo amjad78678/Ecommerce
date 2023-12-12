@@ -346,7 +346,7 @@ const loadProductList = async (req, res) => {
          return res.json({ success: true });
         } else {
             let condition = {};
-            let skip=0
+            
 
             if (req.session.searchInput) {
                 condition.name = {
@@ -374,13 +374,19 @@ const loadProductList = async (req, res) => {
                 delete req.session.allProduct
               }
 
+console.log('Before skip calculation - pageno:', req.session.pageno);
 
-              if(req.session.pageno){
-                let page=pageno==undefined || pageno === 1 ? 1 :pageno;
-                skip=page===1?0:(page-1)*9  ;
+let page = 1; // Default to page 1
+let skip = 0;
 
-                delete req.session.pageno;
-              }
+if (req.session.pageno) {
+  page = req.session.pageno;
+  skip = (page - 1) * 6;
+  console.log('Page:', page);
+  console.log('Calculated skip:', skip);
+  delete req.session.pageno;
+}
+
         
 
             let product = [];
@@ -388,19 +394,23 @@ const loadProductList = async (req, res) => {
             
              if (condition.name || condition.price ||condition.category) {
                 // If there's a search or price condition, apply it to all products
-                product = await Product.find(condition).skip(skip).limit(9)
+                product = await Product.find(condition).skip(skip).limit(6)
             } else {
                 // If no filters are specified, get all products
-                product = await Product.find({}).skip(skip).limit(9)
+                product = await Product.find({}).skip(skip).limit(6)
             }
-
+             
+            
             const productsCount=await Product.find(condition).count()
             console.log('procount'+productsCount);
-            let totalPages=Math.ceil(productsCount/9)
+            let totalPages=Math.ceil(productsCount/6)
             const count=await Product.find(condition).count()
             const currentPage='productList'
-            
-         
+
+            console.log('Skip:', skip);
+
+            console.log('Number of products:', product.length);
+
             const category = await Category.find({});
             const userId = req.session.userId;
         // const  category= await Category.find({})
