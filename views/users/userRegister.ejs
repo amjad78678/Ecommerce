@@ -108,7 +108,7 @@
               aria-expanded="false"
             >
               <i class="fa-regular fa-user"></i>
-            </button>
+            </button> 
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
               <li><a class="dropdown-item" href="/userSignIn">Login</a></li>
               <li><a class="dropdown-item" href="/userRegister">Sign Up</a></li>
@@ -165,7 +165,7 @@
                 role="tabpanel"
                 aria-labelledby="register-tab-2"
               >
-                <form action="" method="post" onsubmit="return validateForm()">
+                <form action="" id="signupForm" onsubmit="return validateForm()">
                   <div class="form-group">
                     <label for="Username">Username *</label>
                     <input
@@ -232,8 +232,8 @@
                   <!-- End .form-group -->
 
                   <div class="form-footer">
-                    <button type="submit" class="btn btn-outline-primary-2">
-                      <span>SIGN UP</span>
+                    <button type="submit" onclick="registerButton(event)" class="btn btn-outline-primary-2">
+                      <span >SIGN UP</span>
                       <i class="icon-long-arrow-right"></i>
                     </button>
                 
@@ -242,9 +242,8 @@
                   <!-- End .form-footer -->
                 </form>
                 <span id="mainError" class="error text-center"></span>
-                <% if (typeof message!=='undefined'){ %>
-                <p class="text-center text-success"><%- message%></p>
-                <% } %>
+       
+                <div id="RegisterMessage" class="text-center" style="color: #cc582e; font-size: smaller;"></div>
 
                 <!-- End .form-choice -->
               </div>
@@ -657,6 +656,33 @@
 
 
      return true
+  }
+
+
+  async function registerButton(event){
+  event.preventDefault()
+     var verifyData = $("#signupForm").serialize();
+
+      $.ajax({
+        type: "POST",
+        url: "/userRegister", // Update the URL to your server endpoint
+        data: verifyData,
+        success: function (response) {
+          console.log(response.message);
+          $("#RegisterMessage").html(response.message);
+         if(response.success){
+        console.log('resId'+response.id);
+          let userId=response.id
+         
+          window.location.href=`/authentication?id=${userId}`
+         }
+         
+        },
+        error: function () {
+          $("#RegisterMessage").html("Error in register");
+        }
+      }); 
+
   }
 
 </script>

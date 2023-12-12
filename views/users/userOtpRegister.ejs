@@ -137,6 +137,7 @@
           <div class="form-tab">
             <ul class="nav nav-pills nav-fill" role="tablist">
               <li class="nav-item">
+                <div id="otpSented" style="display: none;" class="btn-lg btn-primary"></div>
                 <a
                   class="nav-link active"
                   id="register-tab-2"
@@ -170,7 +171,7 @@
 
                     <!-- hidden aayi pass cheyyaaan -->
                     <input type="hidden" name="id" value="<%= locals.id  %>">
-
+               
                     
                     <label for="Your otp">An OTP has been sent to your email. Please enter the OTP to proceed. *</label>
                     <input
@@ -203,10 +204,11 @@
 
                <p class="text-center" id="timer"> <span class="text-danger" id="countdown"> </span> </p>
                <!-- for withot refresh error message -->
-               <div id="otpMessage" class="text-center" style="color: #cc582e; font-size: smaller;"></div>
+               <div id="otpMessage" class="text-center" style="color: #c70000; font-size: smaller;"></div>
            
-                 <a style="display: none;" class="text-center ms-1 mt-1" id="resend" href="<%= resendLink  %>">Resend Otp</a>
-                <% if (typeof message!=='undefined'){ %>
+                 <a style="display: none;" class="text-center ms-1 mt-1" id="resend" href="#" onclick="resendOtp(event)">Resend Otp</a>
+               
+                 <% if (typeof message!=='undefined'){ %>
                 <p class="text-center text-success"><%- message%></p>
                 <% } %>
             
@@ -590,6 +592,32 @@ updateButtonText(); // Start the countdown
 
 
 
+async function resendOtp(event) {
+  event.preventDefault();
+  
+  // Extract user ID from the query parameters in the current URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const userId = urlParams.get('id');
+
+  $.ajax({
+    url: '/resend-otp',
+    type: 'POST',
+    data: {
+      id: userId
+    },
+   success: function (response) {
+  if (response.message) {
+    $("#otpSented").css("display", "block").html(response.message);
+  }
+}
+,
+    error: function (error) {
+      console.error(error);
+      // Handle errors if necessary
+    }
+  });
+}
+
 
 
 
@@ -616,6 +644,8 @@ async function verifyOtp(event){
         }
       });
 }
+
+
 </script>
 
 <!-- Main JS File -->

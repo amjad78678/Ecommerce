@@ -42,9 +42,10 @@ const loadRegister = async (req, res) => {
   }
 };const postRegister = async (req, res) => {
   try {
+    console.log(req.body);
     const existingUser = await User.findOne({email:req.body.email})
     if (existingUser){
-      res.render('userRegister',{message:'User already exists enter new details or  <a href="/userSignIn?id=existingUser._id">Login Now</a> '})//-------------------------------------------------------
+     return res.json({ message: "User already exists" });
       
     }else{
     const bodyPassword =req.body.password
@@ -112,12 +113,12 @@ const loadRegister = async (req, res) => {
           <h2 style="background: #82AE46; margin: 0 auto; width: max-content; padding: 0 10px; color: white; border-radius: 4px;">
             ${otp}
           </h2>
-          <p style="font-size: 0.9em;">Regards,<br />Fresh Pick</p>
+          <p style="font-size: 0.9em;">Regards,<br />Cornerstone</p>
           <hr style="border: none; border-top: 1px solid #eee" />
           <div style="float: right; padding: 8px 0; color: #aaa; font-size: 0.8em; line-height: 1; font-weight: 300">
-            <p>Fresh Pick</p>
-            <p>1600 Ocean Of Heaven</p>
-            <p>Pacific</p>
+            <p>Cornerstone</p>
+            <p>Ocean Of Heaven</p>
+            <p>Omanoor</p>
           </div>
         </div>
       </div>`,
@@ -144,7 +145,10 @@ const result = await userOtpVerification.findOneAndUpdate(filter, update, {
 console.log(result);
 
       await transporter.sendMail(mailOptions);
-      res.redirect(`/authentication?id=${_id}`)
+  
+      
+      return res.json({success:true,id:_id})
+
 
       
 
@@ -631,22 +635,25 @@ const postChangePasssword=async(req,res)=>{
 
 
 
-// Add a new route for OTP resend
-const resendOtp=async (req, res) => {
+const resendOtp = async (req, res) => {
   try {
-    const id = req.query.id;
-  const user= await User.findOne({_id:id})
-    
+    const id = req.body.id;
+    console.log(id);
+    const user = await User.findOne({ _id: id });
+
     // Fetch user details based on the userId
 
     // Resend OTP verification email
-    await sentOtpVerificationMail(user, res);
+    await sentOtpVerificationMail(user);
+
+    res.json({ message: 'Otp successfully sent to mail' });
 
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });
   }
 }
+
 
 
 
