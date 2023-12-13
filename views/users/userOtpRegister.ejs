@@ -576,7 +576,7 @@
 
 <script>
 
-var countDownStart = 60;
+var countDownStart = 5;
 
 function updateButtonText() {countdown
     if (countDownStart > 0) {
@@ -601,14 +601,12 @@ async function resendOtp(event) {
   
   // Extract user ID from the query parameters in the current URL
 
-  const id=  document.getElementById('resendId').value
 
+  var verifyData = $("#otp-form").serialize();
   $.ajax({
     url: '/resend-otp',
     type: 'POST',
-    data: {
-      id: id
-    },
+    data: verifyData,
    success: function (response) {
      if (response.success){
     console.log( response.id); 
@@ -618,7 +616,7 @@ async function resendOtp(event) {
 
 
     
-var countDownStart = 60;
+var countDownStart = 5;
 
 function updateButtonText() {countdown
     if (countDownStart > 0) {
@@ -636,11 +634,10 @@ function updateButtonText() {countdown
 
 updateButtonText(); // Start the countdown
 
-     $("#otpSented").css("display", "block").html(response.message);
-
+  $("#otpSented").css("display", "block").html('Otp successfully sented');
       setTimeout(()=>{
       
-       $('#otpMainDiv').load('/authentication #otpMainDiv');
+     $("#otpSented").css("display", "none").html('Otp successfully sented');
 
       },2000)
    
@@ -668,7 +665,12 @@ async function verifyOtp(event){
         data: verifyData,
         success: function (response) {
           console.log(response.message);
-          $("#otpMessage").html(response.message);
+          if(response.message){
+            $("#otpMessage").html(response.message);
+          setTimeout(()=>{
+          $("#otpMessage").html('')
+          },3000)
+          }
 
           if(response.success){
              window.location.href = '/home';

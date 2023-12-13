@@ -147,9 +147,10 @@ console.log(result);
 
   await transporter.sendMail(mailOptions);
   
-      console.log('iamidmwone',_id);
+    console.log('iamidmwone',_id);
  
-    res.redirect(`/authentication?id=${_id}`)
+
+    res.send({success:true,id:_id})
 
       
 
@@ -661,7 +662,6 @@ const resendOtp = async (req, res) => {
     // Resend OTP verification email
     await sentOtpVerificationMail(user,res);
 
-     return res.json({success:true,id:_id})
 
   } catch (error) {
     console.error(error);
