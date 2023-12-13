@@ -172,7 +172,7 @@
                   <div class="form-group">
 
                     <!-- hidden aayi pass cheyyaaan -->
-                    <input type="hidden" name="id" value="<%= id  %>">
+                    <input type="hidden" id="resendId" name="id" value="<%= id  %>">
                
                     
                     <label for="Your otp">An OTP has been sent to your email. Please enter the OTP to proceed. *</label>
@@ -600,20 +600,24 @@ async function resendOtp(event) {
   event.preventDefault();
   
   // Extract user ID from the query parameters in the current URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const userId = urlParams.get('id');
+
+  const id=  document.getElementById('resendId').value
 
   $.ajax({
     url: '/resend-otp',
     type: 'POST',
     data: {
-      id: userId
+      id: id
     },
    success: function (response) {
-
-  if (response.message) {
-
+     if (response.success){
+    console.log( response.id); 
+      $("#resendId").val(response.id);
      
+
+
+
+    
 var countDownStart = 60;
 
 function updateButtonText() {countdown
@@ -657,7 +661,7 @@ async function verifyOtp(event){
 
      event.preventDefault()
       var verifyData = $("#otp-form").serialize();
-
+       console.log('iruitrudk',verifyData);
       $.ajax({
         type: "POST",
         url: "/authentication", // Update the URL to your server endpoint

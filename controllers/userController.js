@@ -32,7 +32,6 @@ const loadHome = async (req, res) => {
   }
 };
 
-
 const loadRegister = async (req, res) => {
   try {
 
@@ -40,11 +39,14 @@ const loadRegister = async (req, res) => {
   } catch (error) {
     console.log(error.message);
   }
-};const postRegister = async (req, res) => {
+};
+
+const postRegister = async (req, res) => {
   try {
+    console.log(req.body);
     const existingUser = await User.findOne({email:req.body.email})
     if (existingUser){
-      res.render('userRegister',{message:'User already exists enter new details or  <a href="/userSignIn?id=existingUser._id">Login Now</a> '})//-------------------------------------------------------
+     return res.json({ message: "User already exists" });
       
     }else{
     const bodyPassword =req.body.password
@@ -112,12 +114,12 @@ const loadRegister = async (req, res) => {
           <h2 style="background: #82AE46; margin: 0 auto; width: max-content; padding: 0 10px; color: white; border-radius: 4px;">
             ${otp}
           </h2>
-          <p style="font-size: 0.9em;">Regards,<br />Fresh Pick</p>
+          <p style="font-size: 0.9em;">Regards,<br />Cornerstone</p>
           <hr style="border: none; border-top: 1px solid #eee" />
           <div style="float: right; padding: 8px 0; color: #aaa; font-size: 0.8em; line-height: 1; font-weight: 300">
-            <p>Fresh Pick</p>
-            <p>1600 Ocean Of Heaven</p>
-            <p>Pacific</p>
+            <p>Cornerstone</p>
+            <p>Ocean Of Heaven</p>
+            <p>Omanoor</p>
           </div>
         </div>
       </div>`,
@@ -143,8 +145,11 @@ const result = await userOtpVerification.findOneAndUpdate(filter, update, {
 // If you want to access the saved or updated document, you can use 'result'
 console.log(result);
 
-      await transporter.sendMail(mailOptions);
-      res.redirect(`/authentication?id=${_id}`)
+  await transporter.sendMail(mailOptions);
+  
+      console.log('iamidmwone',_id);
+ 
+    res.redirect(`/authentication?id=${_id}`)
 
       
 
@@ -153,10 +158,6 @@ console.log(result);
       console.log(error.message);
     }
   };
-
-
-
-
 const loadLogin = async (req, res) => {
   try {
     res.render('userSignIn');
@@ -183,7 +184,7 @@ const loadOtp = async (req, res) => {
     try {
       const Otp= req.body.Otp
       const userId=req.body.id
-      console.log('iam verifydata'+req.body.verifyData);
+ 
 
       console.log('queryid'+req.query.id);
       console.log('bodyid'+req.body.id);
@@ -652,15 +653,15 @@ const postChangePasssword=async(req,res)=>{
 const resendOtp = async (req, res) => {
   try {
     const id = req.body.id;
-    console.log(id);
+    console.log('dsofiodiouseId'+id);
     const user = await User.findOne({ _id: id });
-     console.log(user);
+     console.log('euryuriam user'+user);
     // Fetch user details based on the userId
 
     // Resend OTP verification email
-    await sentOtpVerificationMail(user);
+    await sentOtpVerificationMail(user,res);
 
-   return res.json({ message: 'Otp successfully sent to mail' });
+     return res.json({success:true,id:_id})
 
   } catch (error) {
     console.error(error);
