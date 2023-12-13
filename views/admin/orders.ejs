@@ -184,7 +184,7 @@
                 <div class="card mb-4">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="myTable" class="table table-hover">
+                            <table id="myTable"  class="table table-hover example">
                                 <thead>
                                     <tr>
                                         <th>#ID</th>
@@ -192,7 +192,7 @@
                                         <th scope="col">Payment Method</th>
                                         <th scope="col">Total</th>
                                         <th scope="col">Date</th>
-                                        <th scope="col" class="t">Orders</th>
+                                        <th scope="col">Orders</th>
                                         <th scope="col">Status</th>
                                        
 
@@ -345,6 +345,22 @@
         <script src="assetsAdmin/js/vendors/select2.min.js"></script>
         <script src="assetsAdmin/js/vendors/perfect-scrollbar.js"></script>
         <script src="assetsAdmin/js/vendors/jquery.fullscreen.min.js"></script>
+
+
+<!-- DataTables JS jquery pagination search -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
+        <!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+
+
+          <!-- jquery library search -->
+ <script>   
+              $(document).ready(function() {
+                 $('.example').DataTable();
+                });
+ </script>
+
 
         <script>
      const orderStatus=async(status,orderId)=>{

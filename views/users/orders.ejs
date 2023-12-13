@@ -63,6 +63,50 @@
 <link rel="stylesheet" href="assets/css/demos/demo-2.css" />
 <link rel="stylesheet" href="/userHome.css" />
 
+ <style>
+  /* Decorated links for Home and Shop */
+  .decorated-link {
+    position: relative;
+    color: #333; /* Set the link text color */
+    text-decoration: none;
+    transition: color 0.3s ease;
+    padding-right: 10px; /* Adjust this value to add spacing between text and decoration */
+  }
+
+  .decorated-link:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px; /* Adjust this value to change the decoration line's height */
+    background-color: #ff8c00; /* Set the decoration line color */
+    transition: width 0.3s ease;
+  }
+
+  .decorated-link:hover {
+    color: #ff8c00; /* Set the link text color on hover */
+  }
+
+  .decorated-link:hover:before {
+    width: 100%;
+  }
+</style>
+<style>
+  .invoice-btn {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 12px 20px;
+    background-color: #ff0000;
+    color: #fff;
+    text-decoration: none;
+    font-size: 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+</style>
+
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
 <% include('../layouts/center.ejs') %>
@@ -88,7 +132,7 @@
         aria-expanded="false"
         aria-label="Toggle navigation"
       >
-        <span class="navbar-toggler-icon togg"
+        <span class="navbar-toggler-icon togg"  
           ><i class="fa-solid fa-bars"></i
         ></span>
       </button>
@@ -159,113 +203,94 @@
       </div>
     </div>
   </header>
+
+
+  <br>
   <br>
  
- 
-     <section style="background-color: #eee">
-      <div class="container-fluid py-5">
+
+
+<body class="goto-here">
+  <!-- Dummy content for userNav.ejs inclusion -->
+
+
+  <div class="container breadcrumb-section" style="background: linear-gradient(to bottom, #93c747, #56a82a)">
+    <div class="breadcrumb-wrapper">
+      <div class="container">
         <div class="row">
-          <div class="col-lg-12">
-            <div class="card mb-4">
-              <div class="card-body">
-                <h5 class="card-title">Orders</h5>
-                <hr />
-                <div class="table-responsive">
-                 <table id="myTable" class="table table-bordered table-hover">
-                    <thead class="thead-light">
-                      <tr>
-                        <th>Date and Time</th>
-                        <th>Order ID</th>
-                        <th>Address</th>
-                        <th>Payment Method</th>
-                        <th>Ordered Items</th>
-                        <th>Expected Delivery</th>
-                        <th>Order Status</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-             <% if (userData) { %>
-             <% for (let order of userData) {%>
-                    <tbody>
-                     
-                          <tr id="orderTable-<%= order._id  %>">
-                            <td>
-                              <%=order.date %>
-                            </td>
-                            <td>
-                             <%= order._id  %>
-                            </td>
-                            <td>
-                              <%= order.delivery_address  %>
-                            </td>
-                            <td>
-                            <%= order.payment  %>
-                            </td>
-                            <td>
-                              <a class="text-primary p-2" href="/viewOrdered?id=<%= order._id  %>">View Details</a>
-                            </td>
-                            <td>
-                              <%=order.expected_delivery  %>
-                            </td>
+          <div class="col-12">
+            <h2 class="breadcrumb-title" style="color: white">Your Orders</h2>
+            <h4 class="breadcrumb-subtitle" style="color: white">
+              Track your orders and view details
+            </h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ...:::: End Breadcrumb Section:::... -->
 
-                            <td id="status-<%= order._id  %>">
-                            <%= order.status  %>
-                            </td>
+  <div class="container mb-4">
+    <div class="d-flex align-items-center justify-content-between">
+      <h4>Thank you for placing your order.</h4>
+      <a href="/userProfile" class="btn btn-md btn-success mt-3">Back</a>
+      
+    </div>
+    <br>
+    <div>
+       <% if (aggrOrderData) { %>
+       <% for (let order of aggrOrderData) {%>
+      <!-- Dummy content for orderHistory iteration -->
+      <div class="order-box border rounded p-4 mb-5">
+        <h5 class="mb-3">Order ID: <%=order._id  %></h5>
+        <div class="row">
+          <div class="col-md-6">  
+          <% const formattedDate = new Date(order.date).toLocaleDateString(); %>
+          <% const formattedTime = new Date(order.date).toLocaleTimeString(); %>
+            <p>Date: <%=formattedDate  %></p>
+            <p>Order Time: <%=formattedTime  %></p>
+            <br>
+            
+            <h5 id="status-<%=order._id%>" class="text-success">Status: <%=order.status  %></h5>
+     
+             
+          
+           
+            <a href="#" class="invoice-btn">Download Invoice</a>
+          </div>
+          <div class="col-md-6">
+            <p>Total: ₹<span id="total"><%=order.total_amount  %></span></p>
+            <p>Method : <span id="method"><%= order.payment  %></span></p>
+            <p>Expected Delivery: <%= order.expected_delivery  %></p>
+            <br>
+            <a href="/viewOrdered?id=<%= order._id  %>" class="btn btn-md btn-success">View Details</a>
+             <% if(order.status=='placed'||order.status=='pending'){ %>
 
-                            <td class="cancel">
-
-                              <% if(order.status=='delivered'){ %>
-                         
-                                <button type="button"  class="btn-md btn-warning me-3 ms-3 mb-3 " data-bs-toggle="modal"
-                                  data-bs-target="#returnModal3843824382">
-                                  Return
-                                </button>
-                                <% } %>
-                                <% if(order.status=='placed'){  %>
-                             
-                                  <button  class="btn-md btn-danger ms-3 " onclick="cancel(event,'<%=order._id%>')">
-                                  Cancel
-                              </button>
-                              <% } %>
-                       
-                                
-                   
-                              
-                      
-                    
-                              </td>
-
-
-                              <!-- <span id="delete" style="display: none">order has been removed</span> -->
-                          </tr>
-                        
-                        
-                         
-                           
-                    </tbody>
-                <% } %>
-                    <% }else{ %>
-                         <h6>There is no order in the list</h6>
+            <a href="#" onclick="cancel(event,'<%=order._id%>')" id="cancel-<%=order._id  %>" class="btn btn-md btn-danger buttonCancel">Cancel</a>
+                   <% }else if(order.status=='delivered'){ %>
+             <a href="#" onclick="returnOrder(event,'<%=order._id%>')" id="return-<%=order._id  %>" class="btn btn-md btn-danger buttonCancel">Return</a>
                     <% } %>
-                   
+          </div>
+        </div>  
+      </div>
+      <!-- End Dummy Content -->
+      <% } %>
+      <% } %>
+    </div>
+ 
+    <div class="flex items-center">
+   <% for(let j=1;j<=totalPages;j++){ %>
+   <a
+    href="/orders?page=<%= j %>"
+    class="mx-1 flex items-center  rounded-md border border-gray-400 px-3 py-1 text-gray-900 hover:scale-105"
+  >
+    <%= j %>
+  </a>
 
-                  </table>
-                  <!-- Add this section after your table -->
-<div class="pagination">
-  <ul class="pagination">
-    <% if (page > 1) { %>
-      <li class="page-item">
-        <a class="page-link" href="?page=<%= page - 1 %>&pageSize=<%= pageSize %>">&laquo; Previous</a>
-      </li>
-    <% } %>
+  <% } %>
+  </div>
 
-    <% if (userData.length === pageSize) { %>
-      <li class="page-item">
-        <a class="page-link" href="?page=<%= page + 1 %>&pageSize=<%= pageSize %>">Next &raquo;</a>
-      </li>
-    <% } %>
-  </ul>
-</div>
+</body>
 
                 </div>
               </div>
@@ -727,6 +752,9 @@
 
 <script>
 async function cancel(event,orderId){
+
+     try {
+      
      event.preventDefault()      
      console.log('started click');
   
@@ -745,9 +773,11 @@ async function cancel(event,orderId){
      const response=await axios.patch('/cancelOrder',{orderId})
 
        if(response.data.success){
-        document.getElementById(`status-${orderId}`).innerHTML=`${response.data.status}`
-        const remove=document.getElementById(`orderTable-${orderId}`).querySelector(`.cancel`);
-        remove.parentNode.removeChild(remove)
+        document.getElementById(`status-${orderId}`).innerHTML=`Status: ${response.data.status}`
+        const removeElement = document.getElementById(`cancel-${orderId}`);
+    
+        removeElement.parentNode.removeChild(removeElement);
+        
        
        }
       
@@ -755,6 +785,9 @@ async function cancel(event,orderId){
 
      })
 
+    }catch(error){
+     console.log(error.message);
+    }
     }
 </script>
 

@@ -489,7 +489,15 @@ const loadLogout=async(req,res)=>{
 const loadOrders=async(req,res)=>{
         try {
        const user_id= req.session.user_id
-        const orderData=  await Order.find({user_id:user_id}).populate('items.product_id')
+        const orderData=  await Order.aggregate([{$match:{user_id:new mongoose.Types.ObjectId(user_id)}},{$sort:{date:-1}},{
+      $lookup: {
+      from: 'products',  // Replace with the actual name of the collection to populate from
+      localField: 'items.product_id',
+      foreignField: '_id',
+      as: 'amjad',
+    },
+  },])
+
         console.log(orderData);
           res.render('orders',{orderData})
         } catch (error) {

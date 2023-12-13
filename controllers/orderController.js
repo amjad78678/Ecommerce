@@ -4,21 +4,52 @@ const Product=require('../models/productModel')
 const bcrypt=require('bcrypt')
 const Cart = require('../models/cartModel')
 const Order=require('../models/orderModel')
+const { default: mongoose } = require('mongoose')
 
 
 const loadOrders = async (req, res) => {
   try {
     const userId = req.session.userId;
-    const page = parseInt(req.query.page) || 1;
-    const pageSize = parseInt(req.query.pageSize) || 10; // Adjust the page size as needed
 
-    const skip = (page - 1) * pageSize;
+
+    var page = 1;
+    if(req.query.page)[
+      page=req.query.page
+    ]
+
+    const limit=7;
+
+   
     const userData = await Order.find({ user_id: userId })
-      .sort({ date: -1 })
-      .skip(skip)
-      .limit(pageSize);
+     
+const aggrOrderData = await Order.aggregate([
+  {
+    $match: {
+      user_id: new mongoose.Types.ObjectId(userId),
+    },
+  },
+  {
+    $sort: {
+      date: -1,
+    },
+  },
+   {
+    $skip: (page - 1) * limit,
+  },
+  {
+    $limit: limit * 1, // Convert limit to a number if it's a string
+  },
+ 
+]);
 
-    res.render('orders', { userData, user: userData, page, pageSize });
+ console.log(aggrOrderData);
+
+ const count= await Order.aggregate([{$match:{user_id:new mongoose.Types.ObjectId(userId)}},{$count:'totalCount'}])
+ const totalCount = count.length > 0 ? count[0].totalCount : 0;
+ console.log(totalCount);
+const totalPages = Math.ceil(totalCount / limit);
+
+    res.render('orders', {aggrOrderData, user: userData,totalPages,currentPage:page});
   } catch (error) {
     console.log(error.message);
   }

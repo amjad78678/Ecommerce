@@ -32,6 +32,7 @@ const loadHome = async (req, res) => {
   }
 };
 
+
 const loadRegister = async (req, res) => {
   try {
 
@@ -41,10 +42,9 @@ const loadRegister = async (req, res) => {
   }
 };const postRegister = async (req, res) => {
   try {
-    console.log(req.body);
     const existingUser = await User.findOne({email:req.body.email})
     if (existingUser){
-     return res.json({ message: "User already exists" });
+      res.render('userRegister',{message:'User already exists enter new details or  <a href="/userSignIn?id=existingUser._id">Login Now</a> '})//-------------------------------------------------------
       
     }else{
     const bodyPassword =req.body.password
@@ -112,12 +112,12 @@ const loadRegister = async (req, res) => {
           <h2 style="background: #82AE46; margin: 0 auto; width: max-content; padding: 0 10px; color: white; border-radius: 4px;">
             ${otp}
           </h2>
-          <p style="font-size: 0.9em;">Regards,<br />Cornerstone</p>
+          <p style="font-size: 0.9em;">Regards,<br />Fresh Pick</p>
           <hr style="border: none; border-top: 1px solid #eee" />
           <div style="float: right; padding: 8px 0; color: #aaa; font-size: 0.8em; line-height: 1; font-weight: 300">
-            <p>Cornerstone</p>
-            <p>Ocean Of Heaven</p>
-            <p>Omanoor</p>
+            <p>Fresh Pick</p>
+            <p>1600 Ocean Of Heaven</p>
+            <p>Pacific</p>
           </div>
         </div>
       </div>`,
@@ -144,10 +144,7 @@ const result = await userOtpVerification.findOneAndUpdate(filter, update, {
 console.log(result);
 
       await transporter.sendMail(mailOptions);
-  
-      
-      return res.json({success:true,id:_id})
-
+      res.redirect(`/authentication?id=${_id}`)
 
       
 
@@ -156,6 +153,10 @@ console.log(result);
       console.log(error.message);
     }
   };
+
+
+
+
 const loadLogin = async (req, res) => {
   try {
     res.render('userSignIn');
@@ -166,7 +167,8 @@ const loadLogin = async (req, res) => {
 const loadOtp = async (req, res) => {
   try {
    
-    User.findOne({is_Verified:false})
+     
+   await User.findOne({is_Verified:false})
     const id = req.query.id
     const resendLink=`/resend-otp?id=${id}`;
     // req.session.userId=req.query.id
@@ -181,16 +183,28 @@ const loadOtp = async (req, res) => {
     try {
       const Otp= req.body.Otp
       const userId=req.body.id
+      console.log('iam verifydata'+req.body.verifyData);
+
+      console.log('queryid'+req.query.id);
+      console.log('bodyid'+req.body.id);
 
       console.log('lastOtp'+Otp);
 
 
           console.log(`this is session ${userId}`);
-          const userOtpVerificationRecords= await userOtpVerification.findOne({userId})
+          const userOtpVerificationRecords= await userOtpVerification.findOne({userId:userId})
           
-              
+         console.log('iamverificqtionrecords'+userOtpVerificationRecords);
+
+         if (!userOtpVerificationRecords) {
+    // Handle the case where no matching record is found
+    return res.json({ message: "User not found or verification record does not exist." });
+  }
+        
+           const {otp:hashedOtp}=userOtpVerificationRecords;
+          
             //user otp record exists
-          const {otp:hashedOtp}=userOtpVerificationRecords;
+        
           // console.log(expiryDate);
 
           const expiresAt=userOtpVerificationRecords.expiresAt
@@ -204,6 +218,7 @@ const loadOtp = async (req, res) => {
             console.log(enteredOtp);
             console.log(hashedOtp);
             const validOtp = await bcrypt.compare(enteredOtp, hashedOtp);
+        
               if(validOtp){
               req.session.userId=userId
               //update user to mask is verified true
@@ -219,7 +234,7 @@ const loadOtp = async (req, res) => {
 
               }
 
-          
+            
           
 
     } catch (error) {
@@ -639,13 +654,13 @@ const resendOtp = async (req, res) => {
     const id = req.body.id;
     console.log(id);
     const user = await User.findOne({ _id: id });
-
+     console.log(user);
     // Fetch user details based on the userId
 
     // Resend OTP verification email
     await sentOtpVerificationMail(user);
 
-    res.json({ message: 'Otp successfully sent to mail' });
+   return res.json({ message: 'Otp successfully sent to mail' });
 
   } catch (error) {
     console.error(error);

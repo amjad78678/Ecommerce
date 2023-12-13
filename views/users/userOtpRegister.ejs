@@ -132,6 +132,8 @@
       class="login-page bg-image pt-8 pb-8 pt-md-12 pb-md-12 pt-lg-17 pb-lg-17"
       style="background-image: url('assets/images/backgrounds/loginsignup.jpg')"
     >
+
+    <div id="otpMainDiv">
       <div class="container">
         <div class="form-box">
           <div class="form-tab">
@@ -161,8 +163,8 @@
               </div>
               <!-- .End .tab-pane -->
               <div
-                class="tab-pane fade show active"
-                id="register-2"
+                class="tab-pane fade show active "
+                id="register-2 "
                 role="tabpanel"
                 aria-labelledby="register-tab-2"
               >
@@ -170,7 +172,7 @@
                   <div class="form-group">
 
                     <!-- hidden aayi pass cheyyaaan -->
-                    <input type="hidden" name="id" value="<%= locals.id  %>">
+                    <input type="hidden" name="id" value="<%= id  %>">
                
                     
                     <label for="Your otp">An OTP has been sent to your email. Please enter the OTP to proceed. *</label>
@@ -229,6 +231,7 @@
         <!-- End .form-box -->
       </div>
       <!-- End .container -->
+      </div>
     </div>
     <!-- End .login-page section-bg -->
   </main>
@@ -572,9 +575,10 @@
 ></script>
 
 <script>
+
 var countDownStart = 60;
 
-function updateButtonText() {
+function updateButtonText() {countdown
     if (countDownStart > 0) {
         document.getElementById('countdown').innerHTML = "Expires in " + countDownStart +' seconds...';
         countDownStart--;
@@ -606,8 +610,36 @@ async function resendOtp(event) {
       id: userId
     },
    success: function (response) {
+
   if (response.message) {
-    $("#otpSented").css("display", "block").html(response.message);
+
+     
+var countDownStart = 60;
+
+function updateButtonText() {countdown
+    if (countDownStart > 0) {
+        document.getElementById('countdown').innerHTML = "Expires in " + countDownStart +' seconds...';
+        countDownStart--;
+        setTimeout(updateButtonText, 1000); // Update every 1 second
+        
+    } else {
+        // OTP expired, update the inner HTML with the resend link
+        var resendLink = document.getElementById('timer').getAttribute('data-resend-link');
+        document.getElementById('countdown').innerHTML = '<span class="text-danger">Otp expired</span>';
+        document.getElementById('resend').style.display='block'
+    } 
+}
+
+updateButtonText(); // Start the countdown
+
+     $("#otpSented").css("display", "block").html(response.message);
+
+      setTimeout(()=>{
+      
+       $('#otpMainDiv').load('/authentication #otpMainDiv');
+
+      },2000)
+   
   }
 } 
 ,

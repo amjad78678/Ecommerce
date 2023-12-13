@@ -5,7 +5,7 @@ const userController = require('../controllers/adminController');
 const bodyParser = require('body-parser');
 const auth=require('../middleware/adminAuth')
 const adminController=require('../controllers/adminController')
-const {upload}=require('../middleware/uploadImages')
+const upload=require('../middleware/uploadImages')
 const session= require('express-session')
 
 
@@ -52,11 +52,11 @@ adminRoute.post('/category/unlist/:id',adminController.unlistingCategory),
 adminRoute.post('/category/deleteCategory/:id',adminController.deleteCategory)
 adminRoute.get('/products',auth.isLogin,adminController.loadProducts)
 adminRoute.get('/addProduct',auth.isLogin,adminController.loadAddProduct)
-adminRoute.post('/addProduct',upload,adminController.postAddProduct)
+adminRoute.post('/addProduct',upload.upload.array('image',5),adminController.postAddProduct)
 adminRoute.post('/products/list/:id',adminController.listingProduct)
 adminRoute.post('/products/unlist/:id',adminController.unlistingProduct)
 adminRoute.get('/editProduct',auth.isLogin,adminController.loadEditProduct)
-adminRoute.post('/editProduct',upload,adminController.postEditProduct)
+adminRoute.post('/editProduct',upload.upload.array('image',5),adminController.postEditProduct)
 adminRoute.post('/products/deleteProducts/:id',adminController.deleteProducts)
 adminRoute.get('/logout',auth.isLogin,adminController.loadLogout)
 adminRoute.get('/orders',auth.isLogin,adminController.loadOrders)
