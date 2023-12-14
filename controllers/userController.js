@@ -188,6 +188,7 @@ const loadOtp = async (req, res) => {
     try {
       const Otp= req.body.Otp
       const userId=req.body.id
+      const email=req.body.email
  
 
       console.log('queryid'+req.query.id);
@@ -228,6 +229,8 @@ const loadOtp = async (req, res) => {
               req.session.userId=userId
               //update user to mask is verified true
               await User.updateOne({_id:userId},{$set:{is_Verified:true }})
+              await User.deleteMany({email:email,is_Verified:false})
+              
                return res.json({ success:true });
               //delete the used otp of otp database 
               
