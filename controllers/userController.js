@@ -44,8 +44,16 @@ const loadRegister = async (req, res) => {
 const postRegister = async (req, res) => {
   try {
     console.log(req.body);
-    const existingUser = await User.findOne({email:req.body.email})
-    if (existingUser){
+   
+const existingUser = await User.aggregate([
+    {
+        $match: {
+            email: req.body.email,
+            is_verified: { $eq: true } // Using $eq for "equal to true"
+        }
+    }
+]);
+    if (existingUser.length>0){
      return res.json({ message: "User already exists" });
       
     }else{

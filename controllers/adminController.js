@@ -530,11 +530,12 @@ const updatedStatus = async (req, res) => {
 
 const loadOrderDetails=async(req,res)=>{
     try {
+
+
   const orderId=req.query.id
 
-  const orderData = await Order.findOne({ _id: orderId })
-  .populate('items.product_id');
-
+  const orderData = await Order.findOne({ _id: orderId }).populate('items.product_id').populate('user_id')
+  
     console.log('orderData'+orderData);
       res.render('orderDetails',{orderData})
     } catch (error) {
