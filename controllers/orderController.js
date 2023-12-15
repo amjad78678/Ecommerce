@@ -63,7 +63,7 @@ const patchCancelOrder=async(req,res)=>{
         console.log('hiii');
         const {orderId}=req.body
         console.log('iam orderid'+orderId);
-        const statusOfOrder = 'Cancelled'
+        const statusOfOrder = 'cancelled'
          const orderData= await Order.findOne({_id:orderId}).populate('items.product_id')
          console.log('hellobro'+orderData);
          await Order.updateOne({_id:orderId},{$set:{status:statusOfOrder}})
@@ -97,7 +97,26 @@ const loadViewOrdered=async(req,res)=>{
      const userId= req.session.userId
   const userData= await  User.findOne({_id:userId})
   const orders= await Order.findOne({_id:orderId}).populate('items.product_id')
-      res.render('viewOrdered',{orders,user:userData})
+
+  console.log('ordersofjhs',orders);
+
+    var status = 0;
+        if (orders.status == 'pending') {
+            status = 1;
+        } else if (orders.status.toString() == 'placed') {
+            status = 2;
+        } else if (orders.status == 'dispatched') {
+            status = 3;
+        } else if (orders.status == 'delivered') {
+            status = 4;
+        } else if (orders.status == 'returned') {
+            status = 5;
+        } else if (orders.status == 'cancelled') {
+            status = 6;
+        } else if (orders.status == 'pending for return approval') {
+            status = 7
+        }
+      res.render('viewOrdered',{orders,user:userData,statuss:status})
      } catch (error) {
       console.log(error.message);
      }
