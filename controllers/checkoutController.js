@@ -22,7 +22,7 @@ var instance = new Razorpay({
               const cart= await Cart.findOne({user_id:userId}).populate({path:'items.product_id'})
               req.session.couponApplied=false
               const availableCoupons=await Coupon.aggregate([{$match:{$and:[{status:true},{'userUsed.user_id':{$nin:[new mongoose.Types.ObjectId(userId)]}}]}}]) 
-        if(userId && cart ){
+        if(userId && cart){
            
 
       let originalAmts = 0;
