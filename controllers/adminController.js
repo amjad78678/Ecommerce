@@ -3,7 +3,9 @@ const Category= require('../models/categoryModel')
 const Product=require('../models/productModel')
 const Order=require('../models/orderModel')
 const bcrypt=require('bcrypt')
+  const path=    require('path')
 const mongoose = require('mongoose');
+const fs = require("fs");
 const { OrderedBulkOperation } = require('mongodb');
 
 
@@ -278,20 +280,49 @@ const unlistingCategory = async (req, res) => {
 
 const deleteCategory = async (req, res) => {
   try {
-        
-    const categ=await Category.findOne({_id:req.params.id})
-    console.log(categ);
     const categoryId = req.params.id;
-    console.log(categoryId);
-    await Category.deleteOne({_id:categoryId})
-    await Product.deleteMany({category:categ.name})
 
-    
+    // Step 1: Find the category to get its name
+    const category = await Category.findOne({ _id: categoryId });
+
+    if (!category) {
+      return res.status(404).json({ error: 'Category not found' });
+    }
+
+    // Step 2: Delete the category document
+    await Category.deleteOne({ _id: categoryId });
+
+    // Step 3: Find and delete all products associated with the category
+    const products = await Product.find({ category: category.name });
+     console.log('products',products);
+    // Loop through products to get image filenames
+    const imageFilenames = products.map((product) => product.imageUrl).flat();
+
+    console.log('imagefilename',imageFilenames);
+
+    // Delete all products associated with the category
+    await Product.deleteMany({ category: category.name });
+
+    // Step 4: Loop through the list of image filenames and unlink each file
+    for (const filename of imageFilenames) {
+      const imagePath = path.join(__dirname, '..', 'public', 'assetsAdmin', 'imgs', 'products', filename);
+
+      // Check if the file exists before attempting to unlink
+      try {
+        await fs.unlink(imagePath,()=>{});
+        console.log(`Image ${filename} deleted successfully.`);
+      } catch (err) {
+        console.error(`Error deleting image ${filename}: ${err.message}`);
+      }
+    }
+
+    res.status(200).json({ success: true });
   } catch (error) {
     console.error('Error deleting category:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
 
 
 const loadProducts=async(req,res)=>{
@@ -470,7 +501,30 @@ const deleteProducts=async(req,res)=>{
      try {
       console.log(req.params);
       const productId=req.params.id
-      await Product.deleteOne({_id:productId})  
+
+     
+    // Step 1: Retrieve the list of image filenames
+    const product = await Product.findById(productId);
+    const imageFilenames = product.imageUrl || [];
+
+    console.log('iamgefilenames'+imageFilenames);
+
+    // Step 2: Delete the product document from the database
+    await Product.deleteOne({ _id: productId });
+
+    // Step 3: Loop through the list of image filenames and unlink each file
+    for (const filename of imageFilenames) {
+      const imagePath = path.join(__dirname, '..', 'public', 'assetsAdmin','imgs','products',filename);
+
+      // Check if the file exists before attempting to unlink
+      try {
+         await fs.unlink(imagePath,()=>{});
+        console.log(`Image ${filename} deleted successfully.`);
+      } catch (err) {
+        console.error(`Error deleting image ${filename}: ${err.message}`);
+      }
+    }
+
 
      } catch (error) {
        console.log(error.message);
@@ -547,7 +601,8 @@ const postDeleteImg=async(req,res)=>{
       try { 
        const {productId,img,index}= req.body
        console.log(productId+img+index);
-
+  
+     fs.unlink(path.join(__dirname, '..', 'public', 'assetsAdmin','imgs','products',img),()=>{})
       await Product.updateOne({_id:productId},{$pull:{imageUrl:img}})
        res.send({success:true})
       } catch (error) {

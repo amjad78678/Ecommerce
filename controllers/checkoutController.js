@@ -101,6 +101,7 @@ const postAddNewAddress=async(req,res)=>{
 const postOrderPlaced=async(req,res)=>{
       try {
   const {selectedAddress,selectedPayment,subTotal}=req.body
+  
   const userId=req.session.userId
                    
  const status=selectedPayment=='cod'||selectedPayment=='walletPayment'?'placed':'pending'

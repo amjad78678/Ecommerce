@@ -788,8 +788,14 @@ async function placeOrder() {
 
   const address = document.querySelector('input[name = "selectedAddress"]:checked').value
   const payment=document.querySelector('input[name = "payment"]:checked').value
-  const total = parseInt($('#sub_total').text().trim());
- 
+const totalText = $('#sub_total').text().trim(); // Get the text content
+
+// Remove the currency symbol (assuming it's always at the beginning)
+const totalWithoutCurrency = totalText.replace('₹', '');
+
+// Parse the integer
+const total = parseInt(totalWithoutCurrency);
+console.log('total',total);
 
   // Proceed with placing the order
   $.ajax({
@@ -908,7 +914,7 @@ event.preventDefault()
      },
 
      success:function(response){
-                 const {discountAmount,discountedTotal,minAmount}     = response
+                 const {discountAmount,discountedTotal,minAmount} = response
        if(response.couponApplied==true){
      document.getElementById('couponDiscount').innerHTML=discountAmount
      document.getElementById('sub_total').innerHTML=discountedTotal
