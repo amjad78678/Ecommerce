@@ -554,6 +554,8 @@ const postDeleteImg=async(req,res)=>{
         console.log(error.message);
       }
 }
+
+
 module.exports={
        loadAdminHome,
        loadAdminLogin,
@@ -582,5 +584,6 @@ module.exports={
        loadOrders,
        updatedStatus,
        loadOrderDetails,
-       postDeleteImg
+       postDeleteImg,
+
     }

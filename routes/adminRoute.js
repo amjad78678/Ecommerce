@@ -5,6 +5,7 @@ const userController = require('../controllers/adminController');
 const bodyParser = require('body-parser');
 const auth=require('../middleware/adminAuth')
 const adminController=require('../controllers/adminController')
+const couponController=require('../controllers/couponController')
 const upload=require('../middleware/uploadImages')
 const session= require('express-session')
 
@@ -63,6 +64,10 @@ adminRoute.get('/orders',auth.isLogin,adminController.loadOrders)
 adminRoute.patch('/updatedStatus',adminController.updatedStatus)
 adminRoute.get('/orderDetails',auth.isLogin,adminController.loadOrderDetails)
 adminRoute.put('/deleteImg',adminController.postDeleteImg)
+adminRoute.get('/coupon',couponController.loadCoupon)
+adminRoute.get('/addCoupon',couponController.loadAddCoupon)
+adminRoute.post('/addCoupon',couponController.postAddCoupon)
+adminRoute.post('/deleteCoupon',couponController.deleteCoupon)
 
 
 

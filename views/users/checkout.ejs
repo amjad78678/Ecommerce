@@ -343,9 +343,13 @@
 		                							<td>Shipping:</td>
 		                							<td>Free shipping</td>
 		                						</tr>
+                                	<tr>
+		                							<td>Coupon discount:</td>
+		                							<td id="couponDiscount">0</td>
+		                						</tr>
 		                						<tr class="summary-total">
 		                							<td>Total:</td>
-		                							<td>₹<%= subTotal  %></td>
+		                							<td id="sub_total">₹<%= subTotal  %></td>
 		                						</tr><!-- End .summary-total -->
 		                					</tbody>
 		                				</table><!-- End .table table-summary -->
@@ -354,15 +358,15 @@
   type="button"
   class="rounded-full form-control mt-3 mb-3   bg-black px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-black/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
    >
-  Available Coupens
+  Available Coupons
 </button>
 
                             <div class="cart-discount">
 			            				<form action="#">
 			            					<div class="input-group">
-				        						<input type="text" class="form-control" required placeholder="coupon code">
+				        						<input type="text" id="couponCode" class="form-control" required placeholder="coupon code">
 				        						<div class="input-group-append">
-													<button class="btn btn-outline-primary-2" type="submit"><i class="icon-long-arrow-right"></i></button>
+													<button class="btn btn-outline-primary-2" id="couponButton" onclick="applyCoupon(event)" type="submit"><i class="icon-long-arrow-right"></i></button>
 												</div><!-- .End .input-group-append -->
 			        						</div><!-- End .input-group -->
 			            				</form>
@@ -659,22 +663,26 @@
 <!-- End .modal -->
 <div class="modal fade mt-5" id="discountModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
-
-        <div class="modal-content rounded-0">
+   <% if(availableCoupons && availableCoupons.length>0){ %>
+         <% availableCoupons.forEach((coupons)=>{ %>
+        <div class="modal-content rounded-0 mb-1">
           <div class="modal-body text-center">
             <div class="icon text-danger">
-              <i class="fas fa-gift"></i>
-            </div>
+              <i class="mt-2 fas fa-gift display-3"></i>
+            </div>  
+            <br>
             <div class="notice">
-              <h4>Get 10000 Discount</h4>
-              <p>This coupon is only available for purchases above ₹500</p>
-              <p>Valid from 14/2/20004 to 15/23/2005 </p>
-              <p>Use promo code <span style="font-size: medium;" class="badge badge-info">VISHU</span></p>
+              <h4>Get <%=coupons.discountAmount  %> Discount</h4>
+
+              <h6>This coupon is only available for purchases above ₹<%=coupons.minAmount  %></h6>
+              <p>Use promo code <span style="font-size: medium;" class="badge badge-info"><%=coupons.couponCode  %></span></p>
+              <br>
             </div>
             <div class="code"></div>
           </div>
         </div>
-
+        <% }) %>
+      <% }else{ %>
       <div class="modal-content rounded-0">
         <div class="modal-body text-center">
           <div class="icon text-danger">
@@ -687,7 +695,7 @@
           <div class="code"></div>
         </div>
       </div>
-      
+      <% } %>
  
   </div>
 </div>
@@ -773,9 +781,14 @@ async function placeOrdersSelect() {
 
 async function placeOrder() {
   // Find the selected address
+
+  // let address = $("input[name=address]:checked").val()
+  // let paymentMethod = $('input[name=paymentMethod]:checked').val()
+  // let grandTotal = parseInt($('#grandTotal').text().trim());
+
   const address = document.querySelector('input[name = "selectedAddress"]:checked').value
   const payment=document.querySelector('input[name = "payment"]:checked').value
-  const total = document.getElementById('total').value
+  const total = parseInt($('#sub_total').text().trim());
  
 
   // Proceed with placing the order
@@ -783,7 +796,7 @@ async function placeOrder() {
     url: '/placeOrder',
     method: 'post',
     data: {
-      selectedAddress: address,
+      selectedAddress: address, 
       selectedPayment: payment,
       subTotal: total,
     },
@@ -876,5 +889,53 @@ async function placeOrder() {
       })
     }
 
+
+async function applyCoupon(event){
+event.preventDefault()
+
+   const couponCode = document.getElementById("couponCode").value.trim();
+   const cartTotal = document.getElementById('total').value
+  console.log(cartTotal);
+  console.log(couponCode);
+
+  $.ajax({
+     
+     url:'/applyCoupon',
+     type:'POST',
+     data:{
+      couponCode:couponCode,
+      cartTotal:cartTotal
+     },
+
+     success:function(response){
+                 const {discountAmount,discountedTotal,minAmount}     = response
+       if(response.couponApplied==true){
+     document.getElementById('couponDiscount').innerHTML=discountAmount
+     document.getElementById('sub_total').innerHTML=discountedTotal
+     document.getElementById('couponButton').disabled=true
+
+     Swal.fire("Copon added successfully", "", "success");   
+       }else if(response.wrongCoupon==true){
+          Swal.fire("Not available");
+       }else if(response.shouldMinAmount==true){
+        Swal.fire(`You should purchase atleast ${minAmount}`);
+       }else if(response.expired==true){
+       Swal.fire("coupon has expired");
+       }else if(response.onlyOneTime==true){
+        Swal.fire("You already used one coupon");
+       }else if(response.usedCoupon==true){
+         Swal.fire("coupon has already used");
+       }
+     },
+       error: function(error) {
+        // Code to handle errors
+        console.error(error);
+    }
+
+  })
+
+
+
+}
 </script>
 <% include('../layouts/footer.ejs') %>

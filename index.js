@@ -7,7 +7,7 @@ const app = express();
 
 
 const nocache=require('nocache')
-const port = process.env.PORT ||3000;
+const port = process.env.PORT ||8001;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json())
 app.use(nocache())
@@ -28,5 +28,5 @@ app.use('/admin',adminRoute)
 
 
 app.listen(port, () =>
-  console.log('port is running at http://localhost:3000/  port is running at http://localhost:3000/admin'),
+  console.log('port is running at http://localhost:8001/  port is running at http://localhost:8001/admin'),
 );

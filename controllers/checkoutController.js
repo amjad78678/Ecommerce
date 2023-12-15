@@ -3,8 +3,10 @@ const Category= require('../models/categoryModel')
 const Product=require('../models/productModel')
 const bcrypt=require('bcrypt')
 const Cart = require('../models/cartModel')
+const Coupon = require('../models/couponModel')
 const Order = require('../models/orderModel')
 const Razorpay = require('razorpay');
+const { default: mongoose } = require('mongoose')
 
 var instance = new Razorpay({
   key_id: process.env.RAZ_KEYID,
@@ -18,7 +20,8 @@ var instance = new Razorpay({
             
               const userId=req.session.userId
               const cart= await Cart.findOne({user_id:userId}).populate({path:'items.product_id'})
-
+              req.session.couponApplied=false
+              const availableCoupons=await Coupon.aggregate([{$match:{$and:[{status:true},{'userUsed.user_id':{$nin:[new mongoose.Types.ObjectId(userId)]}}]}}]) 
         if(userId && cart ){
            
 
@@ -34,7 +37,7 @@ var instance = new Razorpay({
             const user= await User.findOne({_id:req.session.userId})
               const wallet= user.wallet
 
-            res.render('checkout',{cart,subTotal:originalAmts,user:[user],wallet})
+            res.render('checkout',{cart,subTotal:originalAmts,user:[user],wallet,availableCoupons})
               }else{
                 res.redirect('/')
               }
@@ -52,6 +55,8 @@ var instance = new Razorpay({
               console.log(error.message);
              }
     }
+
+
 
 
 
@@ -218,6 +223,60 @@ const loadOrderPlaced=async(req,res)=>{
    }
 }
 
+const applyCoupon=async(req,res)=>{
+     try {
+ const {couponCode,cartTotal} = req.body
+const {userId}=req.session
+const couponData=await Coupon.findOne({couponCode:couponCode})
+let discountedTotal=0;
+if(couponData){
+  let currentDate=new Date()
+  console.log('currnewdate',currentDate);
+
+  let minAmount=couponData.minAmount
+  if(cartTotal>couponData.minAmount){
+
+
+    if(currentDate<=couponData.expiryDate && couponData.status!==false ){
+
+    const id=couponData._id
+    const couponUsed=await Coupon.findOne({_id:id,'userUsed.user_id':userId})
+   if(couponUsed){
+    console.log("this coupon is already used");
+    res.send({usedCoupon:true})
+   }else{
+     if(req.session.couponApplied===false){
+     const updateCouponUsed=  await Coupon.updateOne ({_id:id},{$push:{userUsed:{user_id:userId}}})
+     await Coupon.updateOne({_id:id},{$inc:{Availability:-1}})
+      discountedTotal=cartTotal-couponData.discountAmount
+      let discountAmount=couponData.discountAmount
+      req.session.couponApplied=true
+      res.send({couponApplied:true,discountedTotal,discountAmount})
+     }else{
+      res.send({onlyOneTime:true})
+     }
+   }
+  }else{
+    console.log('Coupon expired');
+    res.send({expired:true})
+  }
+}else{
+  console.log(`you should purchase atleast ${cartTotal}`);
+  res.send({shouldMinAmount:true,minAmount})
+}
+}else{
+  console.log('Wrong Coupon');
+  res.send({wrongCoupon:true})
+}
+
+console.log('coupondata',couponData);
+
+  
+     } catch (error) {
+      console.log(error.message);
+     }
+}
+
 
 
 
@@ -227,6 +286,7 @@ module.exports={
     loadAddNewAddress,
     postAddNewAddress,
     loadOrderPlaced,
-    postOrderPlaced
+    postOrderPlaced,
+    applyCoupon
 
 }
