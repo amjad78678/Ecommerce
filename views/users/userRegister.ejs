@@ -165,7 +165,7 @@
                 role="tabpanel"
                 aria-labelledby="register-tab-2"
               >
-                <form action="" id="signupForm" onsubmit="return validateForm()">
+                <form action="" id="signupForm">
                   <div class="form-group">
                     <label for="Username">Username *</label>
                     <input
@@ -599,8 +599,12 @@
   crossorigin="anonymous"
 ></script>
 <script>
-  function validateForm(){
-   
+
+
+  async function registerButton(event){
+  event.preventDefault()
+
+
        let userName=document.getElementById('userName').value
        let email=document.getElementById('email').value.toLowerCase()
        let mobileNumber=document.getElementById('mobileNumber').value
@@ -654,13 +658,9 @@
     }
 
 
-
-     return true
-  }
+ // Move the AJAX request inside the validation success block
 
 
-  async function registerButton(event){
-  event.preventDefault()
      var verifyData = $("#signupForm").serialize();
 
       $.ajax({

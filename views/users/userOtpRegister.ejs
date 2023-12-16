@@ -576,7 +576,7 @@
 
 <script>
 
-var countDownStart = 5;
+var countDownStart = 60;
 
 function updateButtonText() {countdown
     if (countDownStart > 0) {
@@ -616,7 +616,7 @@ async function resendOtp(event) {
 
 
     
-var countDownStart = 5;
+var countDownStart = 60;
 
 function updateButtonText() {countdown
     if (countDownStart > 0) {
@@ -629,6 +629,9 @@ function updateButtonText() {countdown
         var resendLink = document.getElementById('timer').getAttribute('data-resend-link');
         document.getElementById('countdown').innerHTML = '<span class="text-danger">Otp expired</span>';
         document.getElementById('resend').style.display='block'
+        setTimeout(()=>{
+          document.getElementById('resend').style.display='none'
+        },3000)
     } 
 }
 
@@ -666,7 +669,7 @@ async function verifyOtp(event){
         success: function (response) {
           console.log(response.message);
           if(response.message){
-            $("#otpMessage").html(response.message);
+           $("#otpMessage").html(response.message);
           setTimeout(()=>{
           $("#otpMessage").html('')
           },3000)

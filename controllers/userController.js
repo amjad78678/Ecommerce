@@ -205,14 +205,18 @@ const loadOtp = async (req, res) => {
          if (!userOtpVerificationRecords) {
     // Handle the case where no matching record is found
     return res.json({ message: "User not found or verification record does not exist." });
-  }
+  }else{
+
+  
+    
+  
         
            const {otp:hashedOtp}=userOtpVerificationRecords;
           
             //user otp record exists
         
           // console.log(expiryDate);
-
+  
           const expiresAt=userOtpVerificationRecords.expiresAt
           if (expiresAt < Date.now()) {
 
@@ -226,11 +230,12 @@ const loadOtp = async (req, res) => {
             const validOtp = await bcrypt.compare(enteredOtp, hashedOtp);
         
               if(validOtp){
-              req.session.userId=userId
-              //update user to mask is verified true
+             
+            // Delete all users with is_Verified: false, excluding the user with userId
+            await User.deleteMany({ is_Verified: false, _id: { $ne: userId } });
+
               await User.updateOne({_id:userId},{$set:{is_Verified:true }})
-              await User.deleteMany({email:email,is_Verified:false})
-              
+              req.session.userId=userId
                return res.json({ success:true });
               //delete the used otp of otp database 
               
@@ -244,7 +249,7 @@ const loadOtp = async (req, res) => {
 
             
           
-
+            }
     } catch (error) {
       console.log(error.message);
     }
