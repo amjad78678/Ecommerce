@@ -246,9 +246,16 @@
                                 <span>Payment Method: <%=orderData.payment  %></span><br>
                                 <span>Total Amount: ₹<%=orderData.total_amount  %></span>
                             </div>
+                            <%  %>
                             <div class="mb-2">
+                                <% if(orderData.couponName){ %>
+                               <span>Coupon Name: <%= orderData.couponName %></span><br>
+                                 <span>Coupon Discount: ₹<%= orderData.couponDiscount %></span>
+                                    <% }else{ %>
                                 <span>Coupon Name: No coupon used</span><br>
-                                <span>Coupon Discount: ₹0</span>
+
+                                <% } %>
+                              
                             </div>
                            
                         </div>

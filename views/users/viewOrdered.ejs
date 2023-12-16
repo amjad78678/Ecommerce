@@ -174,26 +174,40 @@
                   <div>
                     <p class="text-muted mb-2">
                       Order ID:
-                      <span class="fw-bold text-dark">
+                      <span class="fw-bold text-dark me-5">
                         <%= orders._id %>
                       </span>
+                      <% if(orders.couponName){ %>
+                      Coupon Name:
+                      <span class="fw-bold text-dark ">
+                        <%= orders.couponName %>
+                      </span>
+                      <% } %>
                     </p>
                     <p class="text-muted mb-0">
                       Ordered On:
                       <span class="fw-bold text-dark me-5">
                         <%= orders.date %>
                       </span>
-
-                     Expected Delivery:
-                       <span class="fw-bold text-dark">
-                        <%= orders.expected_delivery %>
+                        <% if(orders.couponName){ %>
+                      Coupon Discount:
+                       <span class="fw-bold text-dark ">
+                        <%= orders.couponDiscount %>
                       </span>
+                      <% } %>
                     </p>
                     <br>
                     <p class="text-muted mb-0">
                       Order Status:
-                      <span class="fw-bold">
+                      <span class="fw-bold me-5">
                         <%= orders.status %>
+                      </span>
+                         
+                       <span class="fw-bold text-dark float-end">
+                        <span class="text-success">
+                        Expected Delivery:
+                        </span>
+                        <%= orders.expected_delivery %>
                       </span>
                     </p>
                   </div>

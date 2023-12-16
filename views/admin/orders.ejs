@@ -196,7 +196,7 @@
                                         <th scope="col">Status</th>
                                        
 
-                                            <th scope="col">Reason</th>
+                                        
                                             
                                     </tr>
                                 </thead>
@@ -231,57 +231,14 @@
                                             <td>
                                                 <!-- <div class="dropdown">
                                                 <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a> -->
-
-                                                <select  onchange="orderStatus(this.value,'<%=orders._id%>')"
-                                                    class="form-select statusSelector" name="statusSelector"
-                                                    id="statusSelector<%=orders._id  %>">
-                                                    <option value="cancelled"  <% if (orders.status=='cancelled'){ %>
-                                                   
-                                                        selected
-                                                        <% } %>    >Cancelled
-                                                    </option>   
+<!-- Replace the select element with a text field -->
+<input type="text" class="form-control statusText" id="statusText<%=orders._id%>" value="<%=orders.status%>" readonly>
 
 
-                                                    <option value="placed" <% if (orders.status=='placed'){ %>
-                                                        selected 
-                                                        <% } %>  >Placed</option>
 
 
-                                                    <option value="pending" <% if (orders.status=='pending'){ %>
-                                                        selected
-                                                        <% } %>   >Pending
-                                                    </option>
+<!-- to order status visible  -->
 
-
-                                                    <option value="delivered" <% if (orders.status=='delivered'){ %>
-                                               
-                                                        selected
-                                                     <% } %>   >Delivered
-                                                    </option>
-
-
-                                                    <option value="dispatched" <% if (orders.status=='dispatched'){ %>
-                                                
-                                                        selected 
-                                                     <% } %>   >Dispatched
-                                                    </option>
-
-
-                                                    <option value="returned"   <% if (orders.status=='returned'){ %>
-                                               
-                                                        selected
-                                                           <% } %>    >Returned
-                                                    </option>
-
-                                                       <option value="return pending"   <% if (orders.status=='return pending'){ %>
-                                               
-                                                        selected
-                                                           <% } %>    >Return Pending
-                                                    </option>
-
-                                                    
-
-                                                </select>
                                             </td>
                                             <td>
 
@@ -396,6 +353,11 @@
          return false
      }
 
+
+
+    // status visible orders
+
+ 
 
 
 

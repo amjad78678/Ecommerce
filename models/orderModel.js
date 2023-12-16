@@ -45,7 +45,12 @@ const orderSchema=new Schema({
       type:Number,
 
     },
-
+      couponName: {
+        type: String
+    },
+    couponDiscount: {
+        type: Number
+    },
 
     items:[{
       product_id:{

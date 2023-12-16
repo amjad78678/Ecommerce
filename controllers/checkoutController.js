@@ -19,6 +19,7 @@ var instance = new Razorpay({
           try {
             
               const userId=req.session.userId
+             
               const cart= await Cart.findOne({user_id:userId}).populate({path:'items.product_id'})
               req.session.couponApplied=false
               const availableCoupons=await Coupon.aggregate([{$match:{$and:[{status:true},{'userUsed.user_id':{$nin:[new mongoose.Types.ObjectId(userId)]}}]}}]) 
@@ -103,6 +104,7 @@ const postOrderPlaced=async(req,res)=>{
   const {selectedAddress,selectedPayment,subTotal}=req.body
   
   const userId=req.session.userId
+  console.log('iam coupon session',req.session.coupon);
                    
  const status=selectedPayment=='cod'||selectedPayment=='walletPayment'?'placed':'pending'
 
@@ -123,6 +125,13 @@ const postOrderPlaced=async(req,res)=>{
    const delivery=new Date(date.getTime()+(10 * 24 * 60 * 60 * 1000))
    const deliveryDate=delivery.toLocaleString('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).replace(/\//g, '-')
 
+   var couponName=''
+   var couponDiscount=0
+  if(req.session.coupon!=null){
+   couponName=req.session.coupon.couponName
+   couponDiscount=req.session.coupon.discountAmount 
+
+  }
     
    const order=new Order({
 
@@ -134,7 +143,9 @@ const postOrderPlaced=async(req,res)=>{
         date:orderDate,
         expected_delivery:deliveryDate,
         payment:selectedPayment,
-        items:cartProducts
+        items:cartProducts,
+        couponName:couponName,
+        couponDiscount:couponDiscount
 
 
 
@@ -213,6 +224,7 @@ const loadOrderPlaced=async(req,res)=>{
 
     const orderId=req.params.id
     const userId=req.session.userId
+     req.session.coupon=null
     const order= await Order.findOne({_id:orderId})
 
 
@@ -229,6 +241,8 @@ const applyCoupon=async(req,res)=>{
  const {couponCode,cartTotal} = req.body
 const {userId}=req.session
 const couponData=await Coupon.findOne({couponCode:couponCode})
+
+req.session.coupon=couponData
 let discountedTotal=0;
 if(couponData){
   let currentDate=new Date()

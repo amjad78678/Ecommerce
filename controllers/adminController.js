@@ -2,8 +2,9 @@ const User=require('../models/userModel')
 const Category= require('../models/categoryModel')
 const Product=require('../models/productModel')
 const Order=require('../models/orderModel')
+const Coupon =require('../models/couponModel')
 const bcrypt=require('bcrypt')
-  const path=    require('path')
+const path=    require('path')
 const mongoose = require('mongoose');
 const fs = require("fs");
 const { OrderedBulkOperation } = require('mongodb');
@@ -589,8 +590,8 @@ const loadOrderDetails=async(req,res)=>{
   const orderId=req.query.id
 
   const orderData = await Order.findOne({ _id: orderId }).populate('items.product_id').populate('user_id')
-  
-    console.log('orderData'+orderData);
+    await Coupon.findOne()
+      console.log('orderData'+orderData);
       res.render('orderDetails',{orderData})
     } catch (error) {
       console.log(error.message);
