@@ -258,11 +258,13 @@
                                 <strong>Status: <%=orderData.status  %></strong><br>
                                 <i class="bi bi-check-circle text-success"></i><br>
                             </div>
+                            <% if(orderData.status=='return pending'){ %>
                             <div class="mt-4">
                                 <form action="#" method="post">
                                     <button type="submit" class="btn btn-success rounded-0">APPROVE RETURN</button>
                                 </form>
                             </div>
+                            <% } %>
                         </div>
                     </div>
                 </div>

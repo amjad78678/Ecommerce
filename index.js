@@ -25,11 +25,7 @@ app.use('/admin',adminRoute)
 
     
 
-const errorHandler=require('./middleware/errorHandler')
-app.use((req,res)=>{
-  res.status(404).render('404')
-})
-app.use(errorHandler)
+
 
 
 

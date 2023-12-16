@@ -89,7 +89,17 @@ const patchCancelOrder=async(req,res)=>{
       }
 }
 
+const patchReturnOrder=async(req,res)=>{
+       try {
+          const {orderId}= req.body
 
+   const statusOfOrder='return pending'
+   await Order.updateOne({_id:orderId},{$set:{status:statusOfOrder}})
+   res.send({success:true,status:statusOfOrder})
+       } catch (error) {
+        console.log(error.message);
+       }
+}
 
 const loadViewOrdered=async(req,res)=>{
      try {
@@ -99,24 +109,7 @@ const loadViewOrdered=async(req,res)=>{
   const orders= await Order.findOne({_id:orderId}).populate('items.product_id')
 
   console.log('ordersofjhs',orders);
-
-    var status = 0;
-        if (orders.status == 'pending') {
-            status = 1;
-        } else if (orders.status.toString() == 'placed') {
-            status = 2;
-        } else if (orders.status == 'dispatched') {
-            status = 3;
-        } else if (orders.status == 'delivered') {
-            status = 4;
-        } else if (orders.status == 'returned') {
-            status = 5;
-        } else if (orders.status == 'cancelled') {
-            status = 6;
-        } else if (orders.status == 'pending for return approval') {
-            status = 7
-        }
-      res.render('viewOrdered',{orders,user:userData,statuss:status})
+      res.render('viewOrdered',{orders,user:userData})
      } catch (error) {
       console.log(error.message);
      }
@@ -132,5 +125,6 @@ const loadViewOrdered=async(req,res)=>{
 module.exports={
   loadOrders,
   patchCancelOrder,
-  loadViewOrdered
+  loadViewOrdered,
+  patchReturnOrder
 }
