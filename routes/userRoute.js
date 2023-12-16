@@ -73,7 +73,7 @@ userRouter.get('/viewOrdered',auth.isLogin,orderController.loadViewOrdered)
 userRouter.post('/resend-otp', auth.isLogout, userController.resendOtp);
 userRouter.post('/verify-payment',userController.verifyPayment)
 userRouter.get('/walletHistory',userController.loadWalletHistory)
-userRouter.post('/applyCoupon',checkoutController.applyCoupon)
+  userRouter.post('/applyCoupon',checkoutController.applyCoupon)
 
 
 
