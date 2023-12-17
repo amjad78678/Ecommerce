@@ -165,7 +165,7 @@
                 role="tabpanel"
                 aria-labelledby="register-tab-2"
               >
-                <form action="" method="post">
+                <form action="" id="loginOtpForm">
                   <div class="form-group">
                     <label for="Your email">Provide your email to receive an OTP in your inbox for verification*</label>
                     <input
@@ -184,7 +184,7 @@
                   <!-- End .form-group -->
 
                   <div class="form-footer">
-                    <button type="submit" class="btn btn-outline-primary-2">
+                    <button type="submit" onclick="loginWithOtp(event)" class="btn btn-outline-primary-2">
                       <span>Submit</span>
                       <i class="icon-long-arrow-right"></i>
                     </button>
@@ -552,6 +552,31 @@
   integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
   crossorigin="anonymous"
 ></script>
+
+
+<script>
+
+  async function loginWithOtp(event){
+    event.preventDefault()
+
+   const formData= $('#loginOtpForm').serialize()
+
+   $.ajax({
+    type:'POST',
+    url:'/loginWithOtp',
+    data:formData,
+
+    success:function(response){
+      if(response.success==true){
+        let userId=response.id
+         
+          window.location.href=`/authentication?id=${userId}`
+      }
+
+    }
+   })
+  }
+</script>
 <!-- Main JS File -->
 <script src="assets/js/main.js"></script>
 <script src="assets/js/demos/demo-2.js"></script>
