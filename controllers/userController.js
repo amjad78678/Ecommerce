@@ -309,7 +309,7 @@ const verifyLogin=async(req,res)=>{
     const loginWithOtp=async(req,res)=>{
             try {
 
-                res.render('loginWithOtp')
+           res.render('loginWithOtp')
             } catch (error) {
               console.log(error.message);
             }

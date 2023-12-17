@@ -261,10 +261,12 @@
           <div class="col-md-6">
             <p>Total: ₹<span id="total"><%=order.total_amount  %></span></p>
             <p>Method : <span id="method"><%= order.payment  %></span></p>
+            <% if(order.status=='placed'||order.status=='dispatched'||order.status=='out for delivery'){ %>
             <p>Expected Delivery: <%= order.expected_delivery  %></p>
+            <% } %>
             <br>
             <a href="/viewOrdered?id=<%= order._id  %>" class="btn btn-md btn-success bg-secondary">View Details</a>
-             <% if(order.status=='placed'||order.status=='pending'){ %>
+             <% if(order.status=='placed'||order.status=='pending'||order.status=="dispatched"){ %>
 
             <a href="#" style="background-color: #f44336;" onclick="cancel(event,'<%=order._id%>')" id="cancel-<%=order._id  %>" class="btn btn-md btn-danger buttonCancel">Cancel</a>
                     <% }else if(order.status=='delivered'){ %>
@@ -294,18 +296,18 @@
       <% } %>
     
     </div>
- 
-    <div class="flex items-center">
-   <% for(let j=1;j<=totalPages;j++){ %>
-   <a
-    href="/orders?page=<%= j %>"
-    class="mx-1 flex items-center  rounded-md border border-gray-400 px-3 py-1 text-gray-900 hover:scale-105"
-  >
-    <%= j %>
-  </a>
+  
+      <div class="pagination-container" style="display: flex; align-items: center;">
+    <% for(let j=1;j<=totalPages;j++){ %>
+    <a
+      href="/orders?page=<%= j %>"
+      class="mx-2 rounded-md border border-gray-400 px-3 py-1 text-gray-900 hover:scale-105 pagination-link"
+    >
+      <%= j %>
+    </a>
 
-  <% } %>
-  </div>
+    <% } %>
+    </div>
 
 </body>
 
