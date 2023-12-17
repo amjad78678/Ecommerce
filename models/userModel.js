@@ -27,6 +27,10 @@ const userSchema = new mongoose.Schema({
   is_Blocked:{
     type:Boolean,
   },
+  token:{
+       type:String,
+       default:''
+  },
     address: [
     {
       name: {

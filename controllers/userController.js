@@ -6,9 +6,11 @@ const Order= require('../models/orderModel')
 const Product=require('../models/productModel')
 const nodemailer = require('nodemailer');
 const dotenv=require('dotenv')
+const randomstring=require('randomstring')
 const mongoose = require('mongoose');
 const Cart=require('../models/cartModel');
 const { search } = require('../routes/userRoute');
+const { name } = require('ejs');
 dotenv.config();
 
 const securePassword = async (password) => {
@@ -162,6 +164,75 @@ console.log(result);
       console.log(error.message);
     }
   };
+
+
+  // for reset password send mail
+
+
+
+  const sentResetVerificationMail = async ({ _id, email,userName }, res,token) => {
+
+
+ console.log(_id +'email'+email)    //-----------------------------------------------------------------------
+    try {
+ const otp = `${Math.floor(1000 + Math.random() * 9000)}`;
+      //---------------NODEMAILER TRANSPORT
+  const transporter = nodemailer.createTransport({
+    service:'gmail',
+    host: 'smtp.gmail.com',
+    port:587,
+    secure:true,
+    auth: {
+      user: process.env.AUTH_EMAIL,
+      pass: 'gasd cdmy jhlt gnhf'
+    },
+  });
+      //mail---options-
+      console.log(email);
+      const mailOptions = {
+        from: process.env.AUTH_EMAIL,
+        to: email,
+        subject: 'For Reset Password',
+        html: `<p> Hi ${userName} ,Please click here to <a href="http://127.0.0.1:3001/forget-password?token=${token}">Reset</a> your password</p>`,
+      };
+
+      //----hash-the-otp
+  const saltRounds = 10;
+  let hashedOtp = await bcrypt.hash(otp, saltRounds);
+  const filter = { userId: _id };
+  const update = {
+  userId: _id,
+  otp: hashedOtp,
+  createdDate: Date.now(),
+  expiresAt: Date.now() + 60000,
+};
+
+// Use findOneAndUpdate with upsert option
+const result = await userOtpVerification.findOneAndUpdate(filter, update, {
+  upsert: true,
+  new: true, // If set to true, returns the modified document rather than the original
+});
+
+// If you want to access the saved or updated document, you can use 'result'
+console.log(result);
+
+  await transporter.sendMail(mailOptions);
+  
+    console.log('iamidmwone',_id);
+ 
+
+    res.send({success:true,id:_id})
+
+      
+
+    }catch (error) {
+      
+      console.log(error.message);
+    }
+  };
+
+
+
 const loadLogin = async (req, res) => {
   try {
     res.render('userSignIn');
@@ -767,9 +838,93 @@ console.log('walletHistorires'+walletHistory);
    }
 }
 
+const loadForgetPassword=async(req,res)=>{
+     try {
+      res.render('forgetPassword')
+     } catch (error) {
+      console.log(error.message);
+     }
+}
+
+const postForgetPassword=async(req,res)=>{
+       try {
+     console.log(req.body);
+     const userData= await  User.findOne({email:req.body.email})
+     console.log('userdatais',userData);
+     const email=req.body.email
+
+
+  if(userData!==null){
+
+  if(userData.is_Verified==false){
+  res.render('forgetPassword',{message:'Please verify your mail'})
+  }else{
+ const randomString=randomstring.generate();
+  const updatedData= await User.updateOne({email:email},{$set:{token:randomString}})
+  sentResetVerificationMail(userData,res,randomString)
+  res.render('forgetPassword',{message:"Please check your mail to reset your password"})
+  
+  }
 
 
 
+  }else{
+    res.render('forgetPassword',{message:'User email is incorrect'})
+  }
+     
+
+
+       } catch (error) {
+        console.log(error.message);
+       }
+}
+
+
+const loadVerifyForgetPassword=async(req,res)=>{
+    try {
+       const token=req.query.token
+     const tokenData=await  User.findOne({token:token})
+
+     if (tokenData){
+      res.render('forget-password',{userId:tokenData._id})
+      
+     }else{
+       res.render('404')
+     }
+    } catch (error) {
+      console.log(error.message);
+    }
+}
+
+
+const postResetPassword=async(req,res)=>{
+     try {
+   const password= req.body.password
+   const confirmPassword=req.body.confirmPassword
+   const userId=req.body.userId
+
+ if (password === confirmPassword) {
+            const passwordMatch = password;
+
+            if (passwordMatch) {
+                const secure_password = await securePassword(passwordMatch);
+                const updatedData = await User.findByIdAndUpdate(
+                    { _id: userId },
+                    { $set: { password: secure_password, token: '' } }
+                );
+
+                res.redirect('/userSignIn');
+            } else {
+                res.render('forget-password', { message: 'Password should not match',userId });
+            }
+        } else {
+            // Add an error message or handle the case when passwords do not match
+            res.render('forget-password', { message: 'Passwords do not match',userId });
+        }
+     } catch (error) {
+      console.log(error.message);
+     }
+}
  module.exports = {
   loadHome,
   loadRegister,
@@ -796,5 +951,10 @@ console.log('walletHistorires'+walletHistory);
   postChangePasssword,
   resendOtp,
   verifyPayment,
-  loadWalletHistory
+  loadWalletHistory,
+  loadForgetPassword,
+  postForgetPassword,
+  loadVerifyForgetPassword,
+  postResetPassword
+  
 };

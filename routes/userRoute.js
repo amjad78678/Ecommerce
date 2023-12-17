@@ -75,6 +75,22 @@ userRouter.post('/verify-payment',userController.verifyPayment)
 userRouter.get('/walletHistory',userController.loadWalletHistory)
 userRouter.post('/applyCoupon',checkoutController.applyCoupon)
 userRouter.patch('/returnOrder',orderController.patchReturnOrder)
+userRouter.get('/forgetPassword',userController.loadForgetPassword)
+userRouter.post('/forgetPassword',userController.postForgetPassword)
+userRouter.get('/forget-password',userController.loadVerifyForgetPassword)
+userRouter.post('/forget-password',userController.postResetPassword)
+
+
+
+
+
+
+userRouter.get('*',(req,res)=>{
+   res.render('404')
+})
+
+
+
 
 
 

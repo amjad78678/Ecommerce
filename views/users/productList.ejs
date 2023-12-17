@@ -1255,7 +1255,7 @@ async function applyPriceFilter(event){
                         try {
                         const response=await $.ajax({
                          url:'/productList',
-                         method:'post',
+                         method:'POST',
                          data:{
                            minPrice,
                            maxPrice,
