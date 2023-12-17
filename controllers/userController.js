@@ -266,9 +266,15 @@ const verifyLogin=async(req,res)=>{
       //checking is verify or not ----------------------------------------
       if (passwordMatch){
         if(userData.is_Verified===true){
-        req.session.userId=userData._id
+
+          if(!userData.is_Blocked==true){
+               req.session.userId=userData._id
         req.session.email=userData.email
         res.redirect('/')
+          }else{
+            res.render('userSignIn',{message:'Your account is temporarily blocked by the admin. We apologize for any inconvenience and appreciate your patience during this review process."'})
+          }
+      
 
 
         }else{

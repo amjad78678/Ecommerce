@@ -19,7 +19,7 @@ var instance = new Razorpay({
           try {
             
               const userId=req.session.userId
-             
+               req.session.coupon=null
               const cart= await Cart.findOne({user_id:userId}).populate({path:'items.product_id'})
               req.session.couponApplied=false
               const availableCoupons=await Coupon.aggregate([{$match:{$and:[{status:true},{'userUsed.user_id':{$nin:[new mongoose.Types.ObjectId(userId)]}}]}}]) 
@@ -224,7 +224,6 @@ const loadOrderPlaced=async(req,res)=>{
 
     const orderId=req.params.id
     const userId=req.session.userId
-     req.session.coupon=null
     const order= await Order.findOne({_id:orderId})
 
 

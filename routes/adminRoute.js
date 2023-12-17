@@ -69,6 +69,9 @@ adminRoute.get('/addCoupon',couponController.loadAddCoupon)
 adminRoute.post('/addCoupon',couponController.postAddCoupon)
 adminRoute.post('/deleteCoupon',couponController.deleteCoupon)
 adminRoute.get('/logout',adminController.loadLogout)
+adminRoute.post('/order-status',adminController.postOrderStatus)
+adminRoute.post('/cancel-order',adminController.postCancelOrder)
+adminRoute.post('/approveReturn',adminController.postApproveReturn)
 
 
 

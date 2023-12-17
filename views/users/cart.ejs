@@ -187,6 +187,7 @@
 											<th>Product</th>
 											<th>Price</th>
 											<th>Quantity</th>
+                      <th>Stock</th>
 											<th>Total</th>
 											<th></th>
 										</tr>
@@ -222,6 +223,12 @@
 </div>
 <!-- End .cart-product-quantity -->
         </td>
+        <% if( cartItem.product_id.stockQuantity<1){ %>
+        <td class="stock-col text-danger">Out of stock</td>
+        <% }else{ %>
+        <td class="stock-col text-success">In stock</td>
+        
+          <% } %>
         <td class="total-col"><%= cartItem.total_price %></td>
         <td class="remove-col"><button class="btn-remove" onclick="removeFromCart('<%= cartItem._id %>')"><i class="icon-close"></i></button></td>
       </tr>

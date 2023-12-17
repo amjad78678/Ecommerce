@@ -223,7 +223,13 @@
         <div class="col-6 col-md-4 col-lg-4">
           <div class="product product-7 text-center">
             <figure class="product-media">
-              <span class="product-label label-new">New</span>
+          
+
+              <% if(product[i].stockQuantity<1){ %>
+              <span class="product-label label-out-of-stock bg-danger text-white fs-6">Out of Stock</span>
+             <% }else{ %>
+                 <span class="product-label label-new">New</span>
+              <% } %>
               <a href="/productDetail?id=<%= product[i]._id %>">
                 <img src="<%= product[i].imageUrl[0] %>" alt="<%= product[i].imageUrl %>" class="product-image">
               </a>
@@ -239,7 +245,15 @@
            <div class="product-action">
            <input type="hidden" id="quantity" value="1">
            <input type="hidden" id="productId" value="<%= product[i]._id  %>">
-           <a href="#" onclick="addTocart(event,'<%= product[i]._id %>')" class="btn-product btn-cart"><span>add to cart</span></a>
+
+           <% if(product[i].stockQuantity<1){ %>
+
+              <a  class="btn-product btn-cart text-danger bg-danger"><span>Out of stock</span></a>
+            <% }else{ %>
+
+          <a href="#" onclick="addTocart(event,'<%= product[i]._id %>')" class="btn-product btn-cart"><span>add to cart</span></a>
+              <% } %>
+   
 
               </div><!-- End .product-action -->
             </figure><!-- End .product-media -->

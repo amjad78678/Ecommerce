@@ -269,8 +269,8 @@
             <a href="#" style="background-color: #f44336;" onclick="cancel(event,'<%=order._id%>')" id="cancel-<%=order._id  %>" class="btn btn-md btn-danger buttonCancel">Cancel</a>
                     <% }else if(order.status=='delivered'){ %>
 
-                  <% const orderDate=new Date(order.date) %>
-                  <% const returnExpiry=new Date(orderDate) %>
+                
+                  <% const returnExpiry=new Date(order.date) %>
                   <% returnExpiry.setDate(returnExpiry.getDate()+10); %>
                   <% const currDate=new Date() %>
 

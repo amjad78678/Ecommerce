@@ -544,7 +544,7 @@ const loadLogout=async(req,res)=>{
 const loadOrders=async(req,res)=>{
         try {
        const user_id= req.session.user_id
-        const orderData=  await Order.aggregate([{$match:{user_id:new mongoose.Types.ObjectId(user_id)}},{$sort:{date:-1}},{
+        const orderData=  await Order.aggregate([{$match:{}},{$sort:{date:-1}},{
       $lookup: {
       from: 'products',  // Replace with the actual name of the collection to populate from
       localField: 'items.product_id',
@@ -611,6 +611,66 @@ const postDeleteImg=async(req,res)=>{
       }
 }
 
+const postOrderStatus=async(req,res)=>{
+     try {
+      console.log('boduyiam',req.body);
+      const orderId= req.body.orderId
+
+      const status=req.body.status
+
+     await Order.updateOne({_id:orderId},{$set:{status:status}})
+       res.send({success:true})
+
+     } catch (error) {
+      console.log(error.message);
+     }
+}
+
+const postCancelOrder=async(req,res)=>{
+     try {
+    const orderId=req.body.orderId
+    const status='cancelled'
+         await Order.updateOne({_id:orderId},{$set:{status:status}})
+       res.send({success:true})
+
+     } catch (error) {
+      console.log(error.message);
+     }
+}
+
+
+const postApproveReturn=async(req,res)=>{
+    try {
+    const {orderId}= req.body
+ const orderData=  await Order.findById({_id:orderId})
+  const status='returned'
+ const userId=orderData.user_id
+const userData=await User.findById({_id:userId})
+
+let orderTotal=Math.round(orderData.total_amount)
+
+await User.findByIdAndUpdate(
+  { _id: userId },
+  {
+    $inc: { wallet: orderTotal },
+    $push: {
+      wallet_history: {
+        date: new Date(),
+        amount: orderTotal,
+        description: 'Order return refund'
+      }
+    }
+  },
+);
+
+
+await Order.findByIdAndUpdate({_id:orderId},{$set:{status:status}})
+  
+res.send({success:true})
+    } catch (error) {
+      console.log(error.message);
+    }
+}
 
 module.exports={
        loadAdminHome,
@@ -641,5 +701,7 @@ module.exports={
        updatedStatus,
        loadOrderDetails,
        postDeleteImg,
-
+      postOrderStatus,
+      postCancelOrder,
+      postApproveReturn
     }
