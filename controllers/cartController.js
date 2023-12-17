@@ -12,12 +12,32 @@ const { ObjectId } = require('mongodb')
   try {
     const userId = req.session.userId;
 
+    if(!req.session.outOfStock){
+       req.session.outOfStock=null
+    }
+  
+
     if (!userId) {
       res.redirect('/userSignIn');
     } else {
       // Fetch cart details
       const cartDetails = await Cart.findOne({ user_id: userId }).populate({path:'items.product_id'});
       const userData = await User.findOne({ _id: userId });
+
+
+     // Check if cartDetails is truthy before accessing its properties
+      const cartItems = cartDetails ? cartDetails.items : [];
+      var inStock=''
+
+   for (const cartItem of cartItems) {
+        if (cartItem.quantity > cartItem.product_id.stockQuantity) {
+          inStock = 'outOfStock';
+          break; // Exit the loop if any item is out of stock
+        }
+      }
+
+     req.session.outOfStock=inStock
+     let sessionStock=req.session.outOfStock
 
       let originalAmts = 0; 
 
@@ -28,7 +48,7 @@ const { ObjectId } = require('mongodb')
         });
       }
 
-      res.render('cart', { user: userData, cartDetails, subTotal: originalAmts });
+      res.render('cart', { user: userData, cartDetails, subTotal: originalAmts,sessionStock});
     }
   } catch (error) {
     console.log(error.message);
