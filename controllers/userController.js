@@ -218,10 +218,6 @@ console.log(result);
 
   await transporter.sendMail(mailOptions);
   
-    console.log('iamidmwone',_id);
- 
-
-    res.send({success:true,id:_id})
 
       
 
@@ -858,11 +854,19 @@ const postForgetPassword=async(req,res)=>{
 
   if(userData.is_Verified==false){
   res.render('forgetPassword',{message:'Please verify your mail'})
+  return
   }else{
  const randomString=randomstring.generate();
-  const updatedData= await User.updateOne({email:email},{$set:{token:randomString}})
+
+
+const tokenExpiration = new Date();
+tokenExpiration.setMinutes(tokenExpiration.getMinutes() + 1); // Set expiry to 5 minutes from now
+
+
+  const updatedData= await User.updateOne({email:email},{$set:{token:randomString,tokenExpiration:tokenExpiration}})
   sentResetVerificationMail(userData,res,randomString)
   res.render('forgetPassword',{message:"Please check your mail to reset your password"})
+  return
   
   }
 
@@ -870,6 +874,7 @@ const postForgetPassword=async(req,res)=>{
 
   }else{
     res.render('forgetPassword',{message:'User email is incorrect'})
+    return
   }
      
 
@@ -882,49 +887,70 @@ const postForgetPassword=async(req,res)=>{
 
 const loadVerifyForgetPassword=async(req,res)=>{
     try {
-       const token=req.query.token
+    const token=req.query.token
      const tokenData=await  User.findOne({token:token})
 
-     if (tokenData){
+
+
+
       res.render('forget-password',{userId:tokenData._id})
-      
-     }else{
-       res.render('404')
-     }
+   
     } catch (error) {
       console.log(error.message);
     }
 }
 
+const postResetPassword = async (req, res) => {
+    try {
+        const password = req.body.password;
+        const confirmPassword = req.body.confirmPassword;
+        const userId = req.body.userId;
 
-const postResetPassword=async(req,res)=>{
-     try {
-   const password= req.body.password
-   const confirmPassword=req.body.confirmPassword
-   const userId=req.body.userId
+        if (password === confirmPassword) {
+            const user = await User.findById(userId);
 
- if (password === confirmPassword) {
-            const passwordMatch = password;
+            if (user) {
+                const passwordMatch = password;
 
-            if (passwordMatch) {
-                const secure_password = await securePassword(passwordMatch);
-                const updatedData = await User.findByIdAndUpdate(
-                    { _id: userId },
-                    { $set: { password: secure_password, token: '' } }
-                );
+                if (passwordMatch) {
+                    const secure_password = await securePassword(passwordMatch);
 
-                res.redirect('/userSignIn');
+                    if (user.tokenExpiration > new Date()) {
+                        const updatedData = await User.findByIdAndUpdate(
+                            { _id: userId },
+                            { $set: { password: secure_password, token: '' } }
+                        );
+
+                        // Example cleanup (remove tokens that are expired)
+                        const result = await User.updateMany(
+                            { tokenExpiration: { $lt: new Date() } },
+                            { $set: { token: '', tokenExpiration: null } }
+                        );
+
+                        res.redirect('/userSignIn');
+                        return
+                    } else {
+                        res.render('forget-password', { message: 'Invalid or expired token', userId });
+                        return
+                    }
+                } else {
+                    res.render('forget-password', { message: 'Password should not match', userId });
+                    return
+                }
             } else {
-                res.render('forget-password', { message: 'Password should not match',userId });
+                res.render('forget-password', { message: 'User not found', userId });
+                return
             }
         } else {
-            // Add an error message or handle the case when passwords do not match
-            res.render('forget-password', { message: 'Passwords do not match',userId });
+            res.render('forget-password', { message: 'Passwords do not match', userId });
+            return
+
         }
-     } catch (error) {
-      console.log(error.message);
-     }
-}
+    } catch (error) {
+        console.log(error.message);
+    }
+};
+
  module.exports = {
   loadHome,
   loadRegister,

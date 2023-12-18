@@ -31,6 +31,7 @@ const userSchema = new mongoose.Schema({
        type:String,
        default:''
   },
+  tokenExpiration: { type: Date, default: null },
     address: [
     {
       name: {
