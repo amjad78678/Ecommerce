@@ -25,9 +25,14 @@ const loadHome = async (req, res) => {
   try {
     
     
-      const userData=await User.findOne({_id:req.session.userId})
+     const userData=await User.findOne({_id:req.session.userId})
+    const productFeatured= await Product.aggregate([{$match:{stockQuantity:{$lt:50}}},{$sort:{date:1}},{$limit:8}])
+   const productSale= await Product.aggregate([{$match:{}},{$sort:{date:-1}},{$limit:5}])
+   const category=await Category.find({})
+   const allTopSale=await Product.aggregate([{$match:{stockQuantity:{$lt:30}}}])
+   
       console.log(req.session.userId);
-      res.render('userHome',{user:userData});
+      res.render('userHome',{user:userData,productFeatured,productSale,category,allTopSale});
     
     }  catch (error) {
     console.log(error.message);
@@ -189,12 +194,65 @@ console.log(result);
   });
       //mail---options-
       console.log(email);
-      const mailOptions = {
-        from: process.env.AUTH_EMAIL,
-        to: email,
-        subject: 'For Reset Password',
-        html: `<p> Hi ${userName} ,Please click here to <a href="http://127.0.0.1:3001/forget-password?token=${token}">Reset</a> your password</p>`,
-      };
+ const mailOptions = {
+  from: process.env.AUTH_EMAIL,
+  to: email,
+  subject: 'Reset Your Password',
+  html: `
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+          body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+          }
+
+          .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          }
+
+          h2 {
+            color: #333333;
+          }
+
+          p {
+            color: #555555;
+          }
+
+          a {
+            color: #007BFF;
+            text-decoration: none;
+            font-weight: bold;
+          }
+
+          a:hover {
+            text-decoration: underline;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <h2>Hi ${userName},</h2>
+          <p>Click the link below to reset your password. This link will expire in 5 minutes.</p>
+          <p>
+            <a href="http://127.0.0.1:3001/forget-password?token=${token}" target="_blank">Reset Your Password</a>
+          </p>
+        </div>
+      </body>
+    </html>
+  `,
+};
+
 
       //----hash-the-otp
   const saltRounds = 10;
@@ -860,7 +918,7 @@ const postForgetPassword=async(req,res)=>{
 
 
 const tokenExpiration = new Date();
-tokenExpiration.setMinutes(tokenExpiration.getMinutes() + 1); // Set expiry to 5 minutes from now
+tokenExpiration.setMinutes(tokenExpiration.getMinutes() + 5); // Set expiry to 5 minutes from now
 
 
   const updatedData= await User.updateOne({email:email},{$set:{token:randomString,tokenExpiration:tokenExpiration}})
@@ -950,6 +1008,25 @@ const postResetPassword = async (req, res) => {
         console.log(error.message);
     }
 };
+const loadAboutUs=async(req,res,next)=>{
+  try {
+    const userId=req.session.userId
+  const user=  await User.findOne({_id:userId})
+    res.render('aboutUs',user)
+  } catch (error) {
+    console.log(error);
+    next(error)
+  }
+}
+
+const loadContactUs=async(req,res,next)=>{
+      try {
+        res.render('contactUs')
+      } catch (error) {
+        console.log(err);
+        next(error)
+      }
+}
 
  module.exports = {
   loadHome,
@@ -981,6 +1058,7 @@ const postResetPassword = async (req, res) => {
   loadForgetPassword,
   postForgetPassword,
   loadVerifyForgetPassword,
-  postResetPassword
-  
+  postResetPassword,
+  loadAboutUs,
+  loadContactUs
 };

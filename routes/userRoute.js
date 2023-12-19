@@ -79,15 +79,14 @@ userRouter.get('/forgetPassword',userController.loadForgetPassword)
 userRouter.post('/forgetPassword',userController.postForgetPassword)
 userRouter.get('/forget-password',userController.loadVerifyForgetPassword)
 userRouter.post('/forget-password',userController.postResetPassword)
+userRouter.get('/aboutUs',userController.loadAboutUs)
+userRouter.get('/contactUs',userController.loadContactUs)
 
 
 
 
 
 
-userRouter.get('*',(req,res)=>{
-   res.render('404')
-})
 
 
 

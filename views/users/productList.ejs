@@ -246,7 +246,7 @@
 
            <% if(product[i].stockQuantity<1){ %>
 
-              <a  class="btn-product btn-cart text-white bg-danger"><span>Out of stock</span></a>
+              <a  class="btn-product text-white bg-danger"><span>Out of stock</span></a>
             <% }else{ %>
 
           <a href="#" onclick="addTocart(event,'<%= product[i]._id %>')" class="btn-product btn-cart"><span>add to cart</span></a>
